@@ -1,0 +1,319 @@
+% !TEX root = ./main.tex
+
+In this section, we take motivation from Farkas' Lemma and its geometric version, defining optimization in terms of a broader geometric concept on cones and observing equivalences from a higher and abstract point of view. A set $S\subseteq\rr^m$ is {\em polyhedral} if there is a finite list of vectors $\bm v_1, \bm v_2,\dots, \bm v_n \in\rr^m$ and a list of bounds $b_1, b_2, \dots, b_n\in\rr$ so that 
+\[ S = \{ \bmx\in\rr^m :\forall i\in\{1, 2, \dots, n\}, \inner{\bmx, \bmv_i}\leq b_i \} \]
+or equivalently, transpose and stack all $\bmv_i$ and there is a finite-dimensional constraint matrix $M\in\rr^{n\times m}$, and $\bmb = (b_1, b_2, \dots, b_n)^\top$ so that 
+\[ S = \{ \bmx\in\rr^m : M\bmx\leq \bmb\}. \]
+One should have observed that this is essentially the feasible region mentioned in Chapter~\ref{chapter: lin opt dual}. When we have a homogeneous system, where the bound $\bmb = \bm0$, a polyhedral set is a {\em polyhedral cone}. A {\em linear half-space}, or just a {\em halfspace}, defined by $\bma\in\rr^n$ is the set \[ H_\bma = \{\bmy\in\rr^m: \inner{\bma, \bmy} \leq 0\}. \]
+We take the fact that every halfspace is closed and convex as given. A polyhedral cone can be understood as the intersection of finitely many half-spaces 
+\[ H_{\bmv_1}\cap H_{\bmv_2}\cap \dots \cap H_{\bmv_n}. \]
+ 
+ \begin{proposition}\label{prop: polyhedrals are closed and convex}
+Every polyhedral set is closed and convex. In particular, a polyhedral set $P$ has that $P = (P^\circ)^\circ$.  
+\end{proposition}
+\begin{proof}
+Consider the definition of a polyhedral set as a finite intersection of closed halfspaces. By Proposition~\ref{prop: closed intersection} and~\ref{prop: convex intersection}, we have that every polyhedral set remains closed and convex. 
+\end{proof}
+
+\begin{remark}\label{remark: geometric polar farkas}
+With the definition of a polyhedral cone, the geometric version of Farkas' Lemma, Theorem~\ref{farkas geo} can be reinterpreted as follows. If a vector $\bmb$ is in the polar of a polyhedral cone defined by $\bma_1, \bma_2, \dots, \bma_r$, then $\bmb\in\cone(\{\bma_1, \bma_2, \dots, \bma_r\}). $
+\end{remark}
+
+
+\section{Structure and Representations of Polyhedra}
+
+In plain language, the Minkowski-Weyl Theorem is very direct: a cone is finitely generated (a vertex representation, such as the geometric version of Farkas' Lemma) if and only if it can be represented by its hyperplane boundaries (a hyperplane representation, such as Theorem~\ref{farkas}). One may naturally expect that there is a very short, easy proof via some auxiliary matrices as in the proofs of Theorem~\ref{farkas}, \ref{minimax}, or \ref{farkas geo}; unfortunately, no, it still requires a last piece of sophisticated, yet elegant machinery and result to finally prove the Minkowski-Weyl Theorem. 
+
+\subsection{The Fourier-Motzkin Elimination Algorithm Framework}
+
+We sketch the proof for the Minkowski-Weyl Theorem briefly. Let $C = \cone(\{\bma_1, \bma_2, \dots, \bma_n\})$ be finitely generated cone; we would show that $C$ is also a polyhedral cone in $\rr^m$ with respect to some matrix $M$ with $m$ columns. Since every $\bmb \in C$ has a representation of $\bmb = \mu_1\bma_1 + \mu_2\bma_2 + \dots + \mu_n\bma_n$. Let $A = [\bma_1 \mid \bma_2 \mid \dots \mid \bma_n]$ and define matrix
+\[ M_{m+n} =  \begin{bmatrix} I_m& -A\\ -I_m & A \\ \bm0_{n\times m} & -I_n \end{bmatrix} \] 
+so that every concatenation $\bmx = (\bmb, \bmmu) \in\rr^{m + n}$, for $\bmb\in\rr^n$ and the corresponding $\bmmu \in\rr^n_+$ where $\bmb = A\bmmu$, is a solution to the system of inequalites $M_{m+n}\bmx \leq\bm0$. 
+
+Now, the matrix $M_{m+n}$ defines a polyhedral cone 
+\[ P = \left\{\bmx\in\rr^{m+n}: M_{m+n}\bmx\leq \bm0 \right\} \] 
+in which one may verify that  $P = \{(\bmb, \bmmu)\in\rr^{m+n}: \mu\in\rr^n_+, \bmb = A\bmmu\}$. We would then need to show that the polyhedral cone $P$ can be projected down to some set $P' \subset \rr^m$ and $P'$ is a polyhedral cone defined by some $M_{m}$ so that $M_m\bmb\leq\bm0$ if and only if $\bmb\in P'$.  
+
+To obtain the matrix $M_m$, we will perform the {\em Fourier-Motzkin elimination} algorithm. The algorithm projects a polyhedral cone $C_{k+1}\subset \rr^{k+1}$ to some $C_k\subset \rr^{k}$ that, first, remains a polyhedral cone and, second, every $\bmx\in C_k$ is a part of a solution in $C_{k+1}$: formally, we state the Fourier-Motzkin Elimination framwork below. 
+
+\begin{theorem}[Fourier-Motzkin Elimination]\label{thm: FM}
+Let $m$ and $n$ be positive integers. Suppose $P_{n+1} = \{\bmmu\in\rr^{n+1}: A\bmmu\leq \bmb\}\subset \rr^{n+1}$ is a polyhedral set defined by a matrix $ A \in\rr^{m\times (n+1)}$ and $\bmb\in\rr^m$, there then are  $\bma'_1, \bma'_2, \dots, \bma'_{m'}\in \rr^n$, and $b_1', b_2', \dots, b_{m'}'\in\rr$ that defines a polyhedral set $P_n = \{\bmx\in\rr^n:\forall i\in\{1,2,\dots, m\}, \inner{\bma_i, \bmx}\leq b_i'\}\subset \rr^n$ with the projection property 
+\[ \bmx\in P_n \iff \exists  x_{n+1} \in \rr \text{ such that } \begin{bmatrix}\bmx\\ x_{n+1}\end{bmatrix} \in P_{n+1}.  \]
+\end{theorem}
+\begin{proof}
+Suppose that $A\in\rr^{m\times(n+1)}, \bmb\in\rr^m, \bmmu\in\rr^{n+1}$ are as in the statement so that $A\bmmu \leq \bmb$ defines the polyhedral set $P$; let $\bmx$ be the first $n$ components of $\bmmu$ and $x_{n+1}$ be the last component; i.e., $\bmmu = (\bmx, x_{n+1})\in\rr^{n+1}$. For $i\in\{1,2,\dots, m\}$ and $j\in\{1,2,\dots, n+1\}$, let $a_{i,j}\in\rr$ denote the $(i, j)$-th entry of $A$ and $b_i$ be the $i$-th entry of $\bmb$. For $i\in\{1,2,\dots, m\}$, we consider take first $n$ entries if the $i$-th row and denote them as $\bma_{i}^\top = [a_{i, 1}, a_{i, 2}, \dots, a_{i, n}]$ so that we have $\inner{\bma_i, \bmx} + a_{i, n+1} x_{n+1} \leq b_i$, where $b_i$ is the $i$-th entry of $\bmb$. In particular, we now have the format
+\[ \left[\begin{array}{rcl |c} 
+\rule[.5ex]{2em}{.4pt} & \bma_1^\top & \rule[.5ex]{2em}{.4pt} & a_{1, n+1} \\
+\rule[.5ex]{2em}{.4pt} & \bma_2^\top & \rule[.5ex]{2em}{.4pt}  & a_{2, n+1} \\
+ & \vdots &  & \vdots \\
+\rule[.5ex]{2em}{.4pt} & \bma_m^\top & \rule[.5ex]{2em}{.4pt}  & a_{m, n+1}
+\end{array}\right]  
+\left[\begin{array}{c}
+|\\
+\bmx \\
+|\\\hline
+x_{n+1}
+\end{array}\right] 
+\leq \begin{bmatrix} b_1 \\ b_2\\ \vdots \\ b_{m} \end{bmatrix}.
+ \]
+
+First, we partition the index set $\{1,2,\dots, m\} = J_0\cup J_+\cup J_-$ where 
+\begin{equation*}\begin{split}
+J_0\ & = \{i: a_{i, n+1} = 0\},  \\
+J_+\ & = \{i: a_{i, n+1} > 0\},\text{ and }\\
+J_-\ & = \{i: a_{i, n+1} < 0\}.  \\
+\end{split}\end{equation*}
+Thus, when $i\in J_0$, we have $  \inner{\bma_i, \bmx} \leq b_i  $ remain the same; for $i\in J_+$, since $a_{i, n+1}>0$, we have 
+\[  x_{n+1} \leq \frac{b_i - \inner{\bma_i, \bmx}}{a_{i, n+1}}; \]
+for $i\in J_-$, the inequality is flipped by dividing a negative number $a_{i, n+1}<0$ so we have
+\[  x_{n+1} \geq \frac{b_i - \inner{\bma_i, \bmx}}{a_{i, n+1}}. \]
+
+
+
+Next, for each pair $(k, \ell)\in J_-\times J_+$, since we have $\bmmu = (\bmx, x_{n+1})$ is a solution for $A\bm\mu \leq \bmb$, we have that 
+\begin{equation} \label{eqn: FW squeeze} \frac{b_k - \inner{\bma_k, \bmx}}{a_{k, n+1}} \leq \frac{b_\ell - \inner{\bma_\ell, \bmx}}{a_{\ell, n+1}}. \end{equation}
+We multiply both sides by $-a_{k, n+1}a_{\ell, n+1}$, which is positive since $k \in J_-$ and $-a_{k, n+1} > 0$; this eliminates the denominator while keeping the direction of inequalities. Observe the following sequence of equivalence
+\[\begin{array}{crcl}\vspace{.5em}
+& {\displaystyle -a_{k, n+1}a_{\ell, n+1}\frac{b_k - \inner{\bma_k, \bmx}}{a_{k, n+1}}} & \leq & {\displaystyle -a_{k, n+1}a_{\ell, n+1}\frac{b_\ell - \inner{\bma_\ell, \bmx}}{a_{\ell, n+1}}} \\
+\iff  &   -a_{\ell, n+1}(b_k - \inner{\bma_k, \bmx}) & \leq & -a_{k, n+1}(b_\ell - \inner{\bma_\ell, \bmx}) \\
+\iff  & -a_{\ell, n+1}b_k - (-a_{\ell, n+1}) \inner{\bma_k, \bmx} & \leq & -a_{k, n+1}b_\ell - (-a_{k, n+1}) \inner{\bma_\ell, \bmx} \\
+\iff  &  a_{\ell, n+1} \inner{\bma_k, \bmx} -a_{k, n+1} \inner{\bma_\ell, \bmx} & \leq &  a_{\ell, n+1}b_k -a_{k, n+1}b_\ell  \\
+\iff  & \inner{ a_{\ell, n+1} \bma_k  -a_{k, n+1}\bma_\ell, \quad \bmx} & \leq &  a_{\ell, n+1}b_k -a_{k, n+1}b_\ell . \\
+\end{array}\]
+Now, observe that $J_0 \cup (J_-\times J_+)$ is a finite set so the set defined by 
+\begin{equation}\label{eqn: FM poly}\begin{split} 
+P' = \{ \bmx\in\rr^n :~&\forall i\in J_0, \inner{\bma_i, \bmx}\leq b_i \quad\text{ and } \\
+~& \forall (k, \ell)\in J_-\times J_+, \inner{ a_{\ell, n+1} \bma_k  -a_{k, n+1}\bma_\ell, \ \bmx} \leq a_{\ell, n+1}b_k -a_{k, n+1}b_\ell \}  
+ \end{split}\end{equation} is a polyhedral set. Meanwhile, every solution in $\bmx \in P'$ obeys Inequality~\ref{eqn: FW squeeze} and, thus, we may pick a number between the two bounds as $x_{n+1}\rast$ so that the concatenation $\bmmu = (\bmx, x_{n+1}\rast)\in P$. The proof is done.  
+\end{proof}
+
+We remark on Theorem~\ref{thm: FM} and its proof; we assume the notation used in the proof. First, we observe that the resulting polyhedral set $P'$ can be obtained by matrix multiplication. 
+Consider a permutating matrix $U_0\in \rr^{|J_0|\times m}$ by appending $m$ rows. Since $J_0$ is finite, we iterate over $J_0$: for each $i\rast\in J_0$, we obtain and append to $U_0$ a row $\bmu^\top = (u_1, u_2, \dots, u_m)$ with $u_{i\rast} = 1$ and $u_j = 0$ for all $j\in \{1,2,\dots, m\}\setminus\{i\rast\}$. In particular, we have 
+\begin{equation}\label{eqn: FW zero I0} \bmu^\top A = [\textendash\textendash\ \bma_{i\rast}^\top\ \textendash\textendash \mid 0] \quad\text{and}\quad \bmu^\top \bmb = [b_{i\rast}]  \end{equation} where the last entry is $a_{i\rast, n+1} = 0$ as $i\rast\in J_0$ by definition.
+Similarly, define another matrix $U_1\in \rr^{| J_- \times J_+ |\times m}$ that sums rows of $A$. Given the finiteness of $J_+$ and $J_-$, we adopt a canonical way to iterate over $J_- \times J_+$. For each $(k\rast, \ell\rast)\in J_-\times J_+$, define and append $\bmu^\top = (u_1, u_2, \dots, u_m)$ to $U_1$ where $u_{k\rast} = a_{\ell\rast, n+1}$, $u_{\ell\rast} = -a_{k\rast, n+1}$, and $u_j = 0$ for all $j\in \{ 1, 2, \dots, m \}\setminus \{\ell\rast, k\rast\}$. We have that 
+\begin{equation}\label{eqn: FW zero I} \begin{split}
+\bmu^\top A  ~& = [\textendash\textendash\   (a_{\ell\rast, n+1} \bma_{k\rast}  -a_{k\rast, n+1}\bma_{\ell\rast} )^\top\ \textendash\textendash\mid 0 ] \quad\text{and}\\ 
+\bmu^\top\bmb~& = [ a_{\ell\rast, n+1}b_{k\rast} -a_{k\rast, n+1}b_{\ell\rast}], 
+\end{split}\end{equation}
+where the last entry 0 is obtained by $0 = a_{\ell\rast, n+1} a_{k\rast, n+1}  + (-a_{k\rast, n+1})a_{\ell\rast, n+1} $. Let $m' = |J_0| + |J_-\times J_+|$,  
+\[  U = \begin{bmatrix} U_0 \\ U_1
+\end{bmatrix} \in \rr^{m' \times m}, \] and $D_{n+1, n}\in\rr^{n+1, n}$ be the non-standard identity matrix, where every diagonal entry is 1, and 0 otherwise. Due to the observations in Equation~\ref{eqn: FW zero I0} and~\ref{eqn: FW zero I}, the last column of $UA$ an all-zero column, we have that $UA = UAD_{n+1, n}D_{n, n+1}$.  Now, observe that $U$ and $D_{n+1, n}$ contains only positive entries; we have that 
+\begin{multline} 
+A\bm\mu \leq \bmb \iff UA \bmmu\leq U\bmb \iff \\
+(UAD_{n+1, n} D_{n, n+1}) \bmmu = (UAD_{n+1, n}) (D_{n, n+1} \bmmu) \leq U\bmb. 
+\end{multline}
+
+Finally, we may apply the Fourier-Motzkin Elimination algorithm $k$ times and iteratively obtain $U\rise 1, U\rise 2, \dots, U\rise k$, and obtain a final matrix $U = U\rise k U\rise{k-1}\dots U_1$. Observe that \[D_{n+k, n+k-1}D_{n+k-1, n+k-2} \dots D_{n+1, n} = D_{n+k, n}, \] which leads to the following corollary. For positive integers $p$ and $q$, where $p<q$, let $\pi_{q, p}: \rr^{q} \to \rr^p$ be the {\em projection function} where 
+\[ \pi_{q, p}\left(\begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_p \\ \vdots \\ x_q \end{bmatrix}\right) = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_p  \end{bmatrix}. \] For a set $Q\subset \rr^{q}$, we will denote the set $\Pi_{q, p}(Q) = P$ be the set where 
+\[ P = \left\{ \bmx\in\rr^p: \exists \bmx'\in\rr^{q}: \pi_{q, p}(\bmx') = \bmx  \right\}. \]
+
+\begin{corollary}\label{cor: FM projection}
+For a polyhedral set $Q\subset \rr^{n+k}$, its projection $\Pi_{n+k, n}(Q)$ is a polyhedral set in $\rr^n$. 
+\end{corollary}
+We remark on the notion of projection: our definition of projection assumes a basis in a vector space and specifically fixes the order of the coordinates; in many textbooks, projection is defined more abstractly in terms of vector spaces. Here, we adopt this style for application reasons, as we will only be dealing with the Euclidean, multi-dimensional spaces of real numbers. 
+
+Finally, observe from the proof of Theorem~\ref{thm: FM} that, if $\bmb = \bm0$ initially, then the new constraint produced by the algorithm remains $\{b_1', b_2', \dots, b_{m'}'\} = \{0\}$. 
+
+\begin{corollary}\label{cor: FM cone remains cone}
+The projection of a polyhedral cone remains a polyhedral cone. 
+\end{corollary}
+
+\subsection{The Minkowski-Weyl Theorem}
+
+\begin{theorem}[Weyl's Theorem]\label{thm: Weyl}
+Every finitely generated cone is polyhedral; in particular, if $\bma_1, \bma_2, \dots, \bma_r\in\rr^m$ defines $C = \cone(\{\bma_1, \bma_2, \dots, \bma_r\})$, then there exists $\bmb_1, \bmb_2, \dots, \bmb_{s}\in\rr^m$ such that $C = \{\bmy: \forall i\in\{1,2,\dots, s\}, \inner{\bmb_i, \bmy}\leq 0\}$. 
+\end{theorem}
+\begin{proof}
+Suppose that the cone $C = \cone(\{\bma_1, \bma_2, \dots, \bma_r\})$ is finitely generated. Let $A = [\bma_1 \mid \bma_2 \mid \dots \mid \bma_r]$ and define the matrix \[ M_{m+n} =  \begin{bmatrix} I_m& -A\\ -I_m & A \\ \bm0_{n\times m} & -I_n \end{bmatrix}, \]
+which defines a polyhedral cone in $ Q = \rr^{m+n}$ and contains precisely $(\bmb, \bmmu)\in\rr^{m+n}$ for all $\bmb\in C$ such that $\bmb = A\bmmu$. By Corollary~\ref{cor: FM projection}, $\Pi_{m+n, m}(Q) = C$; in particular, by Theorem~\ref{thm: FM}, there is a list of vectors in $\rr^m$ that defines the polyhedral $C$. 
+\end{proof}
+
+
+\begin{theorem}[Minkowski's Theorem]\label{thm: Minkowski}
+Every polyhedral cone is finitely generated. 
+\end{theorem}
+\begin{proof}
+Let $\bma_1, \bma_2, \dots, \bma_r\in\rr^{m}$ be a list of vectors that defines the polyhedral cone $P = \{\bmy\in\rr^m: \forall i\in\{1, 2, \dots, r\}, \inner{\bma_i, \bmy} \leq 0 \}. $ 
+Define a matrix $A\in\rr^{m\times r}$ where $A = [\bma_1 \mid \bma_2 \mid \dots \mid \bma_r]$. 
+Let $Y_{\text{-}, A} = \{\bmy\in\rr^m: A^\top\bmy\leq \bm0\} = P$, we may apply Theorem~\ref{farkas geo} and consider Remark~\ref{remark: geometric polar farkas} so that $P^\circ = \cone(\{\bma_1, \bma_2, \dots, \bma_r\})$ that the polar is finitely generated. Next, apply Theorem~\ref{thm: Weyl} so that the polar $P^\circ$ is also polyhedral defined by $\bmb_1, \bmb_2, \dots, \bmb_s\in\rr^m$. This implies that $(P^{\circ})^\circ$ is finitely generated by $\bmb_1, \bmb_2, \dots, \bmb_s$. Finally, by Proposition~\ref{prop: polyhedrals are closed and convex} and the Bipolar Theorem (Theorem~\ref{thm: bipolar}), we have that $P = (P^{\circ})^\circ$ and, thus, $P$ is finitely generated. 
+\end{proof}
+
+\begin{corollary}
+Finitely generated cones are closed and convex. \hfill \qedsymbol
+\end{corollary}
+
+Recall that $\mu_1 \bmv_1 + \mu_2 \bmv_2 + \dots + \mu_m \bmv_m$ is a convex combination of $\bmv_1, \bmv_2, \dots, \bmv_m$ if $\mu_i\in\rr_+$ for $i \in \{1, 2, \dots, m\}$ and $\sum_{i=1}^m\mu_i = 1$. The convex hull of a set $\{\bmv_1, \bmv_2, \dots, \bmv_m\}$ is $\conv(\{\bmv_1, \bmv_2, \dots, \bmv_m\})$ is the set of all convex combination of $\bmv_1, \bmv_2, \dots, \bmv_m$. 
+
+\begin{theorem}[Minkowski-Weyl Representation]\label{thm: mw representation}
+A set $P$ is polyhedral if and only if there is a set $V = \{\bmv_1, \bmv_2, \dots, \bmv_m\}$ and a finitely generated cone $C$ so that $P = \conv( V ) + C$.  
+\end{theorem}
+\begin{proof}
+By the definition of a polyhedral set, there is a list $\bma_1, \bma_2, \dots, \bma_r\in\rr^m$ and $b_1, b_2, \dots, b_r\in\rr$ so that $ P = \{ \bmy\in\rr^m:  \forall i\in\{1,2,\dots, r\}, \inner{\bmy, \bma_i}\leq b_i \}.$
+Based on $P$, define the polyhedral cone 
+\[ P' = \left\{ \bmat{\bmy\\ y_{m+1}}\in\rr^{m+1} : \left[\begin{array}{rcl |c} 
+\rule[.5ex]{2em}{.4pt} & \bma_1^\top & \rule[.5ex]{2em}{.4pt} & - b_1 \\
+\rule[.5ex]{2em}{.4pt} & \bma_2^\top & \rule[.5ex]{2em}{.4pt}  & - b_2 \\
+ & \vdots &  & \vdots \\
+\rule[.5ex]{2em}{.4pt} & \bma_r^\top & \rule[.5ex]{2em}{.4pt}  & - b_r\\
+\rule[.5ex]{2em}{.4pt} & \bm0 & \rule[.5ex]{2em}{.4pt} & -1
+\end{array}\right]  
+\bmat{ \bmy \\ y_{m+1} } \leq \bm0
+\right\}. \]
+Observe that $P\cong P_1' := \{(\bmy,1)\in\rr^{m+1}: \bmy\in P\}\subset P'$. By Theorem~\ref{thm: Minkowski}, $P'$ is finitely generated; let $V = \{\bmu_1', \bmu_2', \dots, \bmu_s'\}$ so that $P' = \cone(V)$. For $i\in\{1,2,\dots, s\}$, we write each $\bmu_i' = (\bmu_i, u_{i, m+1})$ where $\bmu_i\in\rr^m$ and $u_{i, m+1}\in\rr$. So we also have 
+ \[ P' = \left\{ \bmat{\bmy\\ y_{m+1}} = \bmat{ \sum_{i=1}^s \lambda_i \bmu_i\\ 
+ \sum_{i=1}^s \lambda_i u_{i, m+1} } :  \lambda_1, \lambda_2, \dots, \lambda_s\in\rr_+ \right\}. \]
+Since $y_{m+1} = \sum_{i=1}^s \lambda_i u_{i, m+1}\geq 0$ for any conic combination, we may conclude that $u_{i, m+1}\in\rr_+$ for every $i\in\{1,2,\dots, s\}$. We partition $\{1,2,\dots, s\} = J_0 \cup J_+$ where $J_0 = \{j: u_{j, m+1} = 0\}$ and $J_+ = \{j: u_{j, m+1} > 0\};$ we define \
+\[\mu_i =\left\{\begin{array}{ll}
+\lambda_iu_{i, m+1} & \quad\text{if } i \in J_+ \\ 
+\lambda_i & \quad\text{if } i \in J_0
+\end{array}\right. 
+\quad\text{and}\quad 
+\bmv_i =\left\{\begin{array}{ll}
+\bmu_i/u_{i, m+1} & \quad\text{if } i \in J_+ \\ 
+\bmu_i & \quad\text{if } i \in J_0
+\end{array}\right..
+\] 
+That is, if $u_{i, m+1}= 0$, then it annihilates the contribution, as well as the restriction on $\lambda_i$ to $y_{m+1}$. We may verify 
+\begin{equation}
+%\label{eqn: MW construction 1} 
+P'_1 = \left\{ \bmat{\bmy \\ 1}: \bmy = \sum_{i=1}^s \mu_i\bmv_i, \quad 1 =  \sum_{i\in J_+} \mu_i, \quad \mu_1, \mu_2, \dots, \mu_s\in\rr_+\right\}. \end{equation}
+since every non-negative $\mu_i$ can be traced back to $\lambda_i$ and, since we chose $v_{i, m+1} = 1$, $\lambda_i\in\rr_+$ always. As the definition of $P'_1$, we may write
+\begin{multline}\label{eqn: MW construction}
+P =\left\{  \sum_{j\in J_+} \mu_i\bmv_i :  1 =  \sum_{i\in J_+} \mu_i,~\forall i\in\{1,2,\dots, s\}, \mu_i \in\rr_+\right\} 
++ \\
+\left\{  \sum_{j\in J_0} \mu_i\bmv_i:~ \forall i\in\{1,2,\dots, s\}, \mu_i \in\rr_+\right\}.\end{multline}
+For the converse direction, where we are given a finitely generated cone and a convex hull, observe that the above deduction is a sequence of equivalences. Thus, we proved both directions. 
+\end{proof}
+
+In a Minkowski-Weyl representation of a polyhedral set $P = \conv(V) + C$ for some set of vectors $V$, the cone $C$ is known as the recession cone of $P$. Let $X$ be a set in $\rr^m$; a vector $\bmd\in\rr$ is a {\em recession of $X$} if $\bmx + \alpha\bmd\in X$ for every $\bmx\in X$ and $\alpha\in\rr_+$. By the universal quantifiers, the set of all recessions of $X$ is well-defined; we denote the set of recessions of $X$ by \[ \rec(X) = \{\bmd\in\rr^m: \forall \bmx\in X,\forall \alpha\in\rr_+, \bmx + \alpha\bmd\in X\}.\] In a way, $\cone(X)$ is the minimal cone that contains $X$, and $\rec(X)$ is a maximal translated cone whose translation is properly contained in $X$. 
+
+\begin{corollary}
+For a polyhedral set $P = \{\bmx\in \rr^m: A\bmx\leq \bmb\}$ for $A\in\rr^{n\times m}$ and $\bmb\in\rr^n$ and its Minkowski-Weyl Representation of $P$ as in Equation~(\ref{eqn: MW construction}) defined by $\bmv_i$ for $i\in \{1, 2, \dots, s\} = J_0 \cup J_+$ such that 
+\[ P = \conv(V) + C := \conv(\{\bmv_j: j\in J_+\}) + \cone(\{\bmv_j: j\in J_0\}); \] we have that $C = \rec(P)$.
+\end{corollary}
+\begin{proof}
+Let $P, A, \bma_1, \bma_2, \dots, \bma_r, \bmb, b_1, b_2, \dots, b_r, V, J_0$ be defined as in the statement; further, we take $P'$ and $P'_1$ as in the proof of Theorem~\ref{thm: mw representation}. We will first show that $C \subset \{\bmd : A\bmd \leq \bm0 \}.$ For $j\in J_0$, observe the construction that $\bmv_j$, the generators of $C$, are defined by $\bmv_j = \bmu_j$ where $(\bmu_j, 0)\in P'$; that is, $\inner{\bma_i, \bmu_j} - u_{j, m+1} b_j \leq 0$ for every $i\in\{1, 2, \dots, r\}$. Since $J_0$ is chosen by $J_0 = \{j: u_{j, m+1} = 0\}$, we have $u_{j, m+1} b_j = 0$ for $j\in J_0$; equivalently, $A\bmv_j = A\bmu_j \leq \bm0$ for every generator of $C$. This concludes that every point in $\bmd\in C$ satisfies that $A\bmd\leq\bm0$. 
+
+Suppose that $\bmd\in C$ and we have that $A \bmd \leq \bm0$. For any point $\bmx\in P$ and any $\alpha\in\rr_+$, we have that $A(\bmx + \alpha\bmd) = A\bmx + \alpha A \bmd \leq \bmb + 0$, which follows the definition of $P$, satisfies that $\bmx + \alpha \bmd \in P$ and $\bmd\in \rec(P)$. 
+
+Suppose that $\bmd \in \rec(P)$; by definition, for any point $\bmx\in P$ and any $\alpha\in\rr_+$, we have that $A(\bmx + \alpha \bmd) = A\bmx + \alpha A\bmd \leq \bmb$. This holds only if $A \bmd \leq \bm0$ since, if any entry of $A\bmd$ is positive, then replacing $\alpha$ by a sufficiently large number $\alpha'$ violates the fact that  $A(\bmx + \alpha' \bmd ) \leq \bmb$. Indeed, if $(\bmd, 0) = \sum_{i=1}^s \lambda_i (\bmv_i, u_{i,m+1})$, then the last coordinate gives $0 = \sum_{j \in J_+}\lambda_i u_{i, m+1}.$ For $i\in J_+$, since $u_{i, m+1} > 0$, we have $\lambda_i = 0$ and, thus, $\bmd$ can be written as a conic combination of $\{\bmv_j: j\in J_0\}$; as such $\bmd\in C$. 
+\end{proof}
+
+
+\section{Algebraic Characterization of Extreme Points}
+%\begin{proposition}
+%Let $ V = \{v_1, v_2, \dots, v_m\}$ and $C$ be a finitely generated cone; the set of all extreme points of the polyhedral set $P = \conv(V) + C$, which has a Minkowski-Weyl representation, is a subset of $V$. 
+%\end{proposition}
+Let $C$ be a convex set; an {\em extreme point} $\bmb\in C$ is a point where there is no line that contains $\bmb$ in its interior; that is, there is for all points $\bmc, \bmc'\in C$ so that $\bmb\not\in \{\bmc, \bmc'\}$, we have that $ \bmb \neq \alpha\bmc + (1 - \alpha) \bmc'$ for all $ \alpha\in(0,1)$. 
+This subsection develops the fundamental linear-algebraic characterization of extreme points. Rather than evaluating extreme points solely through geometric convex combinations, the three theorems in this section provide direct, verifiable linear independence criteria tailored to general, standard, and bounded polyhedral representations. While established here algebraically, these characterizations serve as foundational anchors; subsequent sections will explicitly link each criterion back to its geometric, matrix-algebraic, and algorithmic interpretations. We frist write down the theorem statements for the section and prove them in the following subsections. 
+
+%\begin{theorem}[] \label{thm: extreme and lin indep} Let $P\subset\rr^m$ be a polyhedral set. 
+%\end{theorem}
+\begin{theorem}[Extreme points and row spaces]\label{thm: extreme points part 1}
+Suppose that $P\subseteq \rr^m$ is a polyhedral set defined by $\bma_1, \bma_2, \dots, \bma_n\in\rr^m$ and $b_1, b_2,\dots b_n\in\rr$, so that $ P = \{\bmx: \forall i\in\{1,2,\dots n\}, \inner{\bma_i, \bmx}\leq b_i\}$. A point $\bmv\in P$ is an extreme point of $P$ if and only if the set 
+\[S_\bmv = \left\{\bma_j: j \in \{1, 2, \dots, n\}, \inner{\bma_j, \bmv} = b_j\right\} \] contains one or more subsets consisting of $m$ linearly independent vectors. 
+\end{theorem}
+
+Geometrically, Theorem~\ref{thm: extreme points part 1} characterizes an extreme point as the unique solution to a system of $m$ linearly independent active constraint hyperplanes in $\rr^m$.
+
+\begin{theorem}[Extreme points and column spaces]\label{thm: extreme points part 2}
+Suppose $P\subset \rr^m_+$ is a polyhedral set obtained by the intersection of finitely many hyperplanes, $P =\{ \bmx:  M\bm x = \bmb, \bmx\geq\bm0\},$ where $M\in\rr^{n\times m}$ and $\bmb\in\rr^n$.  A vector $\bmv\in P$ is an extreme point of $P$ if and only if the columns of $M$ corresponding to $\supp(\bmv)$ are linearly independent.
+\end{theorem}
+
+\begin{theorem}[Extreme points and column spaces in a bounded region]\label{thm: extreme points part 3}
+Suppose we have a polyhedral set $P =\{ \bmx:  M\bm x = \bmb, \bmc \leq \bmx \leq \bmd\},$ where $M\in\rr^{n\times m}$ and $\bmb\in\rr^n$.  A vector $\bmv\in P$ is an extreme point of $P$ if and only if the columns of $M$ corresponding to the entries in $\bmv$ that are strictly between $\bmc$ and $\bmd$ are linearly independent.
+\end{theorem}
+
+
+\subsection{Ranks of Active Constraints}
+
+%\begin{theorem}\label{thm: extreme points part 1}
+\noindent{\bf Theorem~\ref{thm: extreme points part 1}.~} {\em 
+Suppose that $P\subseteq \rr^m$ is a polyhedral set defined by $\bma_1, \bma_2, \dots, \bma_n\in\rr^m$ and $b_1, b_2,\dots b_n\in\rr$, so that $ P = \{\bmx: \forall i\in\{1,2,\dots n\}, \inner{\bma_i, \bmx}\leq b_i\}$. A point $\bmv\in P$ is an extreme point of $P$ if and only if the set 
+\[S_\bmv = \left\{\bma_j: j \in \{1, 2, \dots, n\}, \inner{\bma_j, \bmv} = b_j\right\} \] contains one or more subsets consisting of $m$ linearly independent vectors. 
+}\vspace{1em}
+
+%\end{theorem}
+\begin{proof}
+For the forward implication, let $\bmv\in\rr^m$ be an extreme point of $P$ and we denote $S = \{\bma_1, \bma_2, \dots, \bma_n\}$. Without loss of generality, suppose $S_\bmv = \{\bma_1, \bma_2, \dots \bma_s\}$, for some $s\geq m$. Let $A$ and $A_\bmv$ be the matrices obtained by stacking all the transposes of every element of $S$ and $S_\bmv$, respectively. Toward contradiction, suppose that $S_{\bmv}$ contains fewer than $m$ linearly independent vectors. By the contradictory hypothesis, the kernal of $A_\bmv$ is nontrivial, i.e., $\ker(A_\bmv)\neq \{\bm0\}$; we also have that $\ker(A_\bmv)\neq\{\bm0\}$. We then have a nonzero solution $\overline\bmw\in\ker(A)$. Since $A$ is a linear function, we have that $A(\bmv + \gamma\overline\bmw) = A\bmv + \gamma A\overline\bmw$ for any $\gamma\in\rr$. Now, by the definition of $S_\bmv$, we have that $\inner{\bma_j, \bmv + \gamma\overline \bmw} = b_j + \gamma \cdot 0 = b_j$ if $\bma_j\in S_\bmv$ and $\inner{\bma_i, \bmv} < b_i$ if $\bma_i\in S\setminus S_\bmv$; this means there is some $\epsilon_i\in\rr_{++}$ for all $i\in \{i: \bma_i\in S\setminus S_\bmv\}$ so that $ \inner{\bma_i, \bmv} + \epsilon_i = b_i $. Let $\epsilon = \max_i{\epsilon}$; we may choose $\gamma>0$ so that $ \inner{\bma_i, \bmv} \pm \gamma\inner{ \bma_i, \overline\bmw }\leq b_i $ for all $\bma_i\in S\setminus S_\bmv$ and, thus, $A(\bmv \pm \gamma\overline\bmw) \leq \bmv$. Yet, this yields that the two points $\bmv + \gamma\overline\bmw, \bmv - \gamma\overline\bmw\in P$, which contradicts that $\bmv$ is an extreme point of $P$. 
+
+For the converse direction, suppose $\bmv\in P$ defines $S_\bmv$ and $S' \subset S_\bmv$ is a subset consisting of $m$ linearly independent vectors. Suppose $\bmu, \bmw\in P$ are points such that $\alpha\in(0, 1)$ so that $\bmv = \alpha \bmu + (1 - \alpha) \bmw$; note that $\inner{\bmu, \bma_j} \leq b_j$ and $\inner{\bmw, \bma_j} \leq b_j$. Now, for any $\bma_j \in S'$ we have that 
+\begin{equation*}\begin{split} 
+b_j = \inner{\bmv, \bma_j}~& = \inner{ \alpha \bmu + (1 - \alpha) \bmw, \bma_j} \\
+& = \alpha \inner{\bmu, \bma_j}  + (1 - \alpha)\inner{\bmw, \bma_j} \\
+& \leq  \alpha b_j  + (1 - \alpha)b_j \\
+& = b_j. \end{split}\end{equation*}
+By a {\em strict weighted-averge} argument, we have that $\inner{\bmu, \bma_j} = \inner{\bmw, \bma_j} = b_j$. 
+
+Let $A'$ be the matrix obtained by stacking the transposes of vectors $\bma_j\in S'$, and let $\bmb'$ be the vector so that the $b_j$ are stacked in the same order. Since $S'$ consists of $n$ linearly independent solutions, we have that $ A'$ is a full-rank matrix and, if there is a solution such that $A'\bmx = \bmb'$, then the solution is unique; thus, we have $\bmu=\bmv=\bmw$. Thus, we have that $\bmv$ is an extreme point.
+\end{proof}
+
+\subsection{Basic Feasible Solutions for Standard Form}
+
+Let $A^\top = [\bma_1\mid \bma_2\mid \dots \mid \bma_r]$. Without loss of generality, assume $r\geq n$ and $\bma_1, \bma_2, \dots, \bma_n\in S_\bmv$ are linearly independent. An extreme point $P$ exists if the submatrix $A'$ consisting of the first $n$ rows of $A$ has full rank.  Let $\bmv\in \rr^n$ and $v_i$ be the value on its $i$-th coordinate; the {\em support} of $\bmv$ is the index set $\supp(\bmv) = \{i : v_i \neq 0\}$. We will denote $\bm\chi_i\in\rr^m$ to be the unit vector with the $i$-th entry being 1. Let $K\subset\{1,2,\dots, m\}$ be an index set; for a vector $\bmv\in\rr^m$, we write $[\bmv]_K$ to be the vector in $\rr^{|K|}$ obtained from $\bmv$ by taking the entries with indices in $K$. \\
+
+
+\noindent{\bf Theorem~\ref{thm: extreme points part 2}.~}{\em 
+Suppose we further have that $P\subset \rr^m_+$ and is obtained by the intersection of finitely many hyperplanes, $P =\{ \bmx:  M\bm x = \bmb, \bmx\geq\bm0\},$ where $M\in\rr^{n\times m}$ and $\bmb\in\rr^n$.  A vector $\bmv\in P$ is an extreme point of $P$ if and only if the columns of $M$ corresponding to $\supp(\bmv)$ are linearly independent.
+}
+
+\begin{proof}
+We rewrite $\bmx\in P$ as a solution to the system of linear inequalities  
+\[ A \bmx  = \bmat{M \\ -M \\ -I_m} \bmx \leq \bmat{\bmb \\ -\bmb\\ \bm0}. \]
+For the forward direction, suppose $\bmv\in\rr_+^m$ is an extreme point in $P$ and, toward contradiction, the columns in $M$ corresponding to the indices in $\supp(\bmv)$ are not linearly independent. This means there is a vector $\bmd \in\rr^m$ where the entries satisfy that
+\[ M\bmd = \bm0, \quad \bmd\neq \bm0, \quad \text{and} \quad \supp(\bmd)\subset \supp(\bmv), \]
+which gives that, for any $\epsilon\in\rr_{++}$, 
+\[A(\bmv + \epsilon\bmd) 
+= \bmat{M \\ -M \\ -I_m}(\bmv + \epsilon\bmd) 
+= \bmat{M\bmv \\ -M\bmv \\ -I_m\bmv} + \epsilon\bmat{M\bmd \\ -M\bmd \\ -I_m\bmd} 
+= \bmat{M\bmv \\ -M\bmv \\ -\bmv} + \epsilon\bmat{\bm0 \\ \bm0 \\ -\bmd} 
+\]
+Since $\supp(\bmd)\subset \supp(\bmv)$ for a non-zero $\bmd$, we have $\bmv\neq \bm0$ as well. We now choose 
+\[\epsilon = \min_{i\in\supp(\bmd)} \frac{v_i}{|d_i|} \] 
+where $v_i$ and $d_i$ are the $i$-th component of $\bmv$ and $\bmd$, respectively, so that $-\bmv \pm \epsilon \bmd \leq \bm0$. From the first two blocks, we have that $M(\bmv \pm \epsilon \bmd) = M\bmv$ and, thus, $\bmv \pm \epsilon\bmd\in P$, which contradicts that $\bmv$ is an extreme point. 
+
+For the converse direction, suppose $\bmv\in P$ and the columns corresponding to $\supp(\bmv)$ are linearly independent. Let $k = |\supp(\bmv)|$ and, without loss of generality, $\supp(\bmv) = \{1, 2, \dots, k\}$; we denote by $M_k\in\rr^{n\times k}$ consists of the first $k$ columns of $M$.  Since $M_k$ then has precisely $k$ linearly independent columns and, thus, has a rank of $k$ or more, by the fundamental theorem of linear algebra, there is a list of $k$ rows of $M_k$ that are linearly independent after transposing; we denote the set of indices of these rows by $J$. We then take the rows of $M$ with indices in $J$ and denote the transpose of these rows by $S_J = \{ \bma_j\in\rr^m: j\in J \}$. 
+
+Let $R_\bmv = \left\{\bm\chi_j\in\rr^m: j\in \{1,2,\dots, m\}\setminus \supp(\bmv)\right\}$, which corresponds to rows in $-I_m$. Suppose that there are $\mu_j, \lambda_i \in\rr$ for $j\in J$ and $i\in \{1,2,\dots, m\}\setminus \supp(\bmv)$ so that 
+\begin{equation}\label{eqn: column space}\bm0 =  \sum_{j\in J} \mu_j \bma_j + \sum_{i\in \{1,2,\dots, m\}\setminus \supp(\bmv)} \lambda_i \bm\chi_i; \end{equation}
+we will now show that $S_J \cup R_\bmv$ is linearly independent by showing that $\{\mu_j: j\in J\}\cup \{\lambda_i: i\in \{1,2,\dots, m\}\setminus \supp(\bmv)\} =\{ 0\}$.  
+We first consider the computation within the entries with indices in $\supp(\bmv)$. Since we chose $S_J$ to be the ``rows'' that are linearly independent in $M_k$, the entries with indices $\supp(\bmv)$ form vectors in $\rr^k$ that are linearly independent; in particular, we have 
+\begin{equation*}\begin{split} 
+&  \left[\sum_{j\in J} \mu_j \bma_j + \sum_{i\in \{1,2,\dots, m\}\setminus \supp(\bmv)} \lambda_i \bm\chi_i\right]_{\supp(\bmv)} \\
+ = &  \sum_{j\in J} \mu_j [\bma_j]_{\supp(\bmv)} + \sum_{i\in \{1,2,\dots, m\}\setminus \supp(\bmv)} \lambda_i [\bm\chi_i]_{\supp(\bmv)}\\ 
+ = &  \sum_{j\in J} \mu_j [\bma_j]_{\supp(\bmv)}
+\end{split}\end{equation*}
+and $[\bm0]_{\supp(\bmv)} = \sum_{j\in J} \mu_j [\bma_j]_{\supp(\bmv)}$ implies that $\mu_j = 0$ for all $j\in J$. Thus, this annilates a summation in Equation~(\ref{eqn: column space}) so that $\bm0 =  \sum_{i\in \{1,2,\dots, m\}\setminus \supp(\bmv)} \lambda_i \bm\chi_i$, which is obvious that $\lambda_i = 0$ for all $i\in\{1,2,\dots, m\}\setminus\supp(\bmv)$. This concludes that $S_J \cup R_\bmv$ is a set of linearly independent vectors. 
+
+Finally, we have $\inner{\bma_j, \bmv}\leq b_i$ for $j\in J$ and, since $\bmv\in P$, we have $- \inner{\bma_j, \bmv}\leq -b_i$, which implies that $\inner{\bma_j, \bmv} = b_i$. For $R_\bmv$ consists of $\bm\chi_i$ with $i\in\{1, 2, \dots, m\}\setminus\supp(\bmv)$ (i.e., the coordinates with a 0-entry in $\bmv$), we have $\inner{\bmv, \bm\chi_i} = 0$. Thus, along with $S_J\cup R_\bmv$ consisting of $m$ linearly independent rows in $M$, we apply Theorem~\ref{thm: extreme points part 1} so that $\bmv$ is an extreme point. 
+\end{proof}
+
+
+\subsection{Bounded Variable Polyhedral Sets}
+
+Let $\bmu, \bmw, \bmv\in\rr^m,$ such that $\bmu \leq \bmw$, and $u_i, w_i, v_i$ be the $i$-th entry; we denote $\supp_{\bmu, \bmw}(\bmv) = \{i: u_i < v_i < w_i\}$. The proof of Theorem~\ref{thm: extreme points part 3} is identical to the proof for Theorem~\ref{thm: extreme points part 2} with some minor twists in the setup. \\ 
+
+
+\noindent{\bf Theorem~\ref{thm: extreme points part 3}. }{\em 
+Suppose that $P =\{ \bmx:  M\bm x = \bmb, \bmc \leq \bmx \leq \bmd\},$ where $M\in\rr^{n\times m}$ and $\bmb\in\rr^n$.  A vector $\bmv\in P$ is an extreme point of $P$ if and only if the columns of $M$ corresponding to the entries in $\bmv$ that are strictly between $\bmc$ and $\bmd$ are linearly independent.
+}\vspace{1em}
+
+\begin{proof}
+The polyhedral set defines the following system of linear inequality
+\[ \begin{bmatrix} M \\ -M \\ -I_m \\ I_m  \end{bmatrix}\bmx \leq \begin{bmatrix}  \bmb \\ -\bmb \\ -\bmu \\ \bmw  \end{bmatrix}  \]
+For the forward direction, suppose that $\bmv$ is an extreme point and, toward a contradiction, suppose that the columns of $M$ corresponding to $\supp_{\bmu, \bmw}(\bmv)$ are linearly dependent, which gives a vector $\bmd\in\rr^m$ so that 
+\[ M\bmd = \bm0, \quad \bmd\neq\bm0, \text{ and }\quad \supp_{\bmu, \bmw}(\bmd)\subseteq \supp_{\bmu, \bmw}(\bmv) \] 
+For any $\epsilon\in\rr_{++}$, we have 
+\[A(\bmv + \epsilon \bmd) = \bmat{M \bmv \\ -M \bmv  \\  -\bmv \\ \bmv} + \epsilon \bmat{\bm0 \\ \bm0  \\  -\bmd \\ \bmd} \]
+and choose small enough 
+\[\epsilon = \min_{i\in \supp_{\bmu, \bmw}(\bmv)} \frac{\min\left(\{ v_i - u_i, w_i -v_i \} \right) }{|d_i|} \] and it would contradict that $\bmv$ is an extreme point. 
+
+For the converse direction, replacing $\supp$ by $\supp_{\bmu, \bmw}$ and one may verify that all the linear independence conditions remain valid. 
+\end{proof}
+
+
+%\section{Remarks on Optimizations}
+%Remark 3.X (The Frontier of Continuous vs. Discrete Optimization)The Corollary to Theorem 3.7 represents the exact boundary where continuous convex analysis meets discrete combinatorial optimization. When a polyhedron $P$ possesses purely integral extreme points ($\text{conv}(P \cap \mathbb{Z}^n) = P$), an intrinsically NP-hard integer program:$$\min \{ c^\top x \mid x \in P \cap \mathbb{Z}^n \}$$collapses into a continuous linear program $\min \{ c^\top x \mid x \in P \}$, which is solvable in polynomial time via continuous methods.When integrality fails, the convex hull $\text{conv}(P \cap \mathbb{Z}^n)$ strictly shrinks inside $P$, creating non-convex discrete structure. At this point, continuous polyhedral analysis yields to discrete machinery (e.g., lattice theory, cutting planes, and branch-and-bound trees). Throughout the remainder of this text, we remain strictly on the continuous side of this watershed—extending our study from polyhedral sets $Ax \ge b$ to general convex sets $g_i(x) \le 0$ and conic domains.
+%
+
+

@@ -1,0 +1,97 @@
+% !TEX root = ./main.tex
+
+%
+%\begin{proposition}
+%If a subset of $\rr^n$ is open (resp. closed, bounded, or compact) with respect to some norm, then it is open (resp. closed, bounded, or compact) with respect to all other norms. 
+%\end{proposition}
+
+We primarily deal with the vector spaces $\rr^n$ with $n\geq 1$ and their subsets. We will denote the boundary and the closure of a set $S$ by $\bd(S)$ and $\cl(S)$, respectively. We take the following analytical fact as given.
+\begin{proposition}\label{prop: closed intersection}
+Every finite or infinite intersection of closed sets is closed. \hfill\qedsymbol
+\end{proposition}
+
+We denote and define the set of all {\em (entry-wise) non-negative vectors} as 
+$$\rr^n_+  = \left\{\bmx = \begin{bmatrix}x_1\\ x_2\\ \vdots\\ x_n\end{bmatrix}: \forall i\in\{1,2,\dots, n\}, x_i\geq 0\right\}$$ 
+and the set of all {\em (entry-wise) non-positive vectors} $$\rr^n_-  = \left\{\bmx = \begin{bmatrix}x_1\\ x_2\\ \vdots\\ x_n\end{bmatrix}: \forall i\in\{1,2,\dots, n\}, x_i\leq 0\right\}. $$
+In the context of linear optimization, all the comparisons between two vectors are entry-wise; that is, for two vectors $\bmx, \bmy \in\rr^n$, where $x_i$ and  $y_i$ denotes the $i$-th entry of $\bmx$ and $\bmy$, respectively, we denote $\bmx\leq\bmy$ if $x_i \leq y_i$ for all $i\in\{1,2,\dots, n\}$. For elements $\bmx\in\rr^n_+$ and $\bmy \in\rr^n_-$, we may write that $\bmy\leq \bm0\leq\bmx$.  
+
+\begin{proposition}
+Let $y, b_1, b_2 \in\rr^m$. If $b_1 \leq b_2$ and $y\geq 0$, then 
+$$\inner{y, b_1}\leq \inner{y, b_2}.$$
+\end{proposition}
+\begin{proof}
+Rewrite $b_1 \leq b_2$ as $b_2- b_1 \geq 0$. As $y\geq 0$ and every term we are dealing with is nonnegative, we have that $\inner{y, b_2 - b_1} \geq 0$, which gives that $ \inner{y, b_2 - b_1}  = \inner{y, b_2} - \inner{y, b_1} \geq 0 $ and thus $\inner{y, b_2} \geq \inner{y, b_1}$. 
+\end{proof}
+
+For inline context, for $\bmx\in\rr^n$ and $\bmx' \in \rr^m$, we may write $(\bmx, \bmx')\in\rr^{m+n}$ as the concatenation of the two vectors; this notation coincides with the notation for an open real number interval, so we will explicitly explain before using this notation. 
+
+\section{Convex Sets}
+
+A set $C$, where $C\subset\rr^n$, is {\em convex} if for all $x, y\in C$ and $\alpha\in [0, 1]$, we have that $\alpha x + (1-\alpha) y\in C$. The closure and the interior of a convex set are also convex. A vector $z$ has a linear combination of vectors $x_1, x_2, \dots, x_m$ if there are $a_1, a_2, \dots, a_m\in\rr$ so that $z = a_1 x_1 + a_2 x_2 + \dots + a_m x_m$. The linear combination is a {\em conic combination} if the coefficients are non-negative; that is, $a_i\geq 0$. The linear combination is a {\em convex combination} if it is a conic combination and $\sum_{i=1}^m a_i = 1$. 
+
+\begin{definition}
+A function $f: C \to \rr$, where $C\subset \rr^n$, is {\em convex} if for all $x, y\in C$ and $\alpha\in[0, 1]$, we have that 
+$$ f(\alpha x + (1 -\alpha) y) \leq \alpha f(x)  + (1 - \alpha) f(y). $$
+Let $C$ and $S$ be sets, where $C\subset S\subset \rr^n$, and $f$ be a function that $f: S\to\rr$. Suppose that $f$ is not convex; then we say $f$ is {\em convex over $C$} if $f|_C$ is convex.  
+\end{definition}
+
+We take the following analytical facts for convex sets as given.  
+
+\begin{proposition}\label{prop: convex intersection}
+Every finite or infinite intersection of convex sets is convex. \hfill\qedsymbol
+\end{proposition}
+
+\begin{proposition}
+Let $C$ be a convex subset of $\rr^n$ and $f:\rr^n\to\rr$ be a differentiable function. We have that 
+$$ f(y) \geq f(x) + \inner{y-x, \nabla f(x)} $$
+for all $x, y\in C$. \hfill\qedsymbol
+\end{proposition}
+
+\begin{proposition}
+Let $C$ be a convex subset of $\rr^n$ and $f:\rr^n\to\rr$ be a twice-differentiable function. If $\nabla^2 f(x)$ is positive semidefinite for all $x\in C$, then $f$ is convex over $C$. If $C$ is open and $f$ is convex over $C$, then $\nabla^2 f(x)$ is positive semidefinite for all $x\in C$. \hfill\qedsymbol
+\end{proposition}
+
+The {\em convex hull} of a set $X$, denoted by $\conv(X)$, is the minimal convex set that contains $X$; alternatively, $\conv(X)$ is the intersection of all convex sets containing $X$. 
+
+\begin{proposition}[Strict Hyperplane Separation Theorem]\label{prop: strict hyperplane separation}
+Suppose $C, D \subset \rr^n$ are two closed convex sets, with $D$ compact and $C\cap D = \emptyset$. There then is a point $\bma\in\rr^n, q \in \rr$ such that $\bma\neq 0$ and 
+\begin{equation*}\tag*{\qedsymbol} \forall \bmx\in C, \inner{\bma, \bmx} \geq q \quad\text{and}\quad\forall \bmx\in D, \inner{ \bma, \bmx } < q. \end{equation*}
+\end{proposition}  
+Since a singleton is closed and compact, we have the following corollary. 
+\begin{corollary}
+If $b\in\rr^n$ is a point such that $b\not\in C$, where $C\subset \rr^n$, then there is a hyperplane that separates $b$ and $C$. \hfill\qedsymbol
+\end{corollary}
+
+
+\section{Geometric Cones}
+
+A set $C$, where $C\subset \rr^n$ is a {\em cone} if for all $x\in C$ and $c\in\rr_+$, we have that $cx\in C$. A cone need not be convex, as the boundary of a cone is also a cone. For example, $\rr^n_+$ is a cone; its boundary, consisting of the non-negative vectors with at least one zero-entry, is a cone but not convex. 
+
+The {\em cone generated by a set $X$}, where $X = \{\bmx_1, \bmx_2, \dots, \bmx_m\}\subset \rr^n$, is denoted and defined as the set of conic combinations of $X$, 
+\[ \cone(X) = 
+	\{a_1\bmx_1 + a_2\bmx_2 + \dots + a_m \bmx_m: \forall 
+			i\in\{1, 2, \dots, m\}, a_i\in\rr_+, \bmx_i\in X
+	\}; 
+\]
+Clearly, $\bm0\in\cone(X)$ for any $X$. The {\em polar cone} of a cone $C$ is denoted and defined as $C^\circ = \{y\in \rr^n: \forall x\in C, \inner{y, x}\leq 0\}$. We take the following facts on cones as given. 
+\begin{proposition}[The Bipolar Theorem]\label{thm: bipolar}
+For a nonempty set $X$, we have 
+\[ X^\circ = (\cl(X))^\circ = (\conv(X))^\circ = (\cone(X))^\circ.\]
+Further, given a cone $C$, we have that 
+\[ (C^\circ)^\circ = \cl(\conv(C)) \] 
+and, thus, $C = (C^\circ)^\circ$ if the cone $C$ is already closed and convex. \hfill\qedsymbol
+\end{proposition}
+
+The next theorem is every math student's favorite type of theorem: it states that a vector in a cone in $\rr^n$ can be represented by $n$ or fewer vectors, and a vector in a convex hull can be represented by $n + 1$ or fewer vectors. 
+
+\begin{proposition}
+Let $X$ be a non-empty subset of $\rr^n$; we may assume that $X$ is a linearly independent set.  
+\begin{enumerate}[noitemsep]
+\item Every nonzero $x\in \cone(X)$ can be represented as a conic combination of linearly independent vectors in $X$. 
+\item Every $x\in\conv(X)\setminus X$ can be represented as a convex combination of $m$ vectors $x_1, x_2, \dots, x_m\in X$ where  $x_2 - x_1, x_3 - x_1, \dots, x_m - x_1$ are linearly independent.\hfill\qedsymbol
+\end{enumerate}
+\end{proposition}
+The first statement is clear as a basic linear-algebraic argument about dimensionality. For the second part, consider $X = \{\bmx_1 = (1, 0)^\top, \bmx_2 = (0, 1)^\top, \bmx_3 = (-1, -1)^\top\}\subset\rr^2$. Clearly, $\bm0\in \conv(X)$ but $\bm0 = \frac13\bmx_1 + \frac13\bmx_2 + \frac13\bmx_3$ is a convex combination and $X$ is not linear independent. 
+
+
+

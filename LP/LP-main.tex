@@ -1,0 +1,53 @@
+\documentclass[12pt]{report}
+%\documentclass[11pt, letterpaper]{scrreprt}
+
+\input{../preamble/packages}
+\input{../preamble/alias}
+\usepackage{geometry}
+%\geometry{letterpaper, left=2cm, right=2cm, top=2cm, bottom=2cm}
+\geometry{letterpaper, left=1.1in, right=1.1in, top=1in, bottom=1in}
+
+%\geometry{letterpaper, left=1in, right=2.2in, top=1in, bottom=1in, marginparwidth=1.8in}
+
+
+\usepackage{hyperref}
+%\usepackage[pagewise]{lineno}
+%\linenumbers
+%\usepackage{refcheck}
+
+\usepackage{setspace}
+\setstretch{1.1}
+%\usepackage{parskip}
+%\usepackage{comment}
+%\excludecomment{proof} 
+%
+
+\begin{document}
+\title{Optimization Theory with a Pedagogical Motivation}
+\author{Zhiyuan (Owen) Zhang}
+%\maketitle
+\tableofcontents
+\newpage
+
+\chapter{Introduction}
+
+Propositions and theorems are both mathematical facts and do not reflect mathematical difficulties or depth. We use propositions, with or without a proof, as facts whose proofs are out of the scope of this note. If a theorem appears without a proof, then its proof is relatively easy and left as an exercise. In many texts, the dot product between two elements in $\rr^n$, $n$-dimensional real vectors, is denoted by $\bmx^\top \bmy$ or $\inner{\bmx, \bmy}$; we adopt the bracket notation $\inner{\bmx, \bmy}$. First, it spares us from explicitly invoking the transpose operation and the associated matrix multiplication. Second, it reads cleaner when discussing associativity, such as $\inner{\bmx, A\bmy} = \inner{A^\top\bmx, \bmy}$. Moreover, when readers arrive at $\inner{-, -}$, we automatically assume it is parsed as a real number, instead of a matrix multiplication with some hidden dimension to discover. Finally, the last author believes that the notation $\bmx^\top \bmy$ assumes the operation on matrices of the vectors $\bmx$ and $\bmy$, and after transposing and multiplication, it gives a 1-by-1 matrix instead of a scalar, in which they are interchangeable but would be more reader-friendly if the scalar-property is addressed explicitly. 
+
+For this note, we assume readers have a basic understanding of linear algebra and analysis. In linear algebra, we expect readers to have internalized the concepts of linear transformations, linear independence, orthogonality, and bases of a subspace. In real analysis, we assume the readers have internalized the equivalence between different definitions for open and closed sets in Euclidean spaces, understood the definition of the interior, boundary, and closure of a set, and have understood the equivalence between Cauchy-ness and convergence in a closed set; since we only shallowly involve analysis and we work on Euclidean space, we may from time-to-time handwave, or omit those proofs with heavy analysis machinery. 
+
+
+\section{Analysis Preliminaries}\label{chapter: prelim}
+\input{analysis-prelim}
+
+\chapter{Linear Optimization and its Dual}\label{chapter: lin opt dual}
+\input{dual.tex}
+
+\chapter{Polyhedral Geometry}\label{chapter: polyhedral geometry}
+\input{polyhedral}
+
+\chapter{Linear Programming}\label{chapter: extreme points}
+\input{dantzig}
+
+\bibliographystyle{unsrtnat}
+\bibliography{ref}
+\end{document}

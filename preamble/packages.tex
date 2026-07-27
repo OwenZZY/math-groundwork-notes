@@ -1,0 +1,54 @@
+%\usepackage{makeidx}
+%\makeindex
+%======================================================================
+% Use fonts in the Times family.
+%
+%\DeclareOldFontCommand{\rm}{\rmfamily}{\mathrm}
+%\DeclareOldFontCommand{\bf}{\bfseries}{\mathbf}
+%\DeclareOldFontCommand{\it}{\itshape}{\mathit}
+%\DeclareOldFontCommand{\sf}{\sffamily}{\mathsf}
+%\DeclareOldFontCommand{\tt}{\ttfamily}{\mathtt}
+
+% General styles
+\usepackage{latexsym}	% LaTeX fonts
+\usepackage{amsmath}  	% \text{} etc
+\usepackage{amsthm}   	% AMS style theorem and proof environments
+\usepackage{amssymb}  	% for \feedback symbol; superset of amsfonts
+\usepackage{mathrsfs}	% special script style \mathscr{S} for \Set
+\usepackage[all]{xy}	% Xy-Pic
+\usepackage{bbm}
+\usepackage{mdframed}
+\usepackage{natbib}
+%\usepackage{microtype}
+
+% ----------------------------------------------------------------------
+
+% To produce straighter arrows, uncomment the following two lines:
+
+%\xyoption{ps}		% backend
+%\xyoption{dvips}	% To have prettier straight lines etc.
+
+
+% \usepackage{geometry}
+% \usepackage{graphicx}
+
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}%vlined
+\usepackage{empheq}
+\usepackage{blkarray}
+\usepackage{tikz}
+\usepackage{algpseudocode}
+\usepackage{enumitem}
+
+\usepackage{caption}
+\captionsetup{width=1\textwidth}
+%\usepackage{bookmark}
+%\usepackage{cleveref}
+%\crefname{algocf}{alg.}{algs.}
+%\Crefname{algocf}{Algorithm}{Algorithms}
+
+\newcommand{\doublespaced}{\renewcommand{\baselinestretch}{2}\normalsize}
+\newcommand{\singlespaced}{\renewcommand{\baselinestretch}{1}\normalsize}
+\newcommand{\draftspaced}{\renewcommand{\baselinestretch}{1.5}\normalsize}  
+		% for 10pt draft only
+
+

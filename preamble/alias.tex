@@ -1,0 +1,290 @@
+% ----------------------------------------------------------------------
+% common text abbreviations
+\newcommand{\eg}{\mbox{\it e.g.}}
+\newcommand{\ie}{\mbox{\it i.e.}}
+\newcommand{\etal}{\mbox{\it et al.}}
+\newcommand{\apriori}{{\it a priori}}
+\newcommand{\aposteriori}{{\it a posteriori}}
+\newcommand{\wloss}{without loss of generality}
+\newcommand{\Wloss}{Without loss of generality}
+
+% ----------------------------------------------------------------------
+% common symbols
+
+% implication
+\newcommand{\imp}{\Rightarrow}                  
+\newcommand{\iimp}{\Longrightarrow}       
+\renewcommand{\implies}{$\imp\ $}		
+\newcommand{\pmi}{\Leftarrow}		
+
+% spacing
+\newcommand{\sep}{\hspace{2em}} 
+\newcommand{\ssep}{\hspace{1em}}
+\newcommand{\void}[1]{}				% comment out the argument
+%\newcommand{\todo}[1]{[#1]\marginpar{\mbox{\Huge !}}}
+
+%Here are some user-defined notations
+
+\newcommand{\RR}{\mathbf R}
+\newcommand{\CC}{\mathbf C}
+\newcommand{\ZZ}{\mathbf Z}
+\newcommand{\ZZn}[1]{\ZZ/{#1}\ZZ}
+\newcommand{\QQ}{\mathbf Q}
+\newcommand{\rr}{\mathbb R}
+\newcommand{\cc}{\mathbb C}
+\newcommand{\zz}{\mathbb Z}
+\newcommand{\ff}{\mathbb{F}}
+\newcommand{\kk}{\mathbf k}
+\newcommand{\zzn}[1]{\zz/{#1}\zz}
+\newcommand{\qq}{\mathbb Q}
+\newcommand{\nn}{\mathbb N}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\dd}{{\rm d}}
+\newcommand{\set}[1]{\mathcal{#1}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\scr}[1]{\mathscr{#1}}
+\newcommand{\im}{\operatorname{im}}
+
+
+
+\newcommand{\wt}{\widetilde}
+\newcommand{\bm}{\boldsymbol}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\rec}{\operatorname{rec}}
+\newcommand{\cone}{\operatorname{cone}}
+\newcommand{\conv}{\operatorname{conv}}
+
+\renewcommand{\leq}{\leqslant}		
+\renewcommand{\geq}{\geqslant}	
+\renewcommand{\preceq}{\preccurlyeq}
+\renewcommand{\succeq}{\succcurlyeq}
+
+\newcommand{\inner}[1]{\left\langle#1\right\rangle}
+\newcommand{\bma}{{\bm a}}
+\newcommand{\bmb}{{\bm b}}
+\newcommand{\bmc}{{\bm c}}
+\newcommand{\bmd}{{\bm d}}
+\newcommand{\bme}{{\bm e}}
+\newcommand{\bmx}{{\bm x}}
+\newcommand{\bmy}{{\bm y}}
+\newcommand{\bmz}{{\bm z}}
+\newcommand{\bmu}{{\bm u}}
+\newcommand{\bmv}{{\bm v}}
+\newcommand{\bmw}{{\bm w}}
+\newcommand{\bms}{{\bm s}}
+\newcommand{\bmt}{{\bm t}}
+
+\newcommand{\bmmu}{{\bm\mu}}
+\newcommand{\bmlambda}{{\bm\lambda}}
+
+\newcommand{\bb}{{\bm b}}
+\newcommand{\bbb}{{\bm b}}
+\newcommand{\bbx}{{\bm x}}
+\newcommand{\bcc}{{\bm c}}
+\newcommand{\xx}{{\bm x}}
+\newcommand{\yy}{{\bm y}}
+\newcommand{\uu}{{\bm u}}
+\newcommand{\vv}{{\bm v}}
+\newcommand{\ww}{{\bm w}}
+
+
+\newcommand{\calP}{\mathcal P}
+\newcommand{\calS}{\mathcal S}
+\newcommand{\calH}{\mathcal H}
+\newcommand{\cat}{\mathcal}
+
+\newcommand{\rast}{^\ast}
+\newcommand{\aff}{\operatorname{aff}}
+\newcommand{\ri}{\operatorname{ri}}
+
+\newcommand{\st}{\mathrm{s.t.\ }}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\bd}{\operatorname{bd}}
+\newcommand{\dist}{\operatorname{dist}}
+
+\newcommand{\e}{\operatorname{e}}
+
+\renewcommand{\subset}{\subseteq}
+\newcommand{\superset}{\supseteq}
+\newcommand{\supersetneq}{\supsetneq}
+
+\newcommand{\pp}{\mathbf{P}}
+\newcommand{\ppn}{\pp^{n}}
+\newcommand{\prob}{\mathbb{P}}
+\newcommand{\ee}{\mathbb{E}}
+\newcommand{\rise}[1]{^{(#1)}}
+\newcommand{\mr}{\operatorname{mr}}
+\newcommand{\paints}[2]{#1\to #2}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\corank}{\operatorname{corank}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\vol}{\textsc{Vol}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\spectralnorm}[1]{{\left\vert\kern-0.25ex\left\vert\kern-0.25ex\left\vert #1 
+    \right\vert\kern-0.25ex\right\vert\kern-0.25ex\right\vert}}
+    
+    
+    
+% ----------------------------------------------------------------------
+% theorem definitions
+% numbered by default: 
+% 	theorem, lemma, proposition, corollary, example, principle
+% unnumbered by default: 
+%	definition, openproblem, remark, remarks, convention
+%
+% get unnumbered versions by un-lemma etc., numbered by n-definition etc. 
+
+\theoremstyle{plain}
+\newtheorem{n-lemma}{Lemma}[section]
+\newtheorem{n-theorem}[n-lemma]{Theorem}
+\newtheorem{n-proposition}[n-lemma]{Proposition}
+\newtheorem{n-corollary}[n-lemma]{Corollary} 
+\newtheorem{n-principle}[n-lemma]{Principle}
+\newtheorem{n-claim}[n-lemma]{Claim}
+\newtheorem{n-assumption}[n-lemma]{Assumption}
+
+\newtheorem*{un-lemma}{Lemma}
+\newtheorem*{un-theorem}{Theorem}
+\newtheorem*{un-proposition}{Proposition}
+\newtheorem*{un-corollary}{Corollary} 
+\newtheorem*{un-principle}{Principle}
+\newtheorem*{un-claim}{Claim}
+
+\theoremstyle{definition}
+\newtheorem{n-definition}[n-lemma]{Definition}
+\newtheorem{n-condition}[n-lemma]{Condition}
+\newtheorem{n-openproblem}[n-lemma]{Open Problem}
+\newtheorem{bn-remark}[n-lemma]{Remark}		% bold remark
+
+\newtheorem*{un-definition}{Definition}
+\newtheorem*{un-openproblem}{Open Problem}
+\newtheorem*{bun-remark}{Remark}		% bold unnumbered remark
+\newtheorem*{un-problem}{Problem}
+\newtheorem{n-problem}[n-lemma]{Problem}
+
+\theoremstyle{remark}
+\newtheorem{n-example}[n-lemma]{Example}
+\newtheorem{n-remark}[n-lemma]{Remark}
+\newtheorem{n-remarks}[n-lemma]{Remarks}
+\newtheorem{n-convention}[n-lemma]{Convention}
+\newtheorem*{un-example}{Example}
+\newtheorem*{un-remark}{Remark}
+\newtheorem*{un-remarks}{Remarks}
+\newtheorem*{un-convention}{Convention}
+
+% defaults numbered/unnumbered
+\newenvironment{theorem}{\begin{mdframed}[linewidth=1pt,            
+        innerleftmargin=10pt,
+        innertopmargin=8pt,
+        skipabove=10pt] 
+\vspace{-\topsep}\begin{n-theorem}}{\end{n-theorem}\end{mdframed}}
+\newenvironment{lemma}{\begin{mdframed}[linewidth=1pt,            
+        innerleftmargin=10pt,
+        innertopmargin=8pt,
+        skipabove=10pt] 
+\vspace{-\topsep}\begin{n-lemma}}{\end{n-lemma}\end{mdframed}}
+\newenvironment{proposition}{\begin{mdframed}[linewidth=1pt,           
+        innerleftmargin=10pt,
+        innertopmargin=8pt,
+        skipabove=10pt] 
+\vspace{-\topsep}\begin{n-proposition}}{\end{n-proposition}\end{mdframed}}
+\newenvironment{corollary}{\begin{mdframed}[linewidth=1pt,            
+        innerleftmargin=10pt,
+        innertopmargin=8pt,
+        skipabove=10pt] 
+\vspace{-\topsep}\begin{n-corollary}}{\end{n-corollary}\end{mdframed}}
+\newenvironment{definition}{\begin{mdframed}[linewidth=1pt,            
+        innerleftmargin=10pt,
+        innertopmargin=8pt,
+        skipabove=10pt] 
+\vspace{-\topsep}\begin{n-definition}}{\end{n-definition}\end{mdframed}}
+\newenvironment{condition}{\begin{n-condition}}{\end{n-condition}}
+\newenvironment{assumption}{\begin{n-assumption}}{\end{n-assumption}}
+\newenvironment{example}{\begin{n-example}}{\end{n-example}}
+\newenvironment{openproblem}{\begin{un-openproblem}}{\end{un-openproblem}}
+\newenvironment{principle}{\begin{n-principle}}{\end{n-principle}}
+\newenvironment{remark}{\begin{mdframed}[linewidth=1pt,            
+        innerleftmargin=10pt,
+        innertopmargin=8pt,
+        skipabove=10pt] 
+\vspace{-\topsep}\begin{n-remark}}{\end{n-remark}\end{mdframed}}
+\newenvironment{remarks}{\begin{un-remarks}}{\end{un-remarks}}
+\newenvironment{convention}{\begin{un-convention}}{\end{un-convention}}
+\newenvironment{claim}{\begin{un-claim}}{\end{un-claim}}
+\newenvironment{problem}{\begin{n-problem}}{\end{n-problem}}
+
+\numberwithin{equation}{n-lemma}
+%\newaliascnt{equation}{n-lemma}
+%\aliascntresetthe{equation}
+
+% proofs
+\renewenvironment{proof}
+{\noindent{\em Proof:}\hspace{.5em}\textrm}
+{\hfill\qedsymbol
+
+\vspace{1em}}
+
+
+
+
+\newenvironment{proofof}[1]			% loose proofs
+	{\begin{trivlist}\item[]{\em  Proof of #1:\hspace{.5em}}\rm}
+% 	{\end{trivlist}}
+	{\hfill\qedsymbol
+	\end{trivlist}}
+\newenvironment{proofsketch}			% proof sketch
+	{\begin{trivlist}\item[]{\em  Proof sketch:\hspace{.5em}}\rm}
+	{\hfill\qedsymbol
+	\end{trivlist}}
+
+\renewcommand{\qed}{} 		% turn off automatic AMS-style \qed'ing.
+\newcommand{\eotsymbol}{{\large $\Box$}} 	% can be redefined
+\newcommand{\eot}{{\hspace*{\fill}\eotsymbol}}
+\newcommand{\eottwo}{\vspace{-5ex}\par\eot}	% \eot after math display
+
+% ----------------------------------------------------------------------
+% case distinctions: label is flush left. 
+% caselist causes no indentation. May use \case for automatic numbering
+% itemlist causes indentation. 
+% nienumerate is like enumerate but flush left
+
+\newcounter{casecounter}
+\newlength{\normalparindent}
+\setlength{\normalparindent}{\parindent}
+\newenvironment{caselist}
+	{\begin{list}{{\bf Case \arabic{casecounter}:}}
+	 {\usecounter{casecounter}
+		\setlength{\leftmargin}{0ex}
+		\setlength{\labelwidth}{0ex} 		 
+		\setlength{\labelsep}{2ex}
+		\setlength{\itemindent}{\labelsep}	
+		\setlength{\parsep}{0ex}
+		\setlength{\listparindent}{\normalparindent}
+	}}	
+	{\end{list}}
+\newcommand{\case}{\item}
+\newcommand{\caseimp}{\case[$\imp$:]}
+\newcommand{\casepmi}{\case[$\pmi$:]}
+\newcommand{\impl}[2]{$\text{#1}\imp\text{#2}$}
+\newcommand{\caseimpl}[2]{\case[\impl{#1}{#2}:]}
+\newenvironment{itemlist}{\begin{list}{\undefinedcase}
+ 	{	\setlength{\leftmargin}{2.5ex}
+		\setlength{\labelwidth}{1.5ex}
+ 		\setlength{\labelsep}{1ex}
+		\setlength{\itemindent}{0ex}}}
+ 	{\end{list}}
+
+\newcounter{nicounter}
+\newenvironment{nienumerate} % enumerate but no indentation
+	{\begin{list}{\arabic{nicounter}.}
+{\usecounter{nicounter} 		 \setlength{\leftmargin}{0ex}
+\setlength{\labelwidth}{0ex} 		 \setlength{\labelsep}{1ex}
+\setlength{\itemindent}{\labelsep} 	}	} 	{\end{list}}
+
+
+\newcommand{\bmat}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+
+%This numbers equations by section
+
+
