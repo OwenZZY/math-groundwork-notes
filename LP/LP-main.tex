@@ -1,5 +1,4 @@
 \documentclass[12pt]{report}
-%\documentclass[11pt, letterpaper]{scrreprt}
 
 \input{../preamble/packages}
 \input{../preamble/alias}
@@ -17,7 +16,7 @@
 
 \usepackage{setspace}
 \setstretch{1.1}
-%\usepackage{parskip}
+
 %\usepackage{comment}
 %\excludecomment{proof} 
 %
@@ -31,12 +30,44 @@
 
 \chapter{Introduction}
 
-Propositions and theorems are both mathematical facts and do not reflect mathematical difficulties or depth. We use propositions, with or without a proof, as facts whose proofs are out of the scope of this note. If a theorem appears without a proof, then its proof is relatively easy and left as an exercise. In many texts, the dot product between two elements in $\rr^n$, $n$-dimensional real vectors, is denoted by $\bmx^\top \bmy$ or $\inner{\bmx, \bmy}$; we adopt the bracket notation $\inner{\bmx, \bmy}$. First, it spares us from explicitly invoking the transpose operation and the associated matrix multiplication. Second, it reads cleaner when discussing associativity, such as $\inner{\bmx, A\bmy} = \inner{A^\top\bmx, \bmy}$. Moreover, when readers arrive at $\inner{-, -}$, we automatically assume it is parsed as a real number, instead of a matrix multiplication with some hidden dimension to discover. Finally, the last author believes that the notation $\bmx^\top \bmy$ assumes the operation on matrices of the vectors $\bmx$ and $\bmy$, and after transposing and multiplication, it gives a 1-by-1 matrix instead of a scalar, in which they are interchangeable but would be more reader-friendly if the scalar-property is addressed explicitly. 
+Most linear programming lectures take the following introduction and definition as the start of the course. Let $M\in\rr^{m\times n}, \bmb\in\rr^m, \bmc\in\rr^n$; consider the standard primal linear program in an inequality form: 
+\begin{equation*}
+\begin{split}
+    \mathrm{max}_{\bmx\in\rr^n}  \quad & \inner{\bm c, \bm x}\\
+    \text{subject to} \quad & M \bm x \leq \bm b. \\ 
+\end{split}
+\end{equation*}
+This compact form expands component-wise to the familiar system of $m$ linear inequalities 
+\[ m_{i, 1} x_1 + m_{i, 2} x_2 + \dots + m_{i, n} x_n \leq b_i, \] 
+where $m_{i, j}$ is the $(i, j)$-th entry of $M$, and $b_j$ and $x_j$ are the entry on the $i$-th coordinate of $\bmb$ and $\bmx$, respectively, for $i \in \{1, 2, \dots, m\}$ and $j \in \{1, 2, \dots, n\}$. Many textbooks further assume $\bmx\geq\bm0$ and, by a seemingly symmetrical rule, introduce a vector $\bmy\in \rr^m$ of dual variables to define the dual problem as 
+\begin{equation*}
+\begin{array}{rrl}
+\mathrm{min}  \quad & \inner{\bm y, \bm b}\\
+    \text{subject to} \quad & M^\top \bmy & \geq \bm c \\ 
+    & \bmy & \geq \bm0.
+\end{array}
+\end{equation*}
+The connection between these two problems is often justified {\em a posteriori} by the following: for any feasible $\bmx$ and $\bmy$, i.e., $M\bm x\leq \bmb$ and $M^\top\bm y\geq \bmc$, we have
+\[ \inner{\bmc, \bmx} \leq \inner{M^\top\bmy, \bmx} = \inner{\bmy, M\bmx}\leq \inner{\bmy, \bmb}.\]
+This chain proves weak duality, and therefore every feasible dual solution gives an upper bound for the primal.
 
-For this note, we assume readers have a basic understanding of linear algebra and analysis. In linear algebra, we expect readers to have internalized the concepts of linear transformations, linear independence, orthogonality, and bases of a subspace. In real analysis, we assume the readers have internalized the equivalence between different definitions for open and closed sets in Euclidean spaces, understood the definition of the interior, boundary, and closure of a set, and have understood the equivalence between Cauchy-ness and convergence in a closed set; since we only shallowly involve analysis and we work on Euclidean space, we may from time-to-time handwave, or omit those proofs with heavy analysis machinery. 
+However, there is a logic gap: the system of inequalities $M^\top\bmy \geq \bmc$ in the dual problem is introduced because the chain of inequalities holds. While this verifies the duality relationship, it does not explain where the dual variables come from, why the signs are what they are, or how to generalize the construction to other constraints. 
 
+In this booklet, we take a pedagogical route. With only a primal problem in linear optimization, we first aim to derive its dual from Farkas' Lemma. On this path, we discover geometric views of optimization from different angles, which leads to the Minkowski-Weyl Theorem and, then, the characterizations for ``vertices'' for linear optimization problems and feasible solutions from implied linear algebra from the constraint system. We set our first milestone as Dantzig's simplex method, a staple of undergraduate courses that is frequently taught as a mere mechanical pivoting procedure, masking the rich geometric and theoretical machinery that actually powers it. 
 
-\section{Analysis Preliminaries}\label{chapter: prelim}
+%Instead of postulating the dual and proving it works, we start with deriving the dual directly from the geometry of the primal system of linear inequalities; namely, Farkas' Lemma (Theorem~\ref{farkas}). We then prove a minimax theorem, Theorem~\ref{minimax}, which reveals that any method in convex optimization with Lagrangians can be cast into a pure feasibility problem via Farkas' Lemma, thereby showing that optimization and feasibility are two sides of the same geometric coin. Finally, we define a general linear optimization (\ref{GP}) and state the form of its dual (\ref{GP}) in order to derive it. 
+
+To maintain a focused, linear reading experience, we adhere to two stylistic conventions. First, we try to be minimalist. With a primary, simple, and sole target of understanding Dantzig's simplex method for linear programs, we detour as little as possible before achieving this target and define terms only when they are necessary. Second, we use mathematical terms to reflect pedagogical weight rather than abstract depth. We use the term {\em proposition}, with or without a proof, as facts whose full proofs lie outside our scope. {\em Theorems} form the core narrative arc; when presented without a proof, the verification is straightforward and left as a constructive exercise.
+
+In many texts, the dot product between two elements in $\rr^n$, $n$-dimensional real vectors, is denoted by $\bmx^\top \bmy$ or $\inner{\bmx, \bmy}$; we adopt the bracket notation $\inner{\bmx, \bmy}$. First, it spares us from explicitly invoking the transpose operation and the associated matrix multiplication, which saves mental power when discussing associativity, such as $\inner{\bmx, A\bmy} = \inner{A^\top\bmx, \bmy}$. Moreover, when readers arrive at $\inner{-, -}$, we automatically assume it is parsed as a real number, instead of a matrix multiplication with some hidden dimension to discover. Finally, the last author believes that the notation $\bmx^\top \bmy$ assumes the operation on matrices of the vectors $\bmx$ and $\bmy$, and after transposing and multiplication, it gives a 1-by-1 matrix instead of a scalar, in which they are interchangeable but would be more reader-friendly if the scalar-property is addressed explicitly. 
+
+%This booklet primarily relies on proofs from the textbooks {\em Convex Analysis and Optimization} by Bertsekas with Nedic and Ozdaglar and {\em Introduction to Linear Programming} by Bertsimas and Tsitsiklis. 
+
+For this note, we assume a working familiarity with introductory linear algebra and basic real analysis in Euclidean space. In linear algebra, we expect readers to have internalized the concepts of linear transformations, linear independence, orthogonality, and bases of a subspace. In real analysis, we assume readers have internalized the equivalence between different definitions of open and closed sets in Euclidean spaces, understood the definition of the interior, boundary, and closure of a set, and have understood the equivalence between Cauchy-ness and convergence in a closed set. Because our focus is geometric intuition within Euclidean space, we keep analytical machinery to a minimum, occasionally omitting technical measure-theoretic or topological details when standard geometric intuition suffices. 
+
+This chapter collects tools in real analysis, convex geometry, and cone theory that form the bedrock of this booklet. Rather than re-deriving these results from first principles, we state these core results as propositions. One may think of Chapter 1 as a self-diagnostic baseline: memorizing their proofs is not necessary, but one should feel comfortable reading, visualizing, and applying them with guides and thus be well-prepared. 
+
+\section{Real Analysis Preliminaries}\label{chapter: prelim}
 \input{analysis-prelim}
 
 \chapter{Linear Optimization and its Dual}\label{chapter: lin opt dual}
@@ -45,7 +76,7 @@ For this note, we assume readers have a basic understanding of linear algebra an
 \chapter{Polyhedral Geometry}\label{chapter: polyhedral geometry}
 \input{polyhedral}
 
-\chapter{Linear Programming}\label{chapter: extreme points}
+\chapter{Linear Programming}\label{chapter: linear programming}
 \input{dantzig}
 
 \bibliographystyle{unsrtnat}

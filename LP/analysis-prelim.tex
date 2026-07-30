@@ -1,11 +1,11 @@
-% !TEX root = ./main.tex
+% !TEX root = ./LP-main.tex
 
 %
 %\begin{proposition}
 %If a subset of $\rr^n$ is open (resp. closed, bounded, or compact) with respect to some norm, then it is open (resp. closed, bounded, or compact) with respect to all other norms. 
 %\end{proposition}
 
-We primarily deal with the vector spaces $\rr^n$ with $n\geq 1$ and their subsets. We will denote the boundary and the closure of a set $S$ by $\bd(S)$ and $\cl(S)$, respectively. We take the following analytical fact as given.
+We primarily deal with the vector spaces $\rr^n$ with $n\geq 1$ and their subsets. We denote the boundary and the closure of a set $S$ by $\bd(S)$ and $\cl(S)$, respectively. We take the following analytical fact as given.
 \begin{proposition}\label{prop: closed intersection}
 Every finite or infinite intersection of closed sets is closed. \hfill\qedsymbol
 \end{proposition}
@@ -16,22 +16,22 @@ and the set of all {\em (entry-wise) non-positive vectors} $$\rr^n_-  = \left\{\
 In the context of linear optimization, all the comparisons between two vectors are entry-wise; that is, for two vectors $\bmx, \bmy \in\rr^n$, where $x_i$ and  $y_i$ denotes the $i$-th entry of $\bmx$ and $\bmy$, respectively, we denote $\bmx\leq\bmy$ if $x_i \leq y_i$ for all $i\in\{1,2,\dots, n\}$. For elements $\bmx\in\rr^n_+$ and $\bmy \in\rr^n_-$, we may write that $\bmy\leq \bm0\leq\bmx$.  
 
 \begin{proposition}
-Let $y, b_1, b_2 \in\rr^m$. If $b_1 \leq b_2$ and $y\geq 0$, then 
-$$\inner{y, b_1}\leq \inner{y, b_2}.$$
+Let $\bmy, \bmb_1, \bmb_2 \in\rr^m$. If $\bmb_1 \leq \bmb_2$ and $\bmy\geq 0$, then 
+$$\inner{\bmy, \bmb_1}\leq \inner{\bmy, \bmb_2}.$$
 \end{proposition}
 \begin{proof}
-Rewrite $b_1 \leq b_2$ as $b_2- b_1 \geq 0$. As $y\geq 0$ and every term we are dealing with is nonnegative, we have that $\inner{y, b_2 - b_1} \geq 0$, which gives that $ \inner{y, b_2 - b_1}  = \inner{y, b_2} - \inner{y, b_1} \geq 0 $ and thus $\inner{y, b_2} \geq \inner{y, b_1}$. 
+Rewrite $\bmb_1 \leq \bmb_2$ as $\bmb_2 - \bmb_1 \geq 0$. As $\bmy\geq 0$ and every term we are dealing with is nonnegative, we have that $\inner{\bmy, \bmb_2 - \bmb_1} \geq 0$, which gives that $ \inner{\bmy, \bmb_2 - \bmb_1}  = \inner{\bmy, \bmb_2} - \inner{\bmy, \bmb_1} \geq 0 $ and thus $\inner{\bmy, \bmb_2} \geq \inner{\bmy, \bmb_1}$. 
 \end{proof}
 
-For inline context, for $\bmx\in\rr^n$ and $\bmx' \in \rr^m$, we may write $(\bmx, \bmx')\in\rr^{m+n}$ as the concatenation of the two vectors; this notation coincides with the notation for an open real number interval, so we will explicitly explain before using this notation. 
+For inline context, given $\bmx\in\rr^n$ and $\bmx' \in \rr^m$, we may write $(\bmx, \bmx')\in\rr^{m+n}$ as the concatenation of the two vectors; this notation coincides with the notation for an open real number interval, so we will explicitly explain before using this notation. 
 
 \section{Convex Sets}
 
-A set $C$, where $C\subset\rr^n$, is {\em convex} if for all $x, y\in C$ and $\alpha\in [0, 1]$, we have that $\alpha x + (1-\alpha) y\in C$. The closure and the interior of a convex set are also convex. A vector $z$ has a linear combination of vectors $x_1, x_2, \dots, x_m$ if there are $a_1, a_2, \dots, a_m\in\rr$ so that $z = a_1 x_1 + a_2 x_2 + \dots + a_m x_m$. The linear combination is a {\em conic combination} if the coefficients are non-negative; that is, $a_i\geq 0$. The linear combination is a {\em convex combination} if it is a conic combination and $\sum_{i=1}^m a_i = 1$. 
+A set $C$, where $C\subset\rr^n$, is {\em convex} if for all $\bmx, \bmy\in C$ and $\alpha\in [0, 1]$, we have that $\alpha \bmx + (1-\alpha) \bmy\in C$. The closure and the interior of a convex set are also convex. A vector $\bmz$ has a linear combination of vectors $\bmx_1, \bmx_2, \dots, \bmx_m$ if there are $a_1, a_2, \dots, a_m\in\rr$ so that $z = a_1 \bmx_1 + a_2 \bmx_2 + \dots + a_m \bmx_m$. The linear combination is a {\em conic combination} if the coefficients are non-negative; that is, $a_i\geq 0$. The linear combination is a {\em convex combination} if it is a conic combination and $\sum_{i=1}^m a_i = 1$. 
 
 \begin{definition}
-A function $f: C \to \rr$, where $C\subset \rr^n$, is {\em convex} if for all $x, y\in C$ and $\alpha\in[0, 1]$, we have that 
-$$ f(\alpha x + (1 -\alpha) y) \leq \alpha f(x)  + (1 - \alpha) f(y). $$
+A function $f: C \to \rr$, where $C\subset \rr^n$, is {\em convex} if for all $\bmx, \bmy\in C$ and $\alpha\in[0, 1]$, we have that 
+$$ f(\alpha \bmx + (1 -\alpha) \bmy) \leq \alpha f(\bmx)  + (1 - \alpha) f(\bmy). $$
 Let $C$ and $S$ be sets, where $C\subset S\subset \rr^n$, and $f$ be a function that $f: S\to\rr$. Suppose that $f$ is not convex; then we say $f$ is {\em convex over $C$} if $f|_C$ is convex.  
 \end{definition}
 
@@ -43,12 +43,12 @@ Every finite or infinite intersection of convex sets is convex. \hfill\qedsymbol
 
 \begin{proposition}
 Let $C$ be a convex subset of $\rr^n$ and $f:\rr^n\to\rr$ be a differentiable function. We have that 
-$$ f(y) \geq f(x) + \inner{y-x, \nabla f(x)} $$
-for all $x, y\in C$. \hfill\qedsymbol
+$$ f(\bmy) \geq f(\bmx) + \inner{\bmy - \bmx, \nabla f(\bmx)} $$
+for all $\bmx, \bmy\in C$. \hfill\qedsymbol
 \end{proposition}
 
 \begin{proposition}
-Let $C$ be a convex subset of $\rr^n$ and $f:\rr^n\to\rr$ be a twice-differentiable function. If $\nabla^2 f(x)$ is positive semidefinite for all $x\in C$, then $f$ is convex over $C$. If $C$ is open and $f$ is convex over $C$, then $\nabla^2 f(x)$ is positive semidefinite for all $x\in C$. \hfill\qedsymbol
+Let $C$ be a convex subset of $\rr^n$ and $f:\rr^n\to\rr$ be a twice-differentiable function. If $\nabla^2 f(\bmx)$ is positive semidefinite for all $\bmx\in C$, then $f$ is convex over $C$. If $C$ is open and $f$ is convex over $C$, then $\nabla^2 f(\bmx)$ is positive semidefinite for all $\bmx\in C$. \hfill\qedsymbol
 \end{proposition}
 
 The {\em convex hull} of a set $X$, denoted by $\conv(X)$, is the minimal convex set that contains $X$; alternatively, $\conv(X)$ is the intersection of all convex sets containing $X$. 
@@ -59,7 +59,7 @@ Suppose $C, D \subset \rr^n$ are two closed convex sets, with $D$ compact and $C
 \end{proposition}  
 Since a singleton is closed and compact, we have the following corollary. 
 \begin{corollary}
-If $b\in\rr^n$ is a point such that $b\not\in C$, where $C\subset \rr^n$, then there is a hyperplane that separates $b$ and $C$. \hfill\qedsymbol
+If $\bmb\in\rr^n$ is a point such that $\bmb\not\in C$, where $C\subset \rr^n$, then there is a hyperplane, defined by $\bma\in\rr^n$ and $q\in\rr$ that separates $\inner{\bma, \bmb} > q$ and $\inner{\bma, \bmc} < q$ for all $\bmc\in C$. \hfill\qedsymbol
 \end{corollary}
 
 
@@ -84,7 +84,7 @@ and, thus, $C = (C^\circ)^\circ$ if the cone $C$ is already closed and convex. \
 
 The next theorem is every math student's favorite type of theorem: it states that a vector in a cone in $\rr^n$ can be represented by $n$ or fewer vectors, and a vector in a convex hull can be represented by $n + 1$ or fewer vectors. 
 
-\begin{proposition}
+\begin{proposition}\label{prop: lin-aff combination}
 Let $X$ be a non-empty subset of $\rr^n$; we may assume that $X$ is a linearly independent set.  
 \begin{enumerate}[noitemsep]
 \item Every nonzero $x\in \cone(X)$ can be represented as a conic combination of linearly independent vectors in $X$. 
@@ -92,6 +92,53 @@ Let $X$ be a non-empty subset of $\rr^n$; we may assume that $X$ is a linearly i
 \end{enumerate}
 \end{proposition}
 The first statement is clear as a basic linear-algebraic argument about dimensionality. For the second part, consider $X = \{\bmx_1 = (1, 0)^\top, \bmx_2 = (0, 1)^\top, \bmx_3 = (-1, -1)^\top\}\subset\rr^2$. Clearly, $\bm0\in \conv(X)$ but $\bm0 = \frac13\bmx_1 + \frac13\bmx_2 + \frac13\bmx_3$ is a convex combination and $X$ is not linear independent. 
+As in the second point of Proposition~\ref{prop: lin-aff combination}, a list of vectors $\bmx_1, \bmx_2, \dots, \bmx_m$ is said to be {\em affinely indepdent} if the list of $m-1$ vectors $\bmx_2 - \bmx_1, \bmx_3 - \bmx_1, \dots, \bmx_m - \bmx_1$ is linearly independent. Recall that, suppose $V\subset\rr^n$ is a list of $m$ linearly independent vectors, then $\dim(\Span(V)) = m$; we have a similar dimensionality argument using affine independence.  
+
+
+
+Consider a line segment $L$ with endpoints $\bma, \bmb\in\rr^{n}$ for $n\geq 2$. There is a unique line that contains $L$, and obviously, we can talk about $L\setminus \{\bma, \bmb\}$ as the ``internal part'' of $L$. However, the interior of $L$ is empty, as every point in $L$ has its delta-ball intersecting something not on the line segment. The concept of affine set and relative interior precisely tackles this issue. 
+
+
+An {\em affine set} is a translated subspace, that is, let $S$ be a subspace of $\rr^{n}$ and $\bmx \in \rr^{n}$, a set $A$ is an affine set if it has a format of $A = \bmx + S = \{\bmx + \bms: \bm s\in S\}$; the subspace $S$ is also known as the {\em subspace parallel to} $A$. Given an affine set $A$, the subspace parallel to it is unique. Given a set $X\subset\rr^{n}$, the {\em affine hull of $X$}, denoted by $\aff(X)$, is the minimal affine set that contains $X$. Alternatively, $\aff(X)$ is the intersection of all affine sets in $\rr^{n}$ that contain $X$. The dimension of $\aff(X)$ is the greatest number of affinely independent vectors in $X$. 
+%Since we will be discussing the intersections of convex sets and their intersections with hyperplanes, 
+
+The {\em relative interior} of a set $X$ is the interior of $X$ in $\aff(X)$, denoted by $\ri(X)$.  For the aforementioned line segment $L$ example, the line that properly contains $L$ is precisely the affine hull $\aff(L)$ and $\ri(L) = L\setminus \{\bma, \bmb\}$. We take the following face as given. 
+
+\begin{proposition}\label{prop: nonempty ri}
+The relative interval of a convex set is nonempty. 
+\end{proposition}
+\begin{proof} 
+Let $K$ be a convex set. For the case when $K = \{\bmx\}$ is a singleton, then $\aff(K) = K$ is a single point. By definition, $K$ is an open set such that every point has a distance of 0 from $\bmx$; thus, $x\in \ri(K)$. 
+
+Suppose $K$ contains one or more affine-independent vectors, that is, there are at least two distinct vectors $\bmx_1, \bmx_2\in K$. We then have $\frac12 \bmx_1 + \frac12 \bmx_2 \in \ri(K)$ by the definition of a convex set and relative interior.
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

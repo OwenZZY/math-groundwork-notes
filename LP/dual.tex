@@ -1,33 +1,8 @@
-% !TEX root = ./main.tex
+% !TEX root = ./LP-main.tex
 
+We start this chapter by introducing a standard textbook-style linear program,~(\ref{P0}). We then investigate the celebrated Farkas' Lemma, Theorem~\ref{farkas}, to give a first characterization for the feasibility of a linear program. Farkas' Lemma is sufficient for proving the strong duality of a linear program; therefore, we prove a specific case for the minimax theorem in Theorem~\ref{minimax}; we then generalize it to a cone-version of the statement, in which the proof is straightforward. This then provides enough motivation to properly define the dual of a primal problem. 
 
-Let $M\in\rr^{m\times n}, \bmb\in\rr^m, \bmc\in\rr^n$; consider the standard primal linear program in inequlity form: 
-\begin{equation*}
-\begin{split}
-    \mathrm{max}_{\bmx\in\rr^n}  \quad & \inner{\bm c, \bm x}\\
-    \text{subject to} \quad & M \bm x \leq \bm b. \\ 
-\end{split}
-\end{equation*}
-This compact form expands component-wise to the familiar system of $m$ linear inequalities 
-\[ m_{i, 1} x_1 + m_{i, 2} x_2 + \dots + m_{i, n} x_n \leq b_i, \] 
-where $m_{i, j}$ is the $(i, j)$-th entry of $M$, $b_j$ and $x_j$ are the entry on the $i$-th coordinate of $\bmb$ and $\bmx$, respectively, for $i \in \{1, 2, \dots, m\}$ and $j \in \{1, 2, \dots, n\}$. 
-
-Many textbooks further assume $\bmx\geq\bm0$ and, by a seemingly symmetrical rule, introduce a vector $\bmy\in \rr^m$ of dual variables to define the dual as 
-\begin{equation*}
-\begin{array}{rrl}
-\mathrm{min}  \quad & \inner{\bm y, \bm b}\\
-    \text{subject to} \quad & M^\top \bmy & \geq \bm c \\ 
-    & \bmy & \geq \bm0.
-\end{array}
-\end{equation*}
-The connection between these two problems is often justified a posteriori by the following: for any feasible $\bmx$ and $\bmy$, i.e., $M\bm x\leq \bmb$ and $M^\top\bm y\geq \bmc$, we have
-\[ \inner{\bmc, \bmx} \leq \inner{M^\top\bmy, \bmx} = \inner{\bmy, M\bmx}\leq \inner{\bmy, \bmb}.\]
-This chain proves weak duality, and therefore every feasible dual solution gives an upper bound for the primal.
-
-However, there is a logic gap: the system of inequalities $M^\top\bmy \geq \bmc$ in the dual problem is introduced because the chain of inequalities holds. While this verifies the duality relationship, it does not explain where the dual variables come from, why the signs are what they are, or how to generalize the construction to other constraints. 
-
-In this section, we take a different pedagogical route. Instead of postulating the dual and proving it works, we derive the dual directly from the geometry of the primal system of linear inequalities; namely, Farkas' Lemma (Theorem~\ref{farkas}). We then prove a minimax theorem, Theorem~\ref{minimax}, which reveals that any method in convex optimization with Lagrangians can be cast into a pure feasibility problem via Farkas' Lemma, thereby showing that optimization and feasibility are two sides of the same geometric coin. Finally, we define a general linear optimization (\ref{GP}) and state the form of its dual (\ref{GP}) in order to derive it. 
-
+In the second part of the chapter, we move to a geometric point of view for Farkas' Lemma, Theorem~\ref{farkas geo}. The two versions of Farkas' Lemma are also known as the H-representation and V-representation of a polyhedral set, which we will then further investigate in Chapter~\ref{chapter: polyhedral geometry}. 
 
 \section{Farkas' Lemma and Dual Problem}
 
@@ -44,7 +19,7 @@ Before looking for solutions to the linear program (\ref{P0}), we first want to 
 
 
 \begin{theorem}[Farkas' Lemma]\label{farkas}
-Let $M\in\rr^{m\times n}, \bmb\in\rr^m$ and $x_1,$ $x_2$, $\dots$, $x_n$, $y_1$, $y_2$, $\dots$, $y_m$ be a list of variables written in their vector forms $\bmx\in\rr^n$ and $\bmu\in\rr^m$. Consider the following two systems of linear inequalities. 
+Let $M\in\rr^{m\times n}, \bmb\in\rr^m$ and $x_1,$ $x_2$, $\dots$, $x_n$, $u_1$, $u_2$, $\dots$, $u_m$ be a list of variables written in their vector forms $\bmx\in\rr^n$ and $\bmu\in\rr^m$. Consider the following two systems of linear inequalities. 
 \begin{equation}\label{eqn: P}
 M\bmx\leq b
 \end{equation} and 
@@ -61,17 +36,17 @@ The system of inequalities (\ref{eqn: P}) has a feasible solution if and only if
 The forward direction, suppose that there are $\bmx$ and $\bmu$ so that (\ref{eqn: P}) and (\ref{eqn: D}) both have solutions; we have that
 \[ 0 > \inner{\bmu, \bmb} \geq \inner{\bmu, M\bmx} = \inner{M^\top \bmu , \bmx} = 0, \] which leads to a contradiction and, thus, (\ref{eqn: D}) has no solution. For the converse direction, we proceed via contrapositive, supposing (\ref{eqn: P}) has no solution; we will show that (\ref{eqn: D}) has a solution. 
 
-The assumption that (\ref{eqn: P}) has no solution means the set $\{M\bmx: \bmx\in\rr^n\}$ does not include $b$; since, otherwise, we would have a solution $x\rast$ so that $Mx\rast = b \leq b$. In particular, we have that $Z = \{M\bmx + \bm s:  \bmx\in\rr^n, \bms\in\rr_+^m\}$ does not include $b$. By the {\em hyperplane separation theorem}, there exists $\bmu^\ast\in\rr^m$ and $q\in\rr$ such that $\inner{\bmu\rast, \bmb} < q$ and $\inner{\bmu\rast, \bmz} \geq q$ for every $\bmz\in Z$. In particular, since $M$ is a linear transformation, $\bmx$ is taken over $\rr^n$, $\bmb\not\in \operatorname{Im}(M) = \{\bmy\in\rr^m: \bmy= M\bmx\}$, and $\operatorname{Im}(M)$ is a subspace of $\rr^m$, we have that $Z$ is a convex cone and we may take $q=0$. 
+The assumption that (\ref{eqn: P}) has no solution means the set $\{M\bmx: \bmx\in\rr^n\}$ does not include $\bmb$; since, otherwise, we would have a solution $\bmx\rast$ so that $M\bmx\rast = \bmb \leq \bmb$. In particular, we have that $Z = \{M\bmx + \bm s:  \bmx\in\rr^n, \bms\in\rr_+^m\}$ does not include $\bmb$. By the {\em hyperplane separation theorem}, there exists $\bmu^\ast\in\rr^m$ and $q\in\rr$ such that $\inner{\bmu\rast, \bmb} < q$ and $\inner{\bmu\rast, \bmz} \geq q$ for every $\bmz\in Z$. In particular, since $M$ is a linear transformation, $\bmx$ is taken over $\rr^n$, $\bmb\not\in \operatorname{Im}(M) := \{\bmy\in\rr^m: \bmy= M\bmx\}$, and $\operatorname{Im}(M)$ is a subspace of $\rr^m$, we have that $Z$ is a convex cone and we may take $q=0$. 
 
 We now verify that $\bmu\rast$ is a solution to (\ref{eqn: D}). First, we have $\inner{\bmu\rast, \bmb} < 0$ by the choice according to the separation theorem. By the construction of $Z$, we may say for all $\bmx\in\rr^n$ and $\bms\in\rr_+^m$, 
 \begin{equation}\label{eqn: construction of Z}\inner{\bmu\rast, M\bmx + \bm s} = \inner{\bmu\rast, M\bmx} + \inner{\bmu\rast, \bm s} \geq 0,
 \end{equation} 
 where the inequality is from the separation theorem. When we fix $x = 0$, Inequality (\ref{eqn: construction of Z}) gives that $\inner{\bmu\rast, \bm s}\geq 0$ for any $\bm s\in\rr_+^m$: we may conclude that $u\rast\in\rr_+^m$ (i.e., $\bmy\rast\geq 0$). 
 
-Finally, we assume $\bms = 0$, we have that $ \inner{\bm u\rast, M\bmx} + \inner{\bmu\rast, \bm s} =  \inner{\bmu\rast, M\bmx} = \inner{M^\top \bmu\rast, \bmx} \geq 0$. Now, by properties of inner products, for every $\bmx\in\rr^n$, we have that $\inner{M^\top \bmu\rast, -x} = -\inner{M^\top \bmu\rast, \bmx}\leq 0$. Which then implies that $\inner{M^\top \bmu\rast, \bmx} = 0$ as it is the only number that equals its own negation. By the positive-semidefiniteness of inner products, it follows that $M^\top \bmu\rast = 0$. 
+Finally, we assume $\bms = 0$, we have that $ \inner{\bm u\rast, M\bmx} + \inner{\bmu\rast, \bm s} =  \inner{\bmu\rast, M\bmx} = \inner{M^\top \bmu\rast, \bmx} \geq 0$. Now, by properties of inner products, for every $\bmx\in\rr^n$, we have that $\inner{M^\top \bmu\rast, -x} = -\inner{M^\top \bmu\rast, \bmx}\leq 0$. This then implies that $\inner{M^\top \bmu\rast, \bmx} = 0$, as it is the only number that equals its own negation. By the positive-semidefiniteness of inner products, it follows that $M^\top \bmu\rast = 0$. 
 \end{proof}
 
-Observe that, we want only the solution where $M\bmx\leq \bmb$ in (\ref{P0}), which is equivalent to $M\bmx - \bmb\in\rr^n_-$ and, otherwise, discard may as $-\infty$. Consider the following notion to reformulate the original problem (\ref{P0}) in a more analytical form.  
+Observe that, we want only the solution where $M\bmx\leq \bmb$ in (\ref{P0}), which is equivalent to $M\bmx - \bmb\in\rr^n_-$ and, otherwise, discard may as $-\infty$. Consider the following notion to reformulate the primal problem (\ref{P0}) in a more analytical form.  
 The {\em geometrical indicator function} is denoted and defined as $\delta_S: \rr^m \to \rr\cup\{\infty\}$ where
 $$ \delta_S(\bms) = \left\{ \begin{array}{ll} 
  0 & \text{ if } \bms\in S, \text{ and }\\
@@ -81,13 +56,13 @@ The subscript is sometimes replaced by an event with respect to the input; for e
 \begin{equation}\label{a}
  z\rast = \max\{\inner{\bmc, \bmx}:  M \bmx\leq \bmb, \xx\in \rr^n\} = \sup_{\bmx\in\rr^n}\left\{ \inner{\bmc, \xx} - \delta_{\rr^m_-}( M \bm x - \bmb)\right\} 
  \end{equation}  
-where $z\rast\in\rr\cup\{-\infty\}$.  Recall that, given a cone $S\subseteq V$, the polar cone is denoted and defined as $S^\circ = \{\bmy\in V: \forall \bmx\in V, \inner{\bmx, \bmy}\leq 0\}$. 
+where $z\rast\in\rr\cup\{-\infty\}$.  Recall that, given a cone $S\subseteq V$, the polar cone is denoted and defined as $S^\circ = \{\bmy\in V: \forall \bmx\in S, \inner{\bmx, \bmy}\leq 0\}$. 
 
 
 
 \begin{proposition}[Support function Representation via Fenchel-Moreau]\label{prop: dual representation}
 Suppose that $S$ is a closed convex cone. We have that 
-$\delta_{S}(x) = \sup_{u\in S^\circ}\{\inner{x, u}\}.$\hfill \qedsymbol
+$\delta_{S}(x) = \sup\{\inner{x, u}:{u\in S^\circ}\}.$\hfill \qedsymbol
 \end{proposition} 
 
 Proposition~\ref{prop: dual representation} then rewrites the program defined in~(\ref{a}) as
@@ -99,7 +74,7 @@ which finally gets to
 \begin{equation}\label{eqn: z sup inf}
  z\rast =  \sup_{\bmx\in\rr^n} \inf_{\bmu\in\rr^m_+} \big\{ \inner{\bmc, \xx} + \inner{\bmu, \bmb}-\inner{\bmu, M\bm x}  \big\}. 
 \end{equation}
-We may convienently define bivariate function $L$ over a subset of $\rr^n\times \rr^m$ where $L(\bmx, \bmu)  =  \inner{\bmc, \xx} +  \inner{\bmu, \bmb}-\inner{\bmu, M\bm x}$. In the aforementioned definition for $z\rast$, its domain is $\rr^n\times \rr^m_+$, which then gives $z\rast = \sup_{\bmx\in\rr^n} \inf_{\bmu\in\rr^m_+} L(\bm x, \bmu)$. Now, we consider the following sup-inf exchange. In particular, the following theorem is the fundamental theorem that establishes the connection between the solution of a linear optimization problem and that of its dual. 
+Given $\bmb \in \rr^n$ and $\bmc \in \rr^m$, we may convienently define bivariate function $L$ over a subset of $\rr^n\times \rr^m$ where $L(\bmx, \bmu)  =  \inner{\bmc, \xx} +  \inner{\bmu, \bmb}-\inner{\bmu, M\bm x}$. In the aforementioned definition for $z\rast$, its domain is $\rr^n\times \rr^m_+$, which then gives $z\rast = \sup_{\bmx\in\rr^n} \inf_{\bmu\in\rr^m_+} L(\bm x, \bmu)$. Now, we consider the following sup-inf exchange. In particular, the following theorem is the fundamental theorem that establishes the connection between the solution of a linear optimization problem and that of its dual. 
 
 \begin{theorem}\label{minimax}
 Let $M\in \rr^{m\times n}, \bbb\in\rr^m, \bcc\in\rr^n$. Suppose that $L$ is a bivariate functional defined on $\rr^n\times \rr_+^{m}$ such that $L(\bmx, \bmu)  =  \inner{\bmc, \xx} +  \inner{\bmu, \bmb}-\inner{\bmu, M\bm x}$. If there is at least one feasible $\bmx\rast$ for $M\bmx\rast \leq \bmb$ and the supremum $z^* :=  \sup_{\bmx\in\rr^n} \inf_{\bmu\in\rr^m_+} L(\bm x, \bmu)$ is finite, then 
@@ -116,14 +91,14 @@ which proves one direction.
 
 We now turn to the other direction that $ \sup_{\bmx\in X} \inf_{\bmu\in U} L(\bmx, \bmu) \geq \inf_{\bmu\in U} \sup_{\bmx\in X} L(\bmx, \bmu)$; toward a contradiction, suppose that $ \sup_{\bmx\in X} \inf_{\bmu\in U} L(\bmx, \bmu) < \inf_{\bmu\in U} \sup_{\bmx\in X} L(\bmx, \bmu)$. Observe that the polar dual of $\rr^n$ is $(\rr^n)^\circ = \{0\}$. We may apply the support function representation so that, for a fixed $\bmu_0$, we have  
 \begin{align*}
-\sup_{x\in X} L(\bmx, \bmu_0) = & \sup_{\bmx\in X}\{\inner{\bmc, \bmx} + \inner{\bmu_0, \bmb}-\inner{\bmu_0, M \bmx}\} \\
-	= 	& \inner{\bmu_0, \bmb} + \sup_{\bmx\in \rr^n}\{ \inner{\bmc, \bmx}-\inner{\bmu, M \bmx}\} \\ 
-	= 	& \inner{\bmu_0, \bmb} + \sup_{\bmx\in \rr^n}\{ \inner{\bmc - M^\top \bmu_0, \bmx}\} \\ 
+\sup_{x\in X} L(\bmx, \bmu_0) = & \sup_{\bmx\in X}\left\{\inner{\bmc, \bmx} + \inner{\bmu_0, \bmb}-\inner{\bmu_0, M \bmx}\right\} \\
+	= 	& \inner{\bmu_0, \bmb} + \sup_{\bmx\in \rr^n}\left\{ \inner{\bmc, \bmx}-\inner{\bmu, M \bmx}\right\} \\ 
+	= 	& \inner{\bmu_0, \bmb} + \sup_{\bmx\in \rr^n}\left\{ \inner{\bmc - M^\top \bmu_0, \bmx}\right\} \\ 
 	= 	& \inner{\bmu_0, \bmb} + \delta_{\{\bmu: \bmc- M^\top \bmu = 0\} }(\bmu_0). \\ 
  \end{align*}
-By the contradiction hypothesis and the definition of an infimum, fix any $u_0\in \rr_+^m$, we have the following chain of inequalities that
-\[ \sup_{\bmx\in \rr^n} \inf_{\bmu\in \rr^m_+} L(\bmx, \bmu) < \inf_{\bmu\in \rr^m_+} \sup_{\bmx\in X} L(\bmx, \bmu) \leq \inner{\bmu_0, \bmb} + \delta_{\bmu: M^\top \bmu = c}(\bmu_0), \]
-and $ \inner{\bmu_0, \bmb} + \delta_{\bmu: M^\top \bmu = \bmc}(u_0) \in\{ \inner{\bmu_0, \bmb}, \infty\}. $ Thus, as we verified the two sides of the strict inequality and the density of the real numbers, we are ensured that there is an $\alpha\in\rr$ so that 
+By the contradiction hypothesis and the definition of an infimum, fix any $\bmu_0\in \rr_+^m$, we have the following chain of inequalities that
+\[ \sup_{\bmx\in \rr^n} \inf_{\bmu\in \rr^m_+} L(\bmx, \bmu) < \inf_{\bmu\in \rr^m_+} \sup_{\bmx\in X} L(\bmx, \bmu) \leq \inner{\bmu_0, \bmb} + \delta_{\{\bmu: M^\top \bmu = c\}}(\bmu_0), \]
+and $ \inner{\bmu_0, \bmb} + \delta_{\{\bmu: M^\top \bmu = \bmc\}}(\bmu_0) \in\{ \inner{\bmu_0, \bmb}, \infty\}. $ Thus, as we verified the two sides of the strict inequality and by the density of the real numbers, we are ensured that there is an $\alpha\in\rr$ so that 
 \[ \max_{\bmx\in\rr^n}\{\inner{\bmc, \bmx}: M\bmx\leq \bbb\} =:  z\rast < \alpha < \inf_{\bmu\in \rr^m_+} \sup_{\bmx\in X} L(\bmx, \bmu).  \]
 
 \noindent Since $z\rast$ is the supremum, that is, $\inner{\bmc, \bmx_0} < \alpha$ for all $\bmx_0\in\rr^n$, the following system does not have a solution
@@ -134,7 +109,7 @@ By Theorem~\ref{farkas}, let $\bmu = (u_1, u_2, \dots, u_m)^\top$ and $u_c$ be v
 \begin{bmatrix} \bmu\\ u_c \end{bmatrix}\geq\bm0 \\
 \inner{\begin{bmatrix} \bmu\\ u_c \end{bmatrix}, \begin{bmatrix} \bmb\\ -\alpha \end{bmatrix}} < 0 
 \end{split}\end{equation}
-has a solution. Let $\bmu\rast$ and $u_c\rast$ be a solution for the constraints (\ref{inhom}), and reformulate so we have 
+has a solution. Let $\bmu\rast$ and $u_c\rast$ be a solution for the system (\ref{inhom}), and reformulate so we have 
 \begin{equation}\label{eqn: aux D}  M^\top \bmu\rast =  u_c\rast\bmc, \quad \bmu\rast \geq\bm0,\quad u_c\rast \geq0,\quad \inner{\bmu\rast, \bmb} < \alpha  u_c\rast. \end{equation}
 
 We first assume $u_c\rast\neq 0$, which (\ref{eqn: aux D}) gives that $u_c\rast > 0$. Let $\widetilde{\bmu} = \bmu\rast / u_c\rast$; since $u_c\rast\geq 0$, we obtain that 
@@ -142,7 +117,9 @@ $$  M^\top \widetilde\bmu =  \bmc, \quad
 \widetilde\bmu = \frac{\bmu\rast}{u_c\rast} \geq \bm0,\quad 
 \inner{\widetilde\bmu, \bmb} = \frac{1}{u_c\rast}\inner{\bmu\rast, \bmb} < \alpha . $$  
 However, we now have $\delta_{M^\top\widetilde\bmu = \bmc} (\widetilde\bmu) = 0$, which leads to the contradiction
-$$ \inner{\widetilde\bmu, \bmb}  < \alpha< \inf_{u} \sup_{x} L( x, u) \leq \inner{\widetilde\bmu, \bmb}.$$ Alternatively, we assume $u_c\rast = 0$ and plug in to inequalities (\ref{eqn: aux D}) and
+\[ \inner{\widetilde\bmu, \bmb}  < \alpha< \inf_{u} \sup_{x} L( x, u) \leq \inner{\widetilde\bmu, \bmb}, \] where $\alpha$ is assumed to be strictly less than the infimum and the infimum is the lower bound for $\inner{\wt{\bmw}, \bmb}$ by definition.  
+
+Alternatively, we assume $u_c\rast = 0$ and plug in to inequalities (\ref{eqn: aux D}) and
 $$  M^\top \bmu\rast =  \bm0, \qquad \bmu\rast \geq \bm0,\qquad \inner{\bmu\rast, \bmb} < 0. $$
 As we assumed its existence, let $\bmx_0$ be a feasible solution to the system of inequalities $M\bmx\leq\bmb$. Since $M^\top \bmu\rast =  \bm0$ and $\bmu\geq\bm0$, we now have a contradiction that 
 $$ 0 = \inner{M^\top\bmu\rast, \bmx_0} = \inner{\bmu\rast, M \bmx_0} \leq \inner{\bmu\rast, \bmb} < 0. $$
@@ -153,11 +130,11 @@ This completes the proof.
 
 We observe from the proof of Theorem~\ref{farkas} that, the change of the constraints and bounds in the primal problem (\ref{eqn: P}) leads to the change in the constraints in its dual problem (\ref{eqn: D}). 
 \begin{itemize}
-\item In (\ref{eqn: D}), the constraint $A^\top y = 0$ is determined by the fact that $x$ is taken from the entire space of $\rr^n$. If we instead restrict $x\in\rr^n_+$ and change the proof accordingly, then the dual constraints in (\ref{eqn: D}) change to $A^\top y \geq 0$. Indeed, in the proof, when the slack variable satisfies $s = 0$, then $\inner{y\rast, Ax} = \inner{A^\top y\rast, x}\geq 0$ for all $x\geq 0$ if and only if $A^\top y\geq 0$. More generally, for any closed convex cone $C$, if $x\in C$, then the dual condition becomes 
-\[ M^\top u\in C\rast\text{ where } C\rast := \{y \in\rr^n: \forall x\in C, \inner{x, y}\geq 0\}. \]
+\item In (\ref{eqn: D}), the constraint $A^\top \bmy = \bm0$ is determined by the fact that $\bmx$ is taken from the entire space of $\rr^n$. If we instead restrict $\bmx\in\rr^n_+$ and change the proof accordingly, then the dual constraints in (\ref{eqn: D}) change to $A^\top \bmy \geq \bm0$. Indeed, in the proof, when the slack variable satisfies $\bms = \bm0$, then $\inner{\bmy\rast, A\bmx} = \inner{A^\top \bmy\rast, \bmx}\geq 0$ for all $\bmx\geq \bm0$ if and only if $A^\top \bmy\geq \bm0$. More generally, for any closed convex cone $C$, if $\bmx\in C$, then the dual condition becomes 
+\[ M^\top \bmu\in C\rast\text{ where } C\rast := \{\bmy \in\rr^n: \forall \bmx\in C, \inner{\bmx, \bmy}\geq 0\}. \]
 where $C\rast$ is known as the {\em dual cone} of $C$. 
 
-\item The non-negativeness of $u\in\rr^m_+$ is independent of the primal cone $C$ of where $x$ is choosen. But dictated by the inequality direction $Mx\leq b$. Observe that if we instead have $Mx\geq b$, then we would take $Z = \{Ax : x\in R^n\} + R^m_-$, which then gives $y\leq0$.  
+\item The non-negativeness of $\bmu\in\rr^m_+$ is independent of the primal cone $C$ of where $\bmx$ is choosen. But dictated by the inequality direction $M \bmx\leq \bmb$. Observe that if we instead have $M\bmx\geq \bmb$, then we would take $Z = \{A\bmx : \bmx\in R^n\} + R^m_-$, which then gives $\bmy\leq\bm0$.  
 %  determined by the construction of $Z = \{Ax: x\in X, x=0\} + \rr^m_+$, regardless of what $ X$ is. 
 \item In a similar vein, the bivariate Lagrangian function in Theorem~\ref{minimax} can be defined more generally.
 \end{itemize}
@@ -171,7 +148,7 @@ Finally, note that the system~(\ref{inhom}) is precisely how to transform an opt
 \begin{array}{ll}
 \mathrm{max}_{\bmx}  \quad & \inner{\bmc, \bmx}\\
 \text{subject to} \quad & \bmb - A\bmx  \in L, \\
-& \bmx\in K, 
+& \bmx\in K; 
 \end{array}
 \end{equation}
 the {\em dual} problem of (\ref{GP}) follows and defines the Linear Problem (\ref{GD}) as
@@ -187,7 +164,7 @@ If we choose $L = \rr^m_+$ and $K = \rr^n_+$, then we can define a primal proble
 \begin{array}{ll}
 \mathrm{max}_{\bmx\in\rr^n}  \quad & \inner{\bmc, \bmx}\\
 \text{subject to} \quad & A\bmx  \leq \bmb, \\
-& \bmx\geq 0.
+& \bmx\geq 0, 
 \end{array}
 \end{equation}
 and its dual problem (\ref{D}) as 
@@ -198,8 +175,7 @@ and its dual problem (\ref{D}) as
 & \bmy\geq 0.
 \end{array} 
 \end{equation}
-In particular, (P) has a solution if and only if (D) has a solution and, if (P) has a solution, then the maximum it attains corresponds to a solution to (D) that attains the same value as the minimum. 
-
+In particular, (P) has a solution if and only if (D) has a solution and, if (P) has a solution, then the maximum it attains corresponds to a solution to (D) that attains the same value as the minimum. However, there is a caveat: even if we are given an optimal solution to a primal problem, we do not immediately obtain an optimal solution for its dual problem, as the strong duality only guarantees the existence of an optimal solution, not an explicit construction. A relevant constructive solution will be discussed in Chapter~\ref{chapter: linear programming}. 
 
 \section{Geometric Point of View for Dual Problems}
 

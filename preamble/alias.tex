@@ -42,25 +42,18 @@
 \newcommand{\calL}{\mathcal{L}}
 \newcommand{\dd}{{\rm d}}
 \newcommand{\set}[1]{\mathcal{#1}}
-\newcommand{\diam}{\operatorname{diam}}
 \newcommand{\scr}[1]{\mathscr{#1}}
-\newcommand{\im}{\operatorname{im}}
 
-
-
-\newcommand{\wt}{\widetilde}
-\newcommand{\bm}{\boldsymbol}
-\newcommand{\Spec}{\operatorname{Spec}}
-\newcommand{\rec}{\operatorname{rec}}
-\newcommand{\cone}{\operatorname{cone}}
-\newcommand{\conv}{\operatorname{conv}}
 
 \renewcommand{\leq}{\leqslant}		
 \renewcommand{\geq}{\geqslant}	
 \renewcommand{\preceq}{\preccurlyeq}
 \renewcommand{\succeq}{\succcurlyeq}
 
-\newcommand{\inner}[1]{\left\langle#1\right\rangle}
+% fonts
+\newcommand{\bm}{\boldsymbol}
+\newcommand{\wt}{\widetilde}
+
 \newcommand{\bma}{{\bm a}}
 \newcommand{\bmb}{{\bm b}}
 \newcommand{\bmc}{{\bm c}}
@@ -94,21 +87,33 @@
 \newcommand{\calH}{\mathcal H}
 \newcommand{\cat}{\mathcal}
 
-\newcommand{\rast}{^\ast}
+
+
+
+% operatornames
+
+\newcommand{\inner}[1]{\left\langle#1\right\rangle}
 \newcommand{\aff}{\operatorname{aff}}
 \newcommand{\ri}{\operatorname{ri}}
-
-\newcommand{\st}{\mathrm{s.t.\ }}
 \newcommand{\cl}{\operatorname{cl}}
 \newcommand{\bd}{\operatorname{bd}}
 \newcommand{\dist}{\operatorname{dist}}
-
-\newcommand{\e}{\operatorname{e}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\rec}{\operatorname{rec}}
+\newcommand{\cone}{\operatorname{cone}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\diam}{\operatorname{diam}}
 
 \renewcommand{\subset}{\subseteq}
 \newcommand{\superset}{\supseteq}
 \newcommand{\supersetneq}{\supsetneq}
 
+% shortcuts 
+\newcommand{\bmat}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\rast}{^\ast}
+\newcommand{\e}{\operatorname{e}}
+\newcommand{\iu}{\operatorname{i}}
 \newcommand{\pp}{\mathbf{P}}
 \newcommand{\ppn}{\pp^{n}}
 \newcommand{\prob}{\mathbb{P}}
@@ -121,11 +126,14 @@
 \newcommand{\supp}{\operatorname{supp}}
 \newcommand{\vol}{\textsc{Vol}}
 \newcommand{\Span}{\operatorname{span}}
+
 \newcommand{\spectralnorm}[1]{{\left\vert\kern-0.25ex\left\vert\kern-0.25ex\left\vert #1 
     \right\vert\kern-0.25ex\right\vert\kern-0.25ex\right\vert}}
     
-    
-    
+
+%\setcounter{chapter}{-1}
+
+\numberwithin{equation}{chapter}
 % ----------------------------------------------------------------------
 % theorem definitions
 % numbered by default: 
@@ -135,14 +143,16 @@
 %
 % get unnumbered versions by un-lemma etc., numbered by n-definition etc. 
 
+
+
 \theoremstyle{plain}
-\newtheorem{n-lemma}{Lemma}[section]
-\newtheorem{n-theorem}[n-lemma]{Theorem}
-\newtheorem{n-proposition}[n-lemma]{Proposition}
-\newtheorem{n-corollary}[n-lemma]{Corollary} 
-\newtheorem{n-principle}[n-lemma]{Principle}
-\newtheorem{n-claim}[n-lemma]{Claim}
-\newtheorem{n-assumption}[n-lemma]{Assumption}
+\newtheorem{n-lemma}[equation]{Lemma}
+\newtheorem{n-theorem}[equation]{Theorem}
+\newtheorem{n-proposition}[equation]{Proposition}
+\newtheorem{n-corollary}[equation]{Corollary} 
+\newtheorem{n-principle}[equation]{Principle}
+\newtheorem{n-claim}[equation]{Claim}
+\newtheorem{n-assumption}[equation]{Assumption}
 
 \newtheorem*{un-lemma}{Lemma}
 \newtheorem*{un-theorem}{Theorem}
@@ -152,22 +162,22 @@
 \newtheorem*{un-claim}{Claim}
 
 \theoremstyle{definition}
-\newtheorem{n-definition}[n-lemma]{Definition}
-\newtheorem{n-condition}[n-lemma]{Condition}
-\newtheorem{n-openproblem}[n-lemma]{Open Problem}
-\newtheorem{bn-remark}[n-lemma]{Remark}		% bold remark
+\newtheorem{n-definition}[equation]{Definition}
+\newtheorem{n-condition}[equation]{Condition}
+\newtheorem{n-openproblem}[equation]{Open Problem}
+\newtheorem{bn-remark}[equation]{Remark}		% bold remark
 
 \newtheorem*{un-definition}{Definition}
 \newtheorem*{un-openproblem}{Open Problem}
 \newtheorem*{bun-remark}{Remark}		% bold unnumbered remark
 \newtheorem*{un-problem}{Problem}
-\newtheorem{n-problem}[n-lemma]{Problem}
+\newtheorem{n-problem}[equation]{Problem}
 
 \theoremstyle{remark}
-\newtheorem{n-example}[n-lemma]{Example}
-\newtheorem{n-remark}[n-lemma]{Remark}
-\newtheorem{n-remarks}[n-lemma]{Remarks}
-\newtheorem{n-convention}[n-lemma]{Convention}
+\newtheorem{n-example}[equation]{Example}
+\newtheorem{n-remark}[equation]{Remark}
+\newtheorem{n-remarks}[equation]{Remarks}
+\newtheorem{n-convention}[equation]{Convention}
 \newtheorem*{un-example}{Example}
 \newtheorem*{un-remark}{Remark}
 \newtheorem*{un-remarks}{Remarks}
@@ -201,7 +211,11 @@
 \vspace{-\topsep}\begin{n-definition}}{\end{n-definition}\end{mdframed}}
 \newenvironment{condition}{\begin{n-condition}}{\end{n-condition}}
 \newenvironment{assumption}{\begin{n-assumption}}{\end{n-assumption}}
-\newenvironment{example}{\begin{n-example}}{\end{n-example}}
+\newenvironment{example}{\begin{mdframed}[linewidth=1pt,            
+        innerleftmargin=10pt,
+        innertopmargin=8pt,
+        skipabove=10pt] 
+\begin{n-example}}{\end{n-example}\end{mdframed}}
 \newenvironment{openproblem}{\begin{un-openproblem}}{\end{un-openproblem}}
 \newenvironment{principle}{\begin{n-principle}}{\end{n-principle}}
 \newenvironment{remark}{\begin{mdframed}[linewidth=1pt,            
@@ -214,7 +228,7 @@
 \newenvironment{claim}{\begin{un-claim}}{\end{un-claim}}
 \newenvironment{problem}{\begin{n-problem}}{\end{n-problem}}
 
-\numberwithin{equation}{n-lemma}
+
 %\newaliascnt{equation}{n-lemma}
 %\aliascntresetthe{equation}
 
@@ -282,9 +296,5 @@
 \setlength{\labelwidth}{0ex} 		 \setlength{\labelsep}{1ex}
 \setlength{\itemindent}{\labelsep} 	}	} 	{\end{list}}
 
-
-\newcommand{\bmat}[1]{\begin{bmatrix} #1 \end{bmatrix}}
-
-%This numbers equations by section
 
 

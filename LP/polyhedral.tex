@@ -1,10 +1,10 @@
-% !TEX root = ./main.tex
+% !TEX root = ./LP-main.tex
 
-In this section, we take motivation from Farkas' Lemma and its geometric version, defining optimization in terms of a broader geometric concept on cones and observing equivalences from a higher and abstract point of view. A set $S\subseteq\rr^m$ is {\em polyhedral} if there is a finite list of vectors $\bm v_1, \bm v_2,\dots, \bm v_n \in\rr^m$ and a list of bounds $b_1, b_2, \dots, b_n\in\rr$ so that 
+In this section, we take motivation from Farkas' Lemma and its geometric version, defining optimization in terms of a broader geometric concept on cones and observing equivalences from a higher and more abstract point of view. A set $S\subseteq\rr^m$ is {\em polyhedral} if there is a finite list of vectors $\bm v_1, \bm v_2,\dots, \bm v_n \in\rr^m$ and a list of bounds $b_1, b_2, \dots, b_n\in\rr$ so that 
 \[ S = \{ \bmx\in\rr^m :\forall i\in\{1, 2, \dots, n\}, \inner{\bmx, \bmv_i}\leq b_i \} \]
 or equivalently, transpose and stack all $\bmv_i$ and there is a finite-dimensional constraint matrix $M\in\rr^{n\times m}$, and $\bmb = (b_1, b_2, \dots, b_n)^\top$ so that 
 \[ S = \{ \bmx\in\rr^m : M\bmx\leq \bmb\}. \]
-One should have observed that this is essentially the feasible region mentioned in Chapter~\ref{chapter: lin opt dual}. When we have a homogeneous system, where the bound $\bmb = \bm0$, a polyhedral set is a {\em polyhedral cone}. A {\em linear half-space}, or just a {\em halfspace}, defined by $\bma\in\rr^n$ is the set \[ H_\bma = \{\bmy\in\rr^m: \inner{\bma, \bmy} \leq 0\}. \]
+One should have observed that this is essentially the feasible region mentioned for a primal problem~(\ref{P}). When we have a homogeneous system, where the bound $\bmb = \bm0$, a polyhedral set is a {\em polyhedral cone}. A {\em linear half-space}, or just a {\em halfspace}, defined by $\bma\in\rr^m$ is the set \[ H_\bma = \{\bmy\in\rr^m: \inner{\bma, \bmy} \leq 0\}. \]
 We take the fact that every halfspace is closed and convex as given. A polyhedral cone can be understood as the intersection of finitely many half-spaces 
 \[ H_{\bmv_1}\cap H_{\bmv_2}\cap \dots \cap H_{\bmv_n}. \]
  
@@ -22,7 +22,7 @@ With the definition of a polyhedral cone, the geometric version of Farkas' Lemma
 
 \section{Structure and Representations of Polyhedra}
 
-In plain language, the Minkowski-Weyl Theorem is very direct: a cone is finitely generated (a vertex representation, such as the geometric version of Farkas' Lemma) if and only if it can be represented by its hyperplane boundaries (a hyperplane representation, such as Theorem~\ref{farkas}). One may naturally expect that there is a very short, easy proof via some auxiliary matrices as in the proofs of Theorem~\ref{farkas}, \ref{minimax}, or \ref{farkas geo}; unfortunately, no, it still requires a last piece of sophisticated, yet elegant machinery and result to finally prove the Minkowski-Weyl Theorem. 
+In plain language, the Minkowski-Weyl Theorem is very direct: a cone is finitely generated (a vertex representation, such as the geometric version of Farkas' Lemma) if and only if it can be represented by a finite list of hyperplane boundaries (a hyperplane representation, such as Theorem~\ref{farkas}). One may naturally expect that there is a very short, easy proof via some auxiliary matrices as in the proofs of Theorem~\ref{farkas}, \ref{minimax}, or \ref{farkas geo}; unfortunately, no, it still requires a last piece of sophisticated, yet elegant machinery and result to finally prove the Minkowski-Weyl Theorem. 
 
 \subsection{The Fourier-Motzkin Elimination Algorithm Framework}
 
@@ -32,12 +32,12 @@ so that every concatenation $\bmx = (\bmb, \bmmu) \in\rr^{m + n}$, for $\bmb\in\
 
 Now, the matrix $M_{m+n}$ defines a polyhedral cone 
 \[ P = \left\{\bmx\in\rr^{m+n}: M_{m+n}\bmx\leq \bm0 \right\} \] 
-in which one may verify that  $P = \{(\bmb, \bmmu)\in\rr^{m+n}: \mu\in\rr^n_+, \bmb = A\bmmu\}$. We would then need to show that the polyhedral cone $P$ can be projected down to some set $P' \subset \rr^m$ and $P'$ is a polyhedral cone defined by some $M_{m}$ so that $M_m\bmb\leq\bm0$ if and only if $\bmb\in P'$.  
+in which one may verify that  $P = \{(\bmb, \bmmu)\in\rr^{m+n}: \mu\in\rr^n_+, \bmb = A\bmmu\}$. We would then need to show that the polyhedral cone $P\subset\rr^{m+n}$ can be projected down to some set $P' \subset \rr^m$ and $P'$ is a polyhedral cone defined by some $M_{m}$ so that $M_m\bmb\leq\bm0$ if and only if $\bmb\in P'$.  
 
 To obtain the matrix $M_m$, we will perform the {\em Fourier-Motzkin elimination} algorithm. The algorithm projects a polyhedral cone $C_{k+1}\subset \rr^{k+1}$ to some $C_k\subset \rr^{k}$ that, first, remains a polyhedral cone and, second, every $\bmx\in C_k$ is a part of a solution in $C_{k+1}$: formally, we state the Fourier-Motzkin Elimination framwork below. 
 
 \begin{theorem}[Fourier-Motzkin Elimination]\label{thm: FM}
-Let $m$ and $n$ be positive integers. Suppose $P_{n+1} = \{\bmmu\in\rr^{n+1}: A\bmmu\leq \bmb\}\subset \rr^{n+1}$ is a polyhedral set defined by a matrix $ A \in\rr^{m\times (n+1)}$ and $\bmb\in\rr^m$, there then are  $\bma'_1, \bma'_2, \dots, \bma'_{m'}\in \rr^n$, and $b_1', b_2', \dots, b_{m'}'\in\rr$ that defines a polyhedral set $P_n = \{\bmx\in\rr^n:\forall i\in\{1,2,\dots, m\}, \inner{\bma_i, \bmx}\leq b_i'\}\subset \rr^n$ with the projection property 
+Let $m$ and $n$ be positive integers. Suppose $P_{n+1} = \{\bmmu\in\rr^{n+1}: A\bmmu\leq \bmb\}\subset \rr^{n+1}$ is a polyhedral set defined by a matrix $ A \in\rr^{m\times (n+1)}$ and $\bmb\in\rr^m$, there then are  $\bma'_1, \bma'_2, \dots, \bma'_{m'}\in \rr^n$ and $b_1', b_2', \dots, b_{m'}'\in\rr$ that defines a polyhedral set $P_n = \{\bmx\in\rr^n:\forall i\in\{1,2,\dots, m\}, \inner{\bma_i, \bmx}\leq b_i'\}\subset \rr^n$ with the projection property 
 \[ \bmx\in P_n \iff \exists  x_{n+1} \in \rr \text{ such that } \begin{bmatrix}\bmx\\ x_{n+1}\end{bmatrix} \in P_{n+1}.  \]
 \end{theorem}
 \begin{proof}
@@ -110,9 +110,9 @@ Finally, we may apply the Fourier-Motzkin Elimination algorithm $k$ times and it
 \begin{corollary}\label{cor: FM projection}
 For a polyhedral set $Q\subset \rr^{n+k}$, its projection $\Pi_{n+k, n}(Q)$ is a polyhedral set in $\rr^n$. 
 \end{corollary}
-We remark on the notion of projection: our definition of projection assumes a basis in a vector space and specifically fixes the order of the coordinates; in many textbooks, projection is defined more abstractly in terms of vector spaces. Here, we adopt this style for application reasons, as we will only be dealing with the Euclidean, multi-dimensional spaces of real numbers. 
+We remark on the notion of projection: in many textbooks, projection is defined more abstractly in terms of vector spaces; our definition of projection assumes a basis in a vector space and specifically fixes the order of the coordinates. Here, we adopt this style for application reasons, as we will only be dealing with the Euclidean, multi-dimensional spaces of real numbers. 
 
-Finally, observe from the proof of Theorem~\ref{thm: FM} that, if $\bmb = \bm0$ initially, then the new constraint produced by the algorithm remains $\{b_1', b_2', \dots, b_{m'}'\} = \{0\}$. 
+Finally, observe from the proof of Theorem~\ref{thm: FM} that, if $\bmb = \bm0$ initially, then the new bounds produced by the algorithm remains $\{b_1', b_2', \dots, b_{m'}'\} = \{0\}$. 
 
 \begin{corollary}\label{cor: FM cone remains cone}
 The projection of a polyhedral cone remains a polyhedral cone. 
@@ -187,8 +187,8 @@ For the converse direction, where we are given a finitely generated cone and a c
 
 In a Minkowski-Weyl representation of a polyhedral set $P = \conv(V) + C$ for some set of vectors $V$, the cone $C$ is known as the recession cone of $P$. Let $X$ be a set in $\rr^m$; a vector $\bmd\in\rr$ is a {\em recession of $X$} if $\bmx + \alpha\bmd\in X$ for every $\bmx\in X$ and $\alpha\in\rr_+$. By the universal quantifiers, the set of all recessions of $X$ is well-defined; we denote the set of recessions of $X$ by \[ \rec(X) = \{\bmd\in\rr^m: \forall \bmx\in X,\forall \alpha\in\rr_+, \bmx + \alpha\bmd\in X\}.\] In a way, $\cone(X)$ is the minimal cone that contains $X$, and $\rec(X)$ is a maximal translated cone whose translation is properly contained in $X$. 
 
-\begin{corollary}
-For a polyhedral set $P = \{\bmx\in \rr^m: A\bmx\leq \bmb\}$ for $A\in\rr^{n\times m}$ and $\bmb\in\rr^n$ and its Minkowski-Weyl Representation of $P$ as in Equation~(\ref{eqn: MW construction}) defined by $\bmv_i$ for $i\in \{1, 2, \dots, s\} = J_0 \cup J_+$ such that 
+\begin{corollary}\label{cor: C is recession}
+For a polyhedral set $P = \{\bmx\in \rr^m: A\bmx\leq \bmb\}$ for $A\in\rr^{n\times m}$ and $\bmb\in\rr^n$ and its Minkowski-Weyl representation of $P$ as in Equation~(\ref{eqn: MW construction}) defined by $\bmv_i$ for $i\in \{1, 2, \dots, s\} = J_0 \cup J_+$ such that 
 \[ P = \conv(V) + C := \conv(\{\bmv_j: j\in J_+\}) + \cone(\{\bmv_j: j\in J_0\}); \] we have that $C = \rec(P)$.
 \end{corollary}
 \begin{proof}
@@ -199,13 +199,31 @@ Suppose that $\bmd\in C$ and we have that $A \bmd \leq \bm0$. For any point $\bm
 Suppose that $\bmd \in \rec(P)$; by definition, for any point $\bmx\in P$ and any $\alpha\in\rr_+$, we have that $A(\bmx + \alpha \bmd) = A\bmx + \alpha A\bmd \leq \bmb$. This holds only if $A \bmd \leq \bm0$ since, if any entry of $A\bmd$ is positive, then replacing $\alpha$ by a sufficiently large number $\alpha'$ violates the fact that  $A(\bmx + \alpha' \bmd ) \leq \bmb$. Indeed, if $(\bmd, 0) = \sum_{i=1}^s \lambda_i (\bmv_i, u_{i,m+1})$, then the last coordinate gives $0 = \sum_{j \in J_+}\lambda_i u_{i, m+1}.$ For $i\in J_+$, since $u_{i, m+1} > 0$, we have $\lambda_i = 0$ and, thus, $\bmd$ can be written as a conic combination of $\{\bmv_j: j\in J_0\}$; as such $\bmd\in C$. 
 \end{proof}
 
+We make the last remark of the section. We make a simple observation that a polyhedral set on $\rr^2$ is, eventually, drawn by drawing lines on a plane and considering the region that they surround. An intersection of two lines creates an angle. As a spoiler, these intersection that creates angles play a pivotal role in linear programming and the simplex method in Chapter~\ref{chapter: linear programming}. Let $C$ be a convex set; an {\em extreme point} $\bmb\in K$ is a point where there is no line $\ell$ properly contained in $K$ contains $\bmb$ in it; that is, for all points $\bmc, \bmc'\in K$ so that $\bmb\not\in \{\bmc, \bmc'\}$, we have that $ \bmb \neq \alpha\bmc + (1 - \alpha) \bmc'$ for all $ \alpha\in(0,1)$.  
+
+\begin{theorem}
+For a polyhedral set $P\subset \rr^n$ and its Minkowski-Weyl Representation $P = \conv(V) + C$ for some $V = \{\bmv_1, \bmv_2, \dots, \bmv_m\}$; we have that every extreme point of $P$ belongs to $V$. 
+\end{theorem}
+\begin{proof}
+We proceed with a proof by contraposition; suppose that $\bmx\in P\setminus V$ and we will show that it is not an extreme point. Let $\bmv = \sum_{i=1}^m \mu_i \bmv_i \in \cone(V)$ be a conic combination, $\bmd\in C$, and we write that $\bmx =  \bmv + \bmd$. By Corollary~\ref{cor: C is recession}, $C = \rec(P)$. First, we may assume that $\bmd \neq \bm0$. By the definition of a recession, we have that $\bmv + 2\bmd\in P$ as well. This gives that 
+\[\bmx = \frac12 \bmv + \frac12(\bmv + 2\bmd) \in P, \]
+which states that $\bmx$ belongs to the line in $P$ with endpoints $\bmv$ and $\bmv + 2\bmd$; thus, $\bmx$ is not an extreme point. 
+
+We now assume that $\bmd = \bm0$. We also have that $|V| > 1$ as, otherwise, $\bmv\in\conv(\{\bmv_1\}) = \{\bmv_1\}$. As $|V| >1$, without loss of generality, we assume that $0\not\in \{\mu_1, \mu_2\}$. By the definition of a convex set, let $\mu = \mu_1 + \mu_2$, for all $\alpha\in(0, \mu)$, $ \alpha\bmv_1 + (\mu - \alpha)\bmv_2 + \sum_{i = 3}^m \mu_i \bmv_i \in P$; we have that $\bmx$ is not an extreme point.  
+\end{proof}
+
+Consider the following example that seems to be a counterexample but actually is not.
+\begin{example}
+Consider the follwoing two sets \[ V = \left\{\bmat{0\\0}, \bmat{1\\0}, \bmat{0\\1}\right\} \quad\text{and}\quad R = \left\{ \bmat{-1\\-1}, \bmat{1\\ -1}, \bmat{-1\\ 1} \right\} \] that defines a polyhedral set $P = \conv(V) + \cone(R)\subset \rr^2$. This polyhedral set can be simplified as the closed halfspace \[\left\{ \bmx\in\rr^2: \inner{\bmat{1\\ 1}, \bmx} \leq 1\right\}, \]
+which does not contain an extreme point even $V$ consists of all extreme points of $\conv(V)$. 
+\end{example}
 
 \section{Algebraic Characterization of Extreme Points}
 %\begin{proposition}
 %Let $ V = \{v_1, v_2, \dots, v_m\}$ and $C$ be a finitely generated cone; the set of all extreme points of the polyhedral set $P = \conv(V) + C$, which has a Minkowski-Weyl representation, is a subset of $V$. 
 %\end{proposition}
-Let $C$ be a convex set; an {\em extreme point} $\bmb\in C$ is a point where there is no line that contains $\bmb$ in its interior; that is, there is for all points $\bmc, \bmc'\in C$ so that $\bmb\not\in \{\bmc, \bmc'\}$, we have that $ \bmb \neq \alpha\bmc + (1 - \alpha) \bmc'$ for all $ \alpha\in(0,1)$. 
-This subsection develops the fundamental linear-algebraic characterization of extreme points. Rather than evaluating extreme points solely through geometric convex combinations, the three theorems in this section provide direct, verifiable linear independence criteria tailored to general, standard, and bounded polyhedral representations. While established here algebraically, these characterizations serve as foundational anchors; subsequent sections will explicitly link each criterion back to its geometric, matrix-algebraic, and algorithmic interpretations. We frist write down the theorem statements for the section and prove them in the following subsections. 
+
+This subsection develops the fundamental linear-algebraic characterization of extreme points. Rather than evaluating extreme points solely through geometric convex combinations, the three theorems in this section provide direct, verifiable linear independence criteria tailored to general, standard, and bounded polyhedral representations. While established here algebraically, these characterizations serve as foundational anchors; subsequent sections will explicitly link each criterion back to its geometric, matrix-algebraic, and algorithmic interpretations. We first write down the theorem statements for the section and prove them in the following subsections. 
 
 %\begin{theorem}[] \label{thm: extreme and lin indep} Let $P\subset\rr^m$ be a polyhedral set. 
 %\end{theorem}
@@ -214,7 +232,7 @@ Suppose that $P\subseteq \rr^m$ is a polyhedral set defined by $\bma_1, \bma_2, 
 \[S_\bmv = \left\{\bma_j: j \in \{1, 2, \dots, n\}, \inner{\bma_j, \bmv} = b_j\right\} \] contains one or more subsets consisting of $m$ linearly independent vectors. 
 \end{theorem}
 
-Geometrically, Theorem~\ref{thm: extreme points part 1} characterizes an extreme point as the unique solution to a system of $m$ linearly independent active constraint hyperplanes in $\rr^m$.
+Geometrically, Theorem~\ref{thm: extreme points part 1} characterizes an extreme point as the unique solution that attains $m$ linearly independent constraint hyperplanes in $\rr^m$.
 
 \begin{theorem}[Extreme points and column spaces]\label{thm: extreme points part 2}
 Suppose $P\subset \rr^m_+$ is a polyhedral set obtained by the intersection of finitely many hyperplanes, $P =\{ \bmx:  M\bm x = \bmb, \bmx\geq\bm0\},$ where $M\in\rr^{n\times m}$ and $\bmb\in\rr^n$.  A vector $\bmv\in P$ is an extreme point of $P$ if and only if the columns of $M$ corresponding to $\supp(\bmv)$ are linearly independent.
@@ -227,15 +245,13 @@ Suppose we have a polyhedral set $P =\{ \bmx:  M\bm x = \bmb, \bmc \leq \bmx \le
 
 \subsection{Ranks of Active Constraints}
 
-%\begin{theorem}\label{thm: extreme points part 1}
 \noindent{\bf Theorem~\ref{thm: extreme points part 1}.~} {\em 
 Suppose that $P\subseteq \rr^m$ is a polyhedral set defined by $\bma_1, \bma_2, \dots, \bma_n\in\rr^m$ and $b_1, b_2,\dots b_n\in\rr$, so that $ P = \{\bmx: \forall i\in\{1,2,\dots n\}, \inner{\bma_i, \bmx}\leq b_i\}$. A point $\bmv\in P$ is an extreme point of $P$ if and only if the set 
 \[S_\bmv = \left\{\bma_j: j \in \{1, 2, \dots, n\}, \inner{\bma_j, \bmv} = b_j\right\} \] contains one or more subsets consisting of $m$ linearly independent vectors. 
 }\vspace{1em}
 
-%\end{theorem}
 \begin{proof}
-For the forward implication, let $\bmv\in\rr^m$ be an extreme point of $P$ and we denote $S = \{\bma_1, \bma_2, \dots, \bma_n\}$. Without loss of generality, suppose $S_\bmv = \{\bma_1, \bma_2, \dots \bma_s\}$, for some $s\geq m$. Let $A$ and $A_\bmv$ be the matrices obtained by stacking all the transposes of every element of $S$ and $S_\bmv$, respectively. Toward contradiction, suppose that $S_{\bmv}$ contains fewer than $m$ linearly independent vectors. By the contradictory hypothesis, the kernal of $A_\bmv$ is nontrivial, i.e., $\ker(A_\bmv)\neq \{\bm0\}$; we also have that $\ker(A_\bmv)\neq\{\bm0\}$. We then have a nonzero solution $\overline\bmw\in\ker(A)$. Since $A$ is a linear function, we have that $A(\bmv + \gamma\overline\bmw) = A\bmv + \gamma A\overline\bmw$ for any $\gamma\in\rr$. Now, by the definition of $S_\bmv$, we have that $\inner{\bma_j, \bmv + \gamma\overline \bmw} = b_j + \gamma \cdot 0 = b_j$ if $\bma_j\in S_\bmv$ and $\inner{\bma_i, \bmv} < b_i$ if $\bma_i\in S\setminus S_\bmv$; this means there is some $\epsilon_i\in\rr_{++}$ for all $i\in \{i: \bma_i\in S\setminus S_\bmv\}$ so that $ \inner{\bma_i, \bmv} + \epsilon_i = b_i $. Let $\epsilon = \max_i{\epsilon}$; we may choose $\gamma>0$ so that $ \inner{\bma_i, \bmv} \pm \gamma\inner{ \bma_i, \overline\bmw }\leq b_i $ for all $\bma_i\in S\setminus S_\bmv$ and, thus, $A(\bmv \pm \gamma\overline\bmw) \leq \bmv$. Yet, this yields that the two points $\bmv + \gamma\overline\bmw, \bmv - \gamma\overline\bmw\in P$, which contradicts that $\bmv$ is an extreme point of $P$. 
+For the forward implication, let $\bmv\in\rr^m$ be an extreme point of $P$ and we denote $S = \{\bma_1, \bma_2, \dots, \bma_n\}$. Without loss of generality, suppose $S_\bmv = \{\bma_1, \bma_2, \dots, \bma_s\}$, for some $s\geq m$. Let $A$ and $A_\bmv$ be the matrices obtained by stacking all the transposes of every element of $S$ and $S_\bmv$, respectively. Toward contradiction, suppose that $S_{\bmv}$ contains fewer than $m$ linearly independent vectors. By the contradictory hypothesis, the kernal of $A_\bmv$ is nontrivial, i.e., $\ker(A_\bmv)\neq \{\bm0\}$; we also have that $\ker(A_\bmv)\neq\{\bm0\}$. We then have a nonzero solution $\overline\bmw\in\ker(A)$. Since $A$ is a linear function, we have that $A(\bmv + \gamma\overline\bmw) = A\bmv + \gamma A\overline\bmw$ for any $\gamma\in\rr$. Now, by the definition of $S_\bmv$, we have that $\inner{\bma_j, \bmv + \gamma\overline \bmw} = b_j + \gamma \cdot 0 = b_j$ if $\bma_j\in S_\bmv$ and $\inner{\bma_i, \bmv} < b_i$ if $\bma_i\in S\setminus S_\bmv$; this means there is some $\epsilon_i\in\rr_{++}$ for all $i\in \{i: \bma_i\in S\setminus S_\bmv\}$ so that $ \inner{\bma_i, \bmv} + \epsilon_i = b_i $. Let $\epsilon = \max_{i\in\{1,2,\dots, s\}}{\epsilon_i}$; we may choose $\gamma>0$ so that $ \inner{\bma_i, \bmv} \pm \gamma\inner{ \bma_i, \overline\bmw }\leq b_i $ for all $\bma_i\in S\setminus S_\bmv$ and, thus, $A(\bmv \pm \gamma\overline\bmw) \leq \bmv$. Yet, this yields that the two points $\bmv + \gamma\overline\bmw, \bmv - \gamma\overline\bmw\in P$, which contradicts that $\bmv$ is an extreme point of $P$. 
 
 For the converse direction, suppose $\bmv\in P$ defines $S_\bmv$ and $S' \subset S_\bmv$ is a subset consisting of $m$ linearly independent vectors. Suppose $\bmu, \bmw\in P$ are points such that $\alpha\in(0, 1)$ so that $\bmv = \alpha \bmu + (1 - \alpha) \bmw$; note that $\inner{\bmu, \bma_j} \leq b_j$ and $\inner{\bmw, \bma_j} \leq b_j$. Now, for any $\bma_j \in S'$ we have that 
 \begin{equation*}\begin{split} 
@@ -288,17 +304,17 @@ and $[\bm0]_{\supp(\bmv)} = \sum_{j\in J} \mu_j [\bma_j]_{\supp(\bmv)}$ implies 
 Finally, we have $\inner{\bma_j, \bmv}\leq b_i$ for $j\in J$ and, since $\bmv\in P$, we have $- \inner{\bma_j, \bmv}\leq -b_i$, which implies that $\inner{\bma_j, \bmv} = b_i$. For $R_\bmv$ consists of $\bm\chi_i$ with $i\in\{1, 2, \dots, m\}\setminus\supp(\bmv)$ (i.e., the coordinates with a 0-entry in $\bmv$), we have $\inner{\bmv, \bm\chi_i} = 0$. Thus, along with $S_J\cup R_\bmv$ consisting of $m$ linearly independent rows in $M$, we apply Theorem~\ref{thm: extreme points part 1} so that $\bmv$ is an extreme point. 
 \end{proof}
 
+%%%%%%%%%%% add basic feasible solutions. 
 
-\subsection{Bounded Variable Polyhedral Sets}
-
-Let $\bmu, \bmw, \bmv\in\rr^m,$ such that $\bmu \leq \bmw$, and $u_i, w_i, v_i$ be the $i$-th entry; we denote $\supp_{\bmu, \bmw}(\bmv) = \{i: u_i < v_i < w_i\}$. The proof of Theorem~\ref{thm: extreme points part 3} is identical to the proof for Theorem~\ref{thm: extreme points part 2} with some minor twists in the setup. \\ 
+%\subsection{Bounded Variable Polyhedral Sets}
+Finally, we may prove Theorem~\ref{thm: extreme points part 3}, which is essentially the bounded version of Theorem~\ref{thm: extreme points part 2}. Though the proofs are parallel, the techniques are identical. Let $\bmu, \bmw, \bmv\in\rr^m,$ such that $\bmu \leq \bmw$, and $u_i, w_i, v_i$ be the $i$-th entry; we denote $\supp_{\bmu, \bmw}(\bmv) = \{i: u_i < v_i < w_i\}$. The proof of Theorem~\ref{thm: extreme points part 3} is identical to the proof for Theorem~\ref{thm: extreme points part 2} with some minor twists in the setup. \\ 
 
 
 \noindent{\bf Theorem~\ref{thm: extreme points part 3}. }{\em 
 Suppose that $P =\{ \bmx:  M\bm x = \bmb, \bmc \leq \bmx \leq \bmd\},$ where $M\in\rr^{n\times m}$ and $\bmb\in\rr^n$.  A vector $\bmv\in P$ is an extreme point of $P$ if and only if the columns of $M$ corresponding to the entries in $\bmv$ that are strictly between $\bmc$ and $\bmd$ are linearly independent.
 }\vspace{1em}
 
-\begin{proof}
+\begin{proof}[Sketch of Proof for Theorem~\ref{thm: extreme points part 3}]
 The polyhedral set defines the following system of linear inequality
 \[ \begin{bmatrix} M \\ -M \\ -I_m \\ I_m  \end{bmatrix}\bmx \leq \begin{bmatrix}  \bmb \\ -\bmb \\ -\bmu \\ \bmw  \end{bmatrix}  \]
 For the forward direction, suppose that $\bmv$ is an extreme point and, toward a contradiction, suppose that the columns of $M$ corresponding to $\supp_{\bmu, \bmw}(\bmv)$ are linearly dependent, which gives a vector $\bmd\in\rr^m$ so that 
@@ -316,4 +332,116 @@ For the converse direction, replacing $\supp$ by $\supp_{\bmu, \bmw}$ and one ma
 %Remark 3.X (The Frontier of Continuous vs. Discrete Optimization)The Corollary to Theorem 3.7 represents the exact boundary where continuous convex analysis meets discrete combinatorial optimization. When a polyhedron $P$ possesses purely integral extreme points ($\text{conv}(P \cap \mathbb{Z}^n) = P$), an intrinsically NP-hard integer program:$$\min \{ c^\top x \mid x \in P \cap \mathbb{Z}^n \}$$collapses into a continuous linear program $\min \{ c^\top x \mid x \in P \}$, which is solvable in polynomial time via continuous methods.When integrality fails, the convex hull $\text{conv}(P \cap \mathbb{Z}^n)$ strictly shrinks inside $P$, creating non-convex discrete structure. At this point, continuous polyhedral analysis yields to discrete machinery (e.g., lattice theory, cutting planes, and branch-and-bound trees). Throughout the remainder of this text, we remain strictly on the continuous side of this watershed—extending our study from polyhedral sets $Ax \ge b$ to general convex sets $g_i(x) \le 0$ and conic domains.
 %
 
+\section{Existence of Extreme Points}
+
+We examine and emphasize the existence of extreme points in a finitely generated polyhedral set. Recall the hypothesis in Theorem~\ref{thm: extreme points part 2} and~\ref{thm: extreme points part 3} that we are given a polyhedral set with only equalities. Consider a linear program (\ref{P}) that optimizes over a polyhedral set $M\bmx\leq b$; the program is in {\em standard form} if all the inequalities are equalities; similarly, if we consider a program that only contains equality constraints, we also call the system {\em in standard form}. In a later chapter, we will see why a program in standard form is necessary and sufficient for constructing a solution. With respect to a point $\bmx\rast\in\rr^{n}$, a row (a constraint) $\bma_i^\top$ is said to be {\em active} if $\inner{\bma, \bmx\rast} = b_i$. 
+
+
+
+\begin{definition}
+Let $P$ be a polyhedral set in $\rr^m$ defined by a list of constraints and bounds $\bme_1, \bme_2, \dots, \bme_r, \bma_1, \bma_2, \dots, \bma_n \in\rr^{m}$ and $e_1, e_2, \dots, e_r, b_1, b_2, \dots, b_n \in \rr$ so that 
+\[\begin{array}{rl}
+P = \{\bmx :&\forall i\in\{1,2,\dots, r\}, \inner{\bme_i, \bmx} = e_i,  \\ 
+&\forall j\in\{1,2,\dots, n\},\inner{\bma_j, \bmx} \leq b_j~\}.
+\end{array}\] Let $\bmx\rast\in \rr^{n}$.  
+\begin{itemize}
+\item 
+The point $\bmx\rast$ is a {\em basic solution} if all the equality constraints are active and there are $m$ linearly independent active constraints with respect to $\bmx\rast$. 
+\item The point $\bmx\rast$ is a {\em basic feasible solution} if $\bmx$ is a basic solution and satisfies all the constrainsts. 
+\end{itemize}
+\end{definition}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{fig/BT-fig2.7.png}
+    \caption{Figure~2.7 in {\em Introduction To Linear Optimization} by Bertsekas and Tsitsiklis. The figure illustrates a polyhedral set $P\subset\rr^2$ where $A, B, C, D, E, F$ are all basic solutions to $P$ but only $C, D, E, F$ are basic feasible solutions. Every pair on the same line is a pair of adjacent basic solutions to $P$. }
+    \label{fig: basic solution and adjacency}
+\end{figure}
+
+We should remind reader junior readers that the term ``basic'' stands for the adjective for ``basis'', which states that the solution is generated by a chosen linear algebraic basis. In the following, we consider a linear algebraic property of the intersection of a convex set and a hyperplane and the behavior of an extreme point under intersections. 
+
+%Though we will omit the formal definition of the dimension of a subspace, the following lemma will be helpful. 
+
+\begin{lemma}\label{lemma: dimension drops by hyperplane intersection}
+Let $K\subseteq \rr^{n}$ be a convex set and $H\subset \rr^{n}$ be a hyperplane such that $K\cap H \neq \empty$. If $K\not\subset H$, then $\dim(K\cap H)\leq \dim(K) - 1$. 
+\end{lemma}
+\begin{proof}
+Observe that $\aff(K\cap H)\subset \aff(K)$, we have that $\dim(K\cap H)\leq \dim(K)$. Since $H$ itself is also an affine set, we have $\aff(K\cap H)\subset H$. Toward a contradiction, suppose that $\aff(K\cap H) = \dim(K)$. Yet, since $\aff(K\cap H)$ and $\aff(K)$ are uniquely defined by subspaces, we have that $\aff(K\cap H) = \aff(K)$, which then gives that $\aff(K)\subset H$. Now, $K\subset \aff(K)$, we have $K\subset H$, which contradicts the assumption that $K\not\subset H$. 
+\end{proof}
+
+
+\begin{theorem}\label{thm: extreme remains extreme} Let $K\subset \rr^{n}$ be a nonempty convex set. Let $H$ be a hyperplane so that one of its closed halfspaces contains $K$. Every extreme point in $K\cap H$ is an extreme point in $K$. 
+\end{theorem}
+\begin{proof}
+Toward a contradiction, suppose a point $\bmx\rast\in K\cap H$ is an extreme point but is not an extreme point in $K$. There then are distinct points $\bmu, \bmw \in K\setminus\{\bmx\rast\}$ and $\alpha\in (0, 1)$ so that $\bmx\rast = \alpha\bmu + (1-\alpha)\bmw$. Since $\bmx\rast\in H$, there is a vector $\bma$ normal to $H$ that defines $H = \{\bmy: \inner{\bmy, \bma} =  \inner{\bmx\rast, \bma}\}$; further, we assume that for all $\bmx\in K$, we have $\inner{\bmx, \bma}\geq \inner{\bmx\rast, \bma}$ that $K$ is contained in this halfspace of $H$. This gives that  $\inner{\bmu, \bma}\geq \inner{\bmx\rast, \bma}$ and $\inner{\bmw, \bma}\geq \inner{\bmx\rast, \bma}$, which in view of $\bmx\rast = \alpha\bmu + (1-\alpha)\bmw$ implies that equality holds for both. Therefore, we have that $\bmu, \bmw\in K\cap H$, but this contradicts the assumption that $\bmx\rast$ is an extreme point in $K\cap H$. 
+\end{proof}
+
+
+
+Recall that, given a convex set $X$, a vector $\bmd$ is a recession of $X$ if, for any $\bmx\in X$ and $\alpha\in\rr_+$, we have that $\bmx + \alpha\bmd \in X$, and $\rec(X)$ is the collection of all recessions of $X$. We first review some more properties of $\rec(X)$ and then finish this section by proving a critical characterization, Theorem~\ref{thm: extreme iff no line}. 
+
+\begin{proposition}[Recession Cone Theorems]\label{thm: recession cone theorem}
+Let $X$ be a closed, convex, and nonempty set in $\rr^n$. 
+\begin{enumerate}
+\item $\rec(X)$ is a closed and convex cone. 
+\item A vector $\bmd$ belongs to $\rec(X)$ if and only if there is a point $\bmx\in X$ such that $\bmx + \alpha\bmd \in X$ for all $\alpha \in\rr_+$.  
+\item If there is a nonzero direction in $\rec(X)$, then $X$ is unbounded. 
+\item $\rec(\ri(X)) = \rec(X)$. 
+\item Let $Y$ be a closed and convex set so that $X\cap Y\neq \emptyset$, we have that $\rec(X\cap Y) = \rec(X)\cap\rec(Y)$; this is closed under arbitrary intersection. 
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+We only prove Item (2), and we treat the remaining items as given since they involve too much point-set topology. For the forward direction for Item (2), it follows from the definition that a direction $\bmd\in\rec(X)$ such that $\bmx +\alpha\bmd \in X$ for all $\bmx\in X$ and $\alpha\in\rr_+$. 
+
+For the converse direction, suppose that $\bmd\in\rr^n$ and there is some $\bmx_0\in X$ so that $\bmx_0 + \alpha_0 \bmd \in X$ for all $\alpha_0\in\rr_+$. Fix a point $\bmy\in X\setminus\{\bmx_0\}$ and a scalar $\alpha\in\rr_+$ arbitrarily; we will show that $\bmy + \alpha \bmd \in X$. Starting from $\bmx_0 + \alpha \bmd$, which is an element of $X$, consider the line 
+\[ \Big\{\bmz_\lambda := (1-\lambda) (\bmy + \alpha \bmd) + \lambda (\bmx_0 + \alpha \bmd) ~~:~~ \lambda\in [0, 1]\Big\}. \]
+Observe the rearrangement for $\lambda\in(0, 1]$ so that 
+\begin{equation*}\begin{split}
+\bmz_\lambda ~ & = (1-\lambda) (\bmy + \alpha \bmd) + \lambda (\bmx_0 + \alpha \bmd) \\ 
+& =  \bmy + \alpha \bmd-\lambda\bmy - \lambda\alpha \bmd  + \lambda \bmx_0 + \lambda\alpha \bmd \\
+& =  \bmy + \alpha \bmd-\lambda\bmy  + \lambda \bmx_0 \\
+& = ( 1 - \lambda ) \bmy + \lambda \left(\bmx_0 + \frac{\alpha}{\lambda} \bmd\right); 
+\end{split}\end{equation*}
+in particular, we may interpret $\bmz_\lambda$ as belonging to the line segment connecting $\bmy$ and $\bmx_0 + (\alpha/ \lambda)\bmd$. As $\alpha/\lambda\in\rr_+$, we have that $\bmy, \bmx_0 + (\alpha/ \lambda)\bmd  \in X$ so $\bmz_\lambda\in X$ by the convexity of $X$.
+By the convexity of $X$,
+That says, for all $\lambda\in (0, 1]$, we have $\bmz_\lambda\in X$. 
+
+Finally, defined with the index set $I = ( \lambda_k)_{k\in\nn_+}$ where $\lambda_k = 1/k$, we have a sequnce 
+\[\left\{\bmz_{\frac1k}:= \bmy + \alpha \bmd  + \frac{1}{k} (\bmx_0 - \bmy) ~:~ \lambda_k\in I \right\} \subset X; \] this is easy to verify that it is a Cauchy sequence and approaches $\bmy + \alpha\bmd$. Since $X$ is closed, every Cauchy sequence is convergent and, thus, we have that $\bmy + \alpha\bmd\in X$. 
+\end{proof}
+
+
+Previously we discussed a ``strictly hyperplane separation theorem'', Proposition~\ref{prop: strict hyperplane separation}; this is too strong for the next theorem, so we study the idea of separation again and provide a weaker condition. Recall that a hyperplane in $\rr^{n}$ is defined with a vector $\bma$ and a scalar $b$ so that $H = H_{\bma, b} = \{\bmx\in\rr^{n}: \inner{\bma, \bmx} = b\}$. Two sets $X$ and $Y$ are said to be {\em separated} by $H$ if $\inner{\bmx, \bma} \leq b \leq \inner{\bmy, \bma}$ for all $\bmx\in X$ and $\bmy\in Y$ or $\inner{\bmy, \bma} \leq b \leq \inner{\bmx, \bma}$ for all $\bmx\in X$ and $\bmy\in Y$; without loss of generality, we assume the prior case. We may further write that $\sup_{\bmx\in X}\inner{\bmx, \bma} \leq \inf_{\bmy \in Y}\inner{\bmy, \bma}$. 
+
+We say a hyperplane $H$ {\em properly separates} two sets $X$ and $Y$ if $H$ separates $X$ and $Y$ and $ X\cup Y \not\subset H$. For a singleton $\{\bmx\}$ we may $H$ separates $\bmx$ and $Y$ if $H$ separates $\{\bmx\}$ and $Y$. For example, consider the following ``intervals on the $x$-axis''
+\[ I_{0, 1} = \left\{\bmat{x\\0}: x\in[0, 1]\right\} \quad \text{and}\quad I_{2, 3} =\left\{ \bmat{y\\0 }: y\in[2, 3]\right\}\] 
+that, in fact, can be separated by the ``$x$-axis'': Consider the unit vector with a 1 on the second coordinate, $\bm\chi_2\in\rr^2$; we have $X = \{\bmx: \inner{\bm\chi_2, \bmx} = 0\}$
+and, indeed for every $\bmx\in I_{0, 1}$ and $\bmy\in I_{2, 3}$, we have $\inner{\bm\chi_2, \bmx} = \inner{\bm\chi_2, \bmy} = 0$ and, thus, $H$ separates $I_{0, 1}$ and $I_{2, 3}$. However, this separation is geometrically meaningless. Thus, we need the notion of proper separation to pick a line with a slope to separate $I_{0, 1}$ and $I_{2, 3}$. 
+
+\begin{proposition}[Proper Separation Theorem]\label{thm: proper separation} 
+Let $C\subset \rr^{n}$ be a nonempty convex set and $\bmx\in\rr^{n}$. There exists a hyperplane that properly separates $C$ and $\bmx$ if and only if $\bmx\not\in\ri(C)$. 
+\end{proposition} 
+
+\begin{theorem}\label{thm: extreme iff no line}
+Suppose $X$ is a closed and non-empty convex set. The set $X$ has one or more extreme point if and only if $X$ does not contain a line. 
+\end{theorem}
+\begin{proof}
+Suppose $\bmx\rast \in X$ is an extreme point and there is also some line $L = \{\bma + \lambda \bmd: \lambda\in \rr\}$ where $\bma\in X$ and $\bmd\neq \bm0$; namely, both $\bmd, -\bmd\in\rec(X)$. By the recession cone theorem, Theorem~\ref{thm: recession cone theorem} Item 2, we have that $\bmx\rast + \lambda\bmd\in X$ for all $\lambda\in\rr$; but this contradicts the fact that $\bmx\rast$ does not belong to a line as an extreme point. 
+
+For the converse direction, we assume that $X$ does not contain a line. We proceed with a proof by induction on the dimension of the affine set of $X$. Suppose $\dim(\aff(X)) = 0$, which means $X$ is a singleton, and the only point is the extreme point automatically. 
+
+Inductively, suppose that for any $X_0$ with $\dim(\aff(X_0)) < k$ in which $X_0$ does not contain a line and contains one or more extreme points. Suppose $X$ has that $\dim(\aff(X)) = k$. Since an affine set is a translated subspace, which always contains a line, we have that $X\neq \aff(X)$. Thus, we may take a point from  $\wt\bmx\in X\setminus \ri(X)$. By the proper hyperplane separation theorem, Theorem~\ref{thm: proper separation}, there is a hyperplane $H$ in $\aff(X)$ that contains $\ri(X)$ in one of its halfspaces and properly separates $\wt\bmx$ and $\ri(X)$. We take $X\cap H$, since $\ri(X)\neq\empty$, we know $X\not\subset H$ and, thus, $\dim(\aff(X\cap H))< \dim(\aff(X))$ by Lemma~\ref{lemma: dimension drops by hyperplane intersection}. As $X$ and $H$ are both closed, we have that $X\cap H$ is closed, non-empty, and contains no line. We have that $X\cap H$ contains one or more extreme points. By Theorem~\ref{thm: extreme remains extreme}, an extreme point in $X\cap H$ remains an extreme point in $X$, which proves the theorem that $X$ has one or more extreme points. 
+\end{proof}
+
+The following proposition has a page-long, linear-algebraic proof; however, if we restrict to the case of polyhedral sets, then it is a natural corollary of the Minkowski-Weyl Theorem. 
+
+\begin{proposition}[Krein-Milman Theorem]
+If $K\subset \rr^n$ is a closed convex set that is compact, then $K$ is equal to the convex hull of its extreme points.
+\end{proposition}
+\begin{corollary}
+If $P\subset \rr^n$ is a compact polyhedral set, then $P$ is equal to the convex hull of its extreme points.
+\end{corollary}
+\begin{proof}
+Let $P = \conv(X) + C$ be a polyhedral set with its Minkowski-Weyl representation. A polyhedral set is closed and convex; if $P$ is compact, then $P$ is bounded, which means $C = \{\bm0\}$. Toward a contradiction, suppose $\bmx \in X$ is not an extreme point of $P$, then $\bmx = \alpha \bmu +  (1-\alpha)\bmw$ for some $\alpha\in(0,1)$ and $\bmu, \bmw \in P$, where the representation of $\bmu$ and $\bmw$ can be $\bmx$-free (i.e. the coefficient of $\bmx$ in the representation is 0). Thus, $\conv(X) = \conv(X\setminus\{\bmx\})$. The statement follows by inductively removing all the non-extreme points.
+\end{proof}
 
