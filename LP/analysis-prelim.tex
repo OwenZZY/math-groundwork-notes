@@ -10,24 +10,25 @@ We primarily deal with the vector spaces $\rr^n$ with $n\geq 1$ and their subset
 Every finite or infinite intersection of closed sets is closed. \hfill\qedsymbol
 \end{proposition}
 
-We denote and define the set of all {\em (entry-wise) non-negative vectors} as 
+
+We denote by $\rr$ the set of real numbers. We denote the set of non-negative real numbers as $\rr_+$ and the set of positive real numbers as $\rr_{++}$; similarly, we denote the set of all non-positive (resp. negative) real numbers as $\rr_-$ (resp. $\rr_{--}$). We denote and define the set of all {\em (entry-wise) non-negative vectors} as 
 $$\rr^n_+  = \left\{\bmx = \begin{bmatrix}x_1\\ x_2\\ \vdots\\ x_n\end{bmatrix}: \forall i\in\{1,2,\dots, n\}, x_i\geq 0\right\}$$ 
 and the set of all {\em (entry-wise) non-positive vectors} $$\rr^n_-  = \left\{\bmx = \begin{bmatrix}x_1\\ x_2\\ \vdots\\ x_n\end{bmatrix}: \forall i\in\{1,2,\dots, n\}, x_i\leq 0\right\}. $$
 In the context of linear optimization, all the comparisons between two vectors are entry-wise; that is, for two vectors $\bmx, \bmy \in\rr^n$, where $x_i$ and  $y_i$ denotes the $i$-th entry of $\bmx$ and $\bmy$, respectively, we denote $\bmx\leq\bmy$ if $x_i \leq y_i$ for all $i\in\{1,2,\dots, n\}$. For elements $\bmx\in\rr^n_+$ and $\bmy \in\rr^n_-$, we may write that $\bmy\leq \bm0\leq\bmx$.  
 
 \begin{proposition}
-Let $\bmy, \bmb_1, \bmb_2 \in\rr^m$. If $\bmb_1 \leq \bmb_2$ and $\bmy\geq 0$, then 
+Let $\bmy, \bmb_1, \bmb_2 \in\rr^m$. If $\bmb_1 \leq \bmb_2$ and $\bmy\geq \bm0$, then 
 $$\inner{\bmy, \bmb_1}\leq \inner{\bmy, \bmb_2}.$$
 \end{proposition}
 \begin{proof}
-Rewrite $\bmb_1 \leq \bmb_2$ as $\bmb_2 - \bmb_1 \geq 0$. As $\bmy\geq 0$ and every term we are dealing with is nonnegative, we have that $\inner{\bmy, \bmb_2 - \bmb_1} \geq 0$, which gives that $ \inner{\bmy, \bmb_2 - \bmb_1}  = \inner{\bmy, \bmb_2} - \inner{\bmy, \bmb_1} \geq 0 $ and thus $\inner{\bmy, \bmb_2} \geq \inner{\bmy, \bmb_1}$. 
+Rewrite $\bmb_1 \leq \bmb_2$ as $\bmb_2 - \bmb_1 \geq \bm0$. As $\bmy\geq \bm0$ and every term we are dealing with is nonnegative, we have that $\inner{\bmy, \bmb_2 - \bmb_1} \geq 0$, which gives that $ \inner{\bmy, \bmb_2 - \bmb_1}  = \inner{\bmy, \bmb_2} - \inner{\bmy, \bmb_1} \geq 0 $ and thus $\inner{\bmy, \bmb_2} \geq \inner{\bmy, \bmb_1}$. 
 \end{proof}
 
 For inline context, given $\bmx\in\rr^n$ and $\bmx' \in \rr^m$, we may write $(\bmx, \bmx')\in\rr^{m+n}$ as the concatenation of the two vectors; this notation coincides with the notation for an open real number interval, so we will explicitly explain before using this notation. 
 
 \section{Convex Sets}
 
-A set $C$, where $C\subset\rr^n$, is {\em convex} if for all $\bmx, \bmy\in C$ and $\alpha\in [0, 1]$, we have that $\alpha \bmx + (1-\alpha) \bmy\in C$. The closure and the interior of a convex set are also convex. A vector $\bmz$ has a linear combination of vectors $\bmx_1, \bmx_2, \dots, \bmx_m$ if there are $a_1, a_2, \dots, a_m\in\rr$ so that $z = a_1 \bmx_1 + a_2 \bmx_2 + \dots + a_m \bmx_m$. The linear combination is a {\em conic combination} if the coefficients are non-negative; that is, $a_i\geq 0$. The linear combination is a {\em convex combination} if it is a conic combination and $\sum_{i=1}^m a_i = 1$. 
+A set $C$, where $C\subset\rr^n$, is {\em convex} if for all $\bmx, \bmy\in C$ and $\alpha\in [0, 1]$, we have that $\alpha \bmx + (1-\alpha) \bmy\in C$. The closure and the interior of a convex set are also convex. A vector $\bmz$ has a linear combination of vectors $\bmx_1, \bmx_2, \dots, \bmx_m$ if there are $a_1, a_2, \dots, a_m\in\rr$ so that $\bmz = a_1 \bmx_1 + a_2 \bmx_2 + \dots + a_m \bmx_m$. The linear combination is a {\em conic combination} if the coefficients are non-negative; that is, $a_i\geq 0$ for every $i\in\{1,2,\dots,m\}$. The linear combination is a {\em convex combination} if it is a conic combination and $\sum_{i=1}^m a_i = 1$. 
 
 \begin{definition}
 A function $f: C \to \rr$, where $C\subset \rr^n$, is {\em convex} if for all $\bmx, \bmy\in C$ and $\alpha\in[0, 1]$, we have that 
@@ -105,7 +106,7 @@ An {\em affine set} is a translated subspace, that is, let $S$ be a subspace of 
 The {\em relative interior} of a set $X$ is the interior of $X$ in $\aff(X)$, denoted by $\ri(X)$.  For the aforementioned line segment $L$ example, the line that properly contains $L$ is precisely the affine hull $\aff(L)$ and $\ri(L) = L\setminus \{\bma, \bmb\}$. We take the following face as given. 
 
 \begin{proposition}\label{prop: nonempty ri}
-The relative interval of a convex set is nonempty. 
+The relative interior of a convex set is nonempty. 
 \end{proposition}
 \begin{proof} 
 Let $K$ be a convex set. For the case when $K = \{\bmx\}$ is a singleton, then $\aff(K) = K$ is a single point. By definition, $K$ is an open set such that every point has a distance of 0 from $\bmx$; thus, $x\in \ri(K)$. 

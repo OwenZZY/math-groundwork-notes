@@ -1,0 +1,40 @@
+% !TEX root = ./LP-main.tex
+
+\section{Simplex Method: the Algorithmic Procedure}
+
+As an algorithm, the simplex method takes in a linear program. The algorithm also optionally takes in a basic feasible solution to initiate the procedure or, if none is given, proceeds with a preliminary procedure to generate one; we will discuss this procedure in the next section. Thus, we study the so-called {\em Phase II} of the simplex method in this section; in particular, Phase II also provides intuition for which basic feasible solution to use if it is not provided. 
+
+\subsection{The Non-Degenerate Conditions}
+
+Based on \LPSA, we first assume there is a basic feasible solution $\bmx$  that is nondegenerate and define the unique $B$ and induce the invertible matrix $M_B$. Compute each $k$-th reduced cost with respect to basis $B$ and form $\bmc$; by Theorem~\ref{thm: reduced cost to optimal}, if $\overline{\bmc} \leq \bm0$, then $\bmx$ attains the maximum of $\inner{\bmc, \cdot}$ over $P$. 
+
+We now suppose that there is some $k$ so that $\overline{c_k} > 0$, which repeats exactly the proof of Theorem~\ref{thm: optimal reduced cost}, and we know that there is some $\theta \in \rr_{++}$ so that $\bmx + \theta \bmd\rise k \in P$; in particular, Theorem~\ref{thm: optimal reduced cost} relies on Lemma~\ref{lemma: basic direction shift} for the choice of $\theta$. We now show that this choice leads to a basic feasible solution with respect to another basis. 
+
+\begin{theorem}
+Consider \LPSA~and let $\bmx$ be a nondegenerate basic feasible solution so that $B = \supp(\bmx)$. Suppose there is $k \in N$ such that $\overline{c_k} > 0$; either the maximization problem (\ref{lps}) is not bounded from above over $P$, or there is some $i\rast \in B$ so that another point  
+\[ \bmx' =  \bmx - \frac{[\bmx]_{i\rast}}{ [\bmd\rise k]_{i\rast} } \bmd\rise k \in P\] 
+is a basic feasible solution and $\inner{\bmc, \bmx'} > \inner{\bmc, \bmx}$. 
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm: optimal reduced cost}, $\bmx$ is not optimal. By the choice of $\bmx'$ in Lemma~\ref{lemma: basic direction shift} and the constructive proof, if $\bmd\rise k \geq \bm0$, then the optimization problem $\max_{\bmx\in P}\inner{\bmc, \bmx}$ is not bounded from above. 
+
+%By the proof and construction in Theorem~\ref{thm: optimal reduced cost}, we know that $\bmx$ is not an optimal solution. In particular, the construction depends on the construction and choice of Lemma~\ref{lemma: basic direction shift}. By the construction in Lemma~\ref{lemma: basic direction shift}, if $\bmd\rise k \geq \bm0$, then $\bmx + \theta \bmd\rise k\in P$ for every $\theta\in\rr_++$. This then gives that 
+%\[ \inner{\bmc, \bmx'} = \inner{\bmc, \bmx } + \inner{\bmc, \bmd\rise k }\]
+
+We now assume that there is some $i \in N$ so that $[\bmd\rise k]_i < 0$; thus, we may choose $\theta = \min_{i \in B,~d_i < 0}  -x_i / d_i$ and denote $i\rast \in B$ be the one that attains the minimum. Now, we have that 
+\[ {[\bmx]}_{i\rast} - \frac{{[\bmx]}_{i\rast}}
+{[\bmd\rise k]_{i\rast}} [\bmd\rise k]_{i\rast} = 0. \] 
+
+Let $\bmx' = \bmx + \theta \bmd\rise k$; we now need to further investigate the entries of $\bmx$ and $\bmx'$; without loss of generality, we may assume $i\rast =1$, $B = \{1, 2, \dots, m\}, k = m+1$, and $N = \{m+1, \dots, n\}$ so we write
+\[ \bmx' = \bmat{[\bmx]_B \\ 0 \\  \bm0} + \theta \bmat{[\bmd\rise k]_B \\ 1 \\ \bm0} \] 
+It is now clear that we have designed to have $\supp(\bmx') \setminus \{k\} \subset \supp(\bmx)\setminus \{i\rast\}$ since the choice of $i\rast$ may not be unique but $[\bmx']_{i\rast} = 0$ neccessarily. Let $B' = B\setminus \{i\rast\} \cup\{k\}$; we will show that $B' = \{2, 3, \dots, m,  m+1\}$ corresponds to a list of linearly independent columns of $M$. Let $(\mu_j)_{j\in B'}$ be a list of real numbers so that $\bm 0 = \sum_{j\in B'} \mu_j \bmf_j$; we apply ${M_B}^{-1}$ to both sides of elements in $\rr^m$ so that
+\begin{equation}\label{eqn: swap linear independence}\begin{split}
+\bm 0 =  {M_B}^{-1} \bm 0~& = {M_B}^{-1} \left( \mu_2 \bmf_2 + \mu_3 \bmf_3 + \dots + \mu_{m+1} \bmf_{m+1} \right) \\
+& =   \mu_2 {M_B}^{-1}\bmf_2 + \mu_3 {M_B}^{-1}\bmf_3 + \dots + \mu_{m+1} {M_B}^{-1}\bmf_{m+1} \\
+& =   \mu_2 \bm\chi_2 + \mu_3 \bm\chi_3 + \dots + \mu_m \bm\chi_m +  \mu_{m+1} [\bmd\rise k]_B
+\end{split}\end{equation}
+where the first $m-1$ terms are due to the observation that  ${M_B}^{-1} \bmf_j = \bm\chi_j$ for $j\in B$ and the last term is given by the choice of $k$ gives that $ {M_B}^{-1} \bmf_k = - [\bmd\rise k]_B$. Since we have assumed $[\bmd\rise k]_{i\rast} < 0$, where $i\rast = 1$ and, in (\ref{eqn: swap linear independence}), all $\bm\chi_i$ for $i\in\{2,3,\dots, m\}$ does not contrabute to the first entry, we may conclude that $\mu_{m+1} = 0$. Now, since the list $\chi_2, \chi_3, \dots, \chi_m$ is linearly independent, we have that $\{\mu_2, \mu_3, \dots, \mu_m\} = \{0\}$. This concludes that $\bm\chi_2, \bm\chi_3, \dots, \bm\chi_m, [\bmd\rise k]_{B}$ is a list of linearly independent vectors and, by properties of invertible mappings, $\bmf_2, \bmf_3, \dots, \bmf_{m+1}$ is a list of linearly independent vectors. By Theorem~\ref{thm: extreme points part 2} and Theorem~\ref{thm: unification}, $\bmx'$ is a basic feasible solution. 
+\end{proof}
+
+
+\subsubsection{Step 1} For each $k\in B$, 

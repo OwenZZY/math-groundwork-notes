@@ -59,6 +59,7 @@
 \newcommand{\bmc}{{\bm c}}
 \newcommand{\bmd}{{\bm d}}
 \newcommand{\bme}{{\bm e}}
+\newcommand{\bmf}{{\bm f}}
 \newcommand{\bmx}{{\bm x}}
 \newcommand{\bmy}{{\bm y}}
 \newcommand{\bmz}{{\bm z}}
@@ -210,7 +211,11 @@
         skipabove=10pt] 
 \vspace{-\topsep}\begin{n-definition}}{\end{n-definition}\end{mdframed}}
 \newenvironment{condition}{\begin{n-condition}}{\end{n-condition}}
-\newenvironment{assumption}{\begin{n-assumption}}{\end{n-assumption}}
+\newenvironment{assumption}{\begin{mdframed}[linewidth=1pt,            
+        innerleftmargin=10pt,
+        innertopmargin=8pt,
+        skipabove=10pt] 
+\vspace{-\topsep}\begin{n-assumption}}{\end{n-assumption}\end{mdframed}}
 \newenvironment{example}{\begin{mdframed}[linewidth=1pt,            
         innerleftmargin=10pt,
         innertopmargin=8pt,
@@ -220,7 +225,7 @@
 \newenvironment{principle}{\begin{n-principle}}{\end{n-principle}}
 \newenvironment{remark}{\begin{mdframed}[linewidth=1pt,            
         innerleftmargin=10pt,
-        innertopmargin=8pt,
+        innertopmargin=12pt,
         skipabove=10pt] 
 \vspace{-\topsep}\begin{n-remark}}{\end{n-remark}\end{mdframed}}
 \newenvironment{remarks}{\begin{un-remarks}}{\end{un-remarks}}

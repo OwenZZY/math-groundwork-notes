@@ -112,7 +112,7 @@ For a polyhedral set $Q\subset \rr^{n+k}$, its projection $\Pi_{n+k, n}(Q)$ is a
 \end{corollary}
 We remark on the notion of projection: in many textbooks, projection is defined more abstractly in terms of vector spaces; our definition of projection assumes a basis in a vector space and specifically fixes the order of the coordinates. Here, we adopt this style for application reasons, as we will only be dealing with the Euclidean, multi-dimensional spaces of real numbers. 
 
-Finally, observe from the proof of Theorem~\ref{thm: FM} that, if $\bmb = \bm0$ initially, then the new bounds produced by the algorithm remains $\{b_1', b_2', \dots, b_{m'}'\} = \{0\}$. 
+Finally, observe from the proof of Theorem~\ref{thm: FM} that, if $\bmb = \bm0$ initially, then the new bounds produced by the algorithm remain $\{b_1', b_2', \dots, b_{m'}'\} = \{0\}$. 
 
 \begin{corollary}\label{cor: FM cone remains cone}
 The projection of a polyhedral cone remains a polyhedral cone. 
@@ -174,8 +174,7 @@ Since $y_{m+1} = \sum_{i=1}^s \lambda_i u_{i, m+1}\geq 0$ for any conic combinat
 \end{array}\right..
 \] 
 That is, if $u_{i, m+1}= 0$, then it annihilates the contribution, as well as the restriction on $\lambda_i$ to $y_{m+1}$. We may verify 
-\begin{equation}
-%\label{eqn: MW construction 1} 
+\begin{equation} %\label{eqn: MW construction 1} 
 P'_1 = \left\{ \bmat{\bmy \\ 1}: \bmy = \sum_{i=1}^s \mu_i\bmv_i, \quad 1 =  \sum_{i\in J_+} \mu_i, \quad \mu_1, \mu_2, \dots, \mu_s\in\rr_+\right\}. \end{equation}
 since every non-negative $\mu_i$ can be traced back to $\lambda_i$ and, since we chose $v_{i, m+1} = 1$, $\lambda_i\in\rr_+$ always. As the definition of $P'_1$, we may write
 \begin{multline}\label{eqn: MW construction}
@@ -218,40 +217,48 @@ Consider the follwoing two sets \[ V = \left\{\bmat{0\\0}, \bmat{1\\0}, \bmat{0\
 which does not contain an extreme point even $V$ consists of all extreme points of $\conv(V)$. 
 \end{example}
 
+
+The following proposition has a page-long, linear-algebraic proof; however, if we restrict to the case of polyhedral sets, then it is a natural corollary of the Minkowski-Weyl Theorem. 
+
+\begin{proposition}[Krein-Milman Theorem]
+If $K\subset \rr^n$ is a closed convex set that is compact, then $K$ is equal to the convex hull of its extreme points.
+\end{proposition}
+\begin{corollary}
+If $P\subset \rr^n$ is a compact polyhedral set, then $P$ is equal to the convex hull of its extreme points.
+\end{corollary}
+\begin{proof}
+Let $P = \conv(X) + C$ be a polyhedral set with its Minkowski-Weyl representation. A polyhedral set is closed and convex; if $P$ is compact, then $P$ is bounded, which means $C = \{\bm0\}$. Toward a contradiction, suppose $\bmx \in X$ is not an extreme point of $P$; we then have some $\alpha\in(0,1)$ and $\bmu, \bmw \in P$ such that $\bmx = \alpha \bmu + (1-\alpha)\bmw$ and, with respect of $X$, the convex combination representation of $\bmu$ and $\bmw$ can be $\bmx$-free (i.e., the coefficient of $\bmx$ in the representation is 0). Thus, $\conv(X) = \conv(X\setminus\{\bmx\})$. The statement follows by inductively removing all the non-extreme points.
+\end{proof}
+
+
 \section{Algebraic Characterization of Extreme Points}
-%\begin{proposition}
-%Let $ V = \{v_1, v_2, \dots, v_m\}$ and $C$ be a finitely generated cone; the set of all extreme points of the polyhedral set $P = \conv(V) + C$, which has a Minkowski-Weyl representation, is a subset of $V$. 
-%\end{proposition}
 
 This subsection develops the fundamental linear-algebraic characterization of extreme points. Rather than evaluating extreme points solely through geometric convex combinations, the three theorems in this section provide direct, verifiable linear independence criteria tailored to general, standard, and bounded polyhedral representations. While established here algebraically, these characterizations serve as foundational anchors; subsequent sections will explicitly link each criterion back to its geometric, matrix-algebraic, and algorithmic interpretations. We first write down the theorem statements for the section and prove them in the following subsections. 
 
-%\begin{theorem}[] \label{thm: extreme and lin indep} Let $P\subset\rr^m$ be a polyhedral set. 
-%\end{theorem}
 \begin{theorem}[Extreme points and row spaces]\label{thm: extreme points part 1}
-Suppose that $P\subseteq \rr^m$ is a polyhedral set defined by $\bma_1, \bma_2, \dots, \bma_n\in\rr^m$ and $b_1, b_2,\dots b_n\in\rr$, so that $ P = \{\bmx: \forall i\in\{1,2,\dots n\}, \inner{\bma_i, \bmx}\leq b_i\}$. A point $\bmv\in P$ is an extreme point of $P$ if and only if the set 
+Suppose that $P\subseteq \rr^m$ is a polyhedral set defined by $\bma_1, \bma_2, \dots, \bma_n\in\rr^m$ and $b_1, b_2,\dots b_n\in\rr$, so that $ P = \{\bmx: \forall i\in\{1, 2, \dots, n\}, \inner{\bma_i, \bmx}\leq b_i\}$. A point $\bmv\in P$ is an extreme point of $P$ if and only if the set 
 \[S_\bmv = \left\{\bma_j: j \in \{1, 2, \dots, n\}, \inner{\bma_j, \bmv} = b_j\right\} \] contains one or more subsets consisting of $m$ linearly independent vectors. 
 \end{theorem}
 
-Geometrically, Theorem~\ref{thm: extreme points part 1} characterizes an extreme point as the unique solution that attains $m$ linearly independent constraint hyperplanes in $\rr^m$.
+Geometrically, Theorem~\ref{thm: extreme points part 1} characterizes an extreme point as the unique solution that attains $m$ linearly independent constraint hyperplanes in $\rr^m$. In the following, we focus on a specific, yet fundamental class of polyhedral sets: those that are defined in the first orthant and those that are bounded. We will later see that these types of polyhedral sets, with their algebraic properties, have computational advantages. In Let $\bmv\in \rr^n$ and $v_i$ be the value on its $i$-th coordinate; the {\em support} of $\bmv$ is the index set $\supp(\bmv) = \{i: v_i \neq 0\}$.
 
 \begin{theorem}[Extreme points and column spaces]\label{thm: extreme points part 2}
-Suppose $P\subset \rr^m_+$ is a polyhedral set obtained by the intersection of finitely many hyperplanes, $P =\{ \bmx:  M\bm x = \bmb, \bmx\geq\bm0\},$ where $M\in\rr^{n\times m}$ and $\bmb\in\rr^n$.  A vector $\bmv\in P$ is an extreme point of $P$ if and only if the columns of $M$ corresponding to $\supp(\bmv)$ are linearly independent.
+Suppose $P\subset \rr^m_+$ is a polyhedral set obtained by the intersection of finitely many hyperplanes, $P =\{ \bmx:  M\bm x = \bmb, \bmx\geq\bm0\},$ where $M\in\rr^{n\times m}$ and $\bmb\in\rr^n$.  A vector $\bmv\in P$ is an extreme point of $P$ if and only if the columns of $M$ with indices in $\supp(\bmv)$ are linearly independent.
 \end{theorem}
+
+Let $\bmu, \bmw, \bmv\in\rr^m,$ such that $\bmu \leq \bmw$, and $u_i, w_i, v_i$ be their $i$-th entry, respectively;  $\supp_{\bmu, \bmw}(\bmv) = \{i: u_i < v_i < w_i\}$. 
 
 \begin{theorem}[Extreme points and column spaces in a bounded region]\label{thm: extreme points part 3}
-Suppose we have a polyhedral set $P =\{ \bmx:  M\bm x = \bmb, \bmc \leq \bmx \leq \bmd\},$ where $M\in\rr^{n\times m}$ and $\bmb\in\rr^n$.  A vector $\bmv\in P$ is an extreme point of $P$ if and only if the columns of $M$ corresponding to the entries in $\bmv$ that are strictly between $\bmc$ and $\bmd$ are linearly independent.
+Suppose we have a polyhedral set $P =\{ \bmx \in \rr^m:  M\bm x = \bmb, \bmc \leq \bmx \leq \bmd\},$ where $M\in\rr^{n\times m}$, $\bmb\in\rr^n$, and $\bmc, \bmd\in\rr^m$. A vector $\bmv\in P$ is an extreme point of $P$ if and only if the columns of $M$ with indices so that the corresponding entries in $\bmv$ that are strictly between $\bmc$ and $\bmd$ are linearly independent.
 \end{theorem}
 
+Critically, these column space properties do not hold for arbitrary polyhedral sets without such one- or two-sided bounds. 
 
 \subsection{Ranks of Active Constraints}
 
-\noindent{\bf Theorem~\ref{thm: extreme points part 1}.~} {\em 
-Suppose that $P\subseteq \rr^m$ is a polyhedral set defined by $\bma_1, \bma_2, \dots, \bma_n\in\rr^m$ and $b_1, b_2,\dots b_n\in\rr$, so that $ P = \{\bmx: \forall i\in\{1,2,\dots n\}, \inner{\bma_i, \bmx}\leq b_i\}$. A point $\bmv\in P$ is an extreme point of $P$ if and only if the set 
-\[S_\bmv = \left\{\bma_j: j \in \{1, 2, \dots, n\}, \inner{\bma_j, \bmv} = b_j\right\} \] contains one or more subsets consisting of $m$ linearly independent vectors. 
-}\vspace{1em}
-
-\begin{proof}
-For the forward implication, let $\bmv\in\rr^m$ be an extreme point of $P$ and we denote $S = \{\bma_1, \bma_2, \dots, \bma_n\}$. Without loss of generality, suppose $S_\bmv = \{\bma_1, \bma_2, \dots, \bma_s\}$, for some $s\geq m$. Let $A$ and $A_\bmv$ be the matrices obtained by stacking all the transposes of every element of $S$ and $S_\bmv$, respectively. Toward contradiction, suppose that $S_{\bmv}$ contains fewer than $m$ linearly independent vectors. By the contradictory hypothesis, the kernal of $A_\bmv$ is nontrivial, i.e., $\ker(A_\bmv)\neq \{\bm0\}$; we also have that $\ker(A_\bmv)\neq\{\bm0\}$. We then have a nonzero solution $\overline\bmw\in\ker(A)$. Since $A$ is a linear function, we have that $A(\bmv + \gamma\overline\bmw) = A\bmv + \gamma A\overline\bmw$ for any $\gamma\in\rr$. Now, by the definition of $S_\bmv$, we have that $\inner{\bma_j, \bmv + \gamma\overline \bmw} = b_j + \gamma \cdot 0 = b_j$ if $\bma_j\in S_\bmv$ and $\inner{\bma_i, \bmv} < b_i$ if $\bma_i\in S\setminus S_\bmv$; this means there is some $\epsilon_i\in\rr_{++}$ for all $i\in \{i: \bma_i\in S\setminus S_\bmv\}$ so that $ \inner{\bma_i, \bmv} + \epsilon_i = b_i $. Let $\epsilon = \max_{i\in\{1,2,\dots, s\}}{\epsilon_i}$; we may choose $\gamma>0$ so that $ \inner{\bma_i, \bmv} \pm \gamma\inner{ \bma_i, \overline\bmw }\leq b_i $ for all $\bma_i\in S\setminus S_\bmv$ and, thus, $A(\bmv \pm \gamma\overline\bmw) \leq \bmv$. Yet, this yields that the two points $\bmv + \gamma\overline\bmw, \bmv - \gamma\overline\bmw\in P$, which contradicts that $\bmv$ is an extreme point of $P$. 
+\begin{proofof}{Theorem~\ref{thm: extreme points part 1}}
+For the forward implication, let $\bmv\in\rr^m$ be an extreme point of $P$ and we denote $S = \{\bma_1, \bma_2, \dots, \bma_n\}$. Without loss of generality, suppose $S_\bmv = \{\bma_1, \bma_2, \dots, \bma_s\}$, for some $s\geq m$. Let $A$ and $A_\bmv$ be the matrices obtained by stacking all the transposes of every element of $S$ and $S_\bmv$, respectively. Toward a contradiction, suppose that $S_{\bmv}$ contains fewer than $m$ linearly independent vectors. By the contradictory hypothesis, the kernal of $A_\bmv$ is nontrivial, i.e., $\ker(A_\bmv)\neq \{\bm0\}$; let $\overline\bmw\in\ker(A_\bmv)$ be a nonzero point. Since $A$ is a linear function, we have that $A(\bmv + \gamma\overline\bmw) = A\bmv + \gamma A\overline\bmw$ for any $\gamma\in\rr$. By the definition of $S_\bmv$ and by the choice of $\overline\bmw$, we have that $\inner{\bma_j, \bmv + \gamma\overline \bmw} = b_j + \gamma \cdot 0 = b_j$ if $\bma_j\in S_\bmv$ and $\inner{\bma_i, \bmv} < b_i$ if $\bma_i\in S\setminus S_\bmv$; this means there is some $\epsilon_i\in\rr_{++}$ for all $i\in \{i: \bma_i\in S\setminus S_\bmv\}$ so that $ \inner{\bma_i, \bmv} + \epsilon_i = b_i $. 
+Let $\epsilon = \max_{i\in\{1,2,\dots, s\}}{\epsilon_i}$; we may choose $\gamma \in \rr_{++}$ so that, for all $\bma_i\in S\setminus S_\bmv$, we have that $ \inner{\bma_i, \bmv} \pm \gamma\inner{ \bma_i, \overline\bmw }\leq b_i $ and, thus, $A(\bmv \pm \gamma\overline\bmw) \leq \bmb$. Yet, this yields that the two points $\bmv + \gamma\overline\bmw, \bmv - \gamma\overline\bmw\in P$, which contradicts that $\bmv$ is an extreme point of $P$. 
 
 For the converse direction, suppose $\bmv\in P$ defines $S_\bmv$ and $S' \subset S_\bmv$ is a subset consisting of $m$ linearly independent vectors. Suppose $\bmu, \bmw\in P$ are points such that $\alpha\in(0, 1)$ so that $\bmv = \alpha \bmu + (1 - \alpha) \bmw$; note that $\inner{\bmu, \bma_j} \leq b_j$ and $\inner{\bmw, \bma_j} \leq b_j$. Now, for any $\bma_j \in S'$ we have that 
 \begin{equation*}\begin{split} 
@@ -262,22 +269,45 @@ b_j = \inner{\bmv, \bma_j}~& = \inner{ \alpha \bmu + (1 - \alpha) \bmw, \bma_j} 
 By a {\em strict weighted-averge} argument, we have that $\inner{\bmu, \bma_j} = \inner{\bmw, \bma_j} = b_j$. 
 
 Let $A'$ be the matrix obtained by stacking the transposes of vectors $\bma_j\in S'$, and let $\bmb'$ be the vector so that the $b_j$ are stacked in the same order. Since $S'$ consists of $n$ linearly independent solutions, we have that $ A'$ is a full-rank matrix and, if there is a solution such that $A'\bmx = \bmb'$, then the solution is unique; thus, we have $\bmu=\bmv=\bmw$. Thus, we have that $\bmv$ is an extreme point.
-\end{proof}
+\end{proofof}
+
+With respect to a point $\bmx\rast$, a constraint $\bma$ is said to be {\em active} if $\inner{\bma, \bmx\rast} = b_i$. 
+
+\begin{definition}
+Let $P$ be a polyhedral set in $\rr^m$ defined by a list of constraints and bounds $\bme_1, \bme_2, \dots, \bme_r, \bma_1, \bma_2, \dots, \bma_n \in\rr^{m}$ and $q_1, q_2, \dots, q_r, b_1, b_2, \dots, b_n \in \rr$ so that 
+\[\begin{array}{rl}
+P = \{\bmx :&\forall i\in\{1,2,\dots, r\}, \inner{\bme_i, \bmx} = q_i,  \\ 
+&\forall j\in\{1,2,\dots, n\},\inner{\bma_j, \bmx} \leq b_j~\}.
+\end{array}\] 
+Let $\bmx\rast\in \rr^{m}$.  
+\begin{itemize}
+\item 
+The point $\bmx\rast$ is a {\em basic solution} if all the equality constraints are active and there are $m$ linearly independent active constraints with respect to $\bmx\rast$. 
+\item The point $\bmx\rast$ is a {\em basic feasible solution} if $\bmx$ is a basic solution and satisfies all the constrainsts. 
+\end{itemize}
+\end{definition}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{fig/BT-fig2.7.eps}
+    \caption{Figure~2.7 in {\em Introduction To Linear Optimization} by Bertsekas and Tsitsiklis. The figure illustrates a polyhedral set $P\subset\rr^2$ where $A, B, C, D, E, F$ are all basic solutions to $P$ but only $C, D, E, F$ are basic feasible solutions. Every pair on the same line is a pair of adjacent basic solutions to $P$. }
+    \label{fig: basic solution and adjacency}
+\end{figure}
+
+We should remind junior readers that the term ``basic'' stands for the adjective for ``basis'', which states that the solution is generated by a chosen linear algebraic basis; we will see more discussion in the following chapters. 
+In the following, we consider a linear algebraic property of the intersection of a convex set and a hyperplane and the behavior of an extreme point under intersections. 
+
 
 \subsection{Basic Feasible Solutions for Standard Form}
 
-Let $A^\top = [\bma_1\mid \bma_2\mid \dots \mid \bma_r]$. Without loss of generality, assume $r\geq n$ and $\bma_1, \bma_2, \dots, \bma_n\in S_\bmv$ are linearly independent. An extreme point $P$ exists if the submatrix $A'$ consisting of the first $n$ rows of $A$ has full rank.  Let $\bmv\in \rr^n$ and $v_i$ be the value on its $i$-th coordinate; the {\em support} of $\bmv$ is the index set $\supp(\bmv) = \{i : v_i \neq 0\}$. We will denote $\bm\chi_i\in\rr^m$ to be the unit vector with the $i$-th entry being 1. Let $K\subset\{1,2,\dots, m\}$ be an index set; for a vector $\bmv\in\rr^m$, we write $[\bmv]_K$ to be the vector in $\rr^{|K|}$ obtained from $\bmv$ by taking the entries with indices in $K$. \\
+We denote the unit vector with the $i$-th entry being 1 by $\bm\chi_i\in\rr^m$. Let $B\subset\{1,2,\dots, m\}$ be an index set and $\bmv\in\rr^m$; we write $[\bmv]_B$ to be the vector in $\rr^{|K|}$ obtained from $\bmv$ by taking the entries with indices in $K$. 
 
-
-\noindent{\bf Theorem~\ref{thm: extreme points part 2}.~}{\em 
-Suppose we further have that $P\subset \rr^m_+$ and is obtained by the intersection of finitely many hyperplanes, $P =\{ \bmx:  M\bm x = \bmb, \bmx\geq\bm0\},$ where $M\in\rr^{n\times m}$ and $\bmb\in\rr^n$.  A vector $\bmv\in P$ is an extreme point of $P$ if and only if the columns of $M$ corresponding to $\supp(\bmv)$ are linearly independent.
-}
-
-\begin{proof}
+\begin{proofof}{Theorem~\ref{thm: extreme points part 2}}
+Suppose that $P\subset \rr^m_+$ is obtained by the intersection of finitely many hyperplanes, $P =\{ \bmx:  M\bm x = \bmb, \bmx\geq\bm0\}$ for some $M\in\rr^{n\times m}$ and $\bmb\in\rr^n$. 
 We rewrite $\bmx\in P$ as a solution to the system of linear inequalities  
 \[ A \bmx  = \bmat{M \\ -M \\ -I_m} \bmx \leq \bmat{\bmb \\ -\bmb\\ \bm0}. \]
-For the forward direction, suppose $\bmv\in\rr_+^m$ is an extreme point in $P$ and, toward contradiction, the columns in $M$ corresponding to the indices in $\supp(\bmv)$ are not linearly independent. This means there is a vector $\bmd \in\rr^m$ where the entries satisfy that
-\[ M\bmd = \bm0, \quad \bmd\neq \bm0, \quad \text{and} \quad \supp(\bmd)\subset \supp(\bmv), \]
+For the forward direction, suppose $\bmv\in\rr_+^m$ is an extreme point in $P$ and, toward contradiction, the columns in $M$ corresponding to the indices in $\supp(\bmv)$ are not linearly independent. By the definition of linear independence, there then is a vector $\bmd \in\rr^m$ where the entries satisfy that
+\[\supp(\bmd)\subset \supp(\bmv),\quad M\bmd = \bm0, \quad \text{and} \quad  \bmd\neq \bm0, \]
 which gives that, for any $\epsilon\in\rr_{++}$, 
 \[A(\bmv + \epsilon\bmd) 
 = \bmat{M \\ -M \\ -I_m}(\bmv + \epsilon\bmd) 
@@ -302,19 +332,19 @@ We first consider the computation within the entries with indices in $\supp(\bmv
 and $[\bm0]_{\supp(\bmv)} = \sum_{j\in J} \mu_j [\bma_j]_{\supp(\bmv)}$ implies that $\mu_j = 0$ for all $j\in J$. Thus, this annilates a summation in Equation~(\ref{eqn: column space}) so that $\bm0 =  \sum_{i\in \{1,2,\dots, m\}\setminus \supp(\bmv)} \lambda_i \bm\chi_i$, which is obvious that $\lambda_i = 0$ for all $i\in\{1,2,\dots, m\}\setminus\supp(\bmv)$. This concludes that $S_J \cup R_\bmv$ is a set of linearly independent vectors. 
 
 Finally, we have $\inner{\bma_j, \bmv}\leq b_i$ for $j\in J$ and, since $\bmv\in P$, we have $- \inner{\bma_j, \bmv}\leq -b_i$, which implies that $\inner{\bma_j, \bmv} = b_i$. For $R_\bmv$ consists of $\bm\chi_i$ with $i\in\{1, 2, \dots, m\}\setminus\supp(\bmv)$ (i.e., the coordinates with a 0-entry in $\bmv$), we have $\inner{\bmv, \bm\chi_i} = 0$. Thus, along with $S_J\cup R_\bmv$ consisting of $m$ linearly independent rows in $M$, we apply Theorem~\ref{thm: extreme points part 1} so that $\bmv$ is an extreme point. 
-\end{proof}
-
+\end{proofof}
 %%%%%%%%%%% add basic feasible solutions. 
-
-%\subsection{Bounded Variable Polyhedral Sets}
-Finally, we may prove Theorem~\ref{thm: extreme points part 3}, which is essentially the bounded version of Theorem~\ref{thm: extreme points part 2}. Though the proofs are parallel, the techniques are identical. Let $\bmu, \bmw, \bmv\in\rr^m,$ such that $\bmu \leq \bmw$, and $u_i, w_i, v_i$ be the $i$-th entry; we denote $\supp_{\bmu, \bmw}(\bmv) = \{i: u_i < v_i < w_i\}$. The proof of Theorem~\ref{thm: extreme points part 3} is identical to the proof for Theorem~\ref{thm: extreme points part 2} with some minor twists in the setup. \\ 
+%\subsubsection{Basic and Basic Feasible Solutions}
 
 
-\noindent{\bf Theorem~\ref{thm: extreme points part 3}. }{\em 
-Suppose that $P =\{ \bmx:  M\bm x = \bmb, \bmc \leq \bmx \leq \bmd\},$ where $M\in\rr^{n\times m}$ and $\bmb\in\rr^n$.  A vector $\bmv\in P$ is an extreme point of $P$ if and only if the columns of $M$ corresponding to the entries in $\bmv$ that are strictly between $\bmc$ and $\bmd$ are linearly independent.
-}\vspace{1em}
 
-\begin{proof}[Sketch of Proof for Theorem~\ref{thm: extreme points part 3}]
+Finally, we may prove Theorem~\ref{thm: extreme points part 3}, which is essentially the bounded version of Theorem~\ref{thm: extreme points part 2}. Though the proofs are parallel, the proof of Theorem~\ref{thm: extreme points part 3} employs an argument identical to the proof for Theorem~\ref{thm: extreme points part 2} with some minor twists in the setup.
+%\\ 
+
+\begin{proofof}{Theorem~\ref{thm: extreme points part 3}}
+%\noindent{\bf Theorem~\ref{thm: extreme points part 3}. }{\em 
+%Suppose that $P =\{ \bmx:  M\bm x = \bmb, \bmc \leq \bmx \leq \bmd\},$ where $M\in\rr^{n\times m}$ and $\bmb\in\rr^n$.  A vector $\bmv\in P$ is an extreme point of $P$ if and only if the columns of $M$ corresponding to the entries in $\bmv$ that are strictly between $\bmc$ and $\bmd$ are linearly independent.
+%}\vspace{1em}
 The polyhedral set defines the following system of linear inequality
 \[ \begin{bmatrix} M \\ -M \\ -I_m \\ I_m  \end{bmatrix}\bmx \leq \begin{bmatrix}  \bmb \\ -\bmb \\ -\bmu \\ \bmw  \end{bmatrix}  \]
 For the forward direction, suppose that $\bmv$ is an extreme point and, toward a contradiction, suppose that the columns of $M$ corresponding to $\supp_{\bmu, \bmw}(\bmv)$ are linearly dependent, which gives a vector $\bmd\in\rr^m$ so that 
@@ -325,7 +355,8 @@ and choose small enough
 \[\epsilon = \min_{i\in \supp_{\bmu, \bmw}(\bmv)} \frac{\min\left(\{ v_i - u_i, w_i -v_i \} \right) }{|d_i|} \] and it would contradict that $\bmv$ is an extreme point. 
 
 For the converse direction, replacing $\supp$ by $\supp_{\bmu, \bmw}$ and one may verify that all the linear independence conditions remain valid. 
-\end{proof}
+\end{proofof}
+%This proof can also be obtained after applying an affine mapping (a translationg) and 
 
 
 %\section{Remarks on Optimizations}
@@ -334,33 +365,7 @@ For the converse direction, replacing $\supp$ by $\supp_{\bmu, \bmw}$ and one ma
 
 \section{Existence of Extreme Points}
 
-We examine and emphasize the existence of extreme points in a finitely generated polyhedral set. Recall the hypothesis in Theorem~\ref{thm: extreme points part 2} and~\ref{thm: extreme points part 3} that we are given a polyhedral set with only equalities. Consider a linear program (\ref{P}) that optimizes over a polyhedral set $M\bmx\leq b$; the program is in {\em standard form} if all the inequalities are equalities; similarly, if we consider a program that only contains equality constraints, we also call the system {\em in standard form}. In a later chapter, we will see why a program in standard form is necessary and sufficient for constructing a solution. With respect to a point $\bmx\rast\in\rr^{n}$, a row (a constraint) $\bma_i^\top$ is said to be {\em active} if $\inner{\bma, \bmx\rast} = b_i$. 
-
-
-
-\begin{definition}
-Let $P$ be a polyhedral set in $\rr^m$ defined by a list of constraints and bounds $\bme_1, \bme_2, \dots, \bme_r, \bma_1, \bma_2, \dots, \bma_n \in\rr^{m}$ and $e_1, e_2, \dots, e_r, b_1, b_2, \dots, b_n \in \rr$ so that 
-\[\begin{array}{rl}
-P = \{\bmx :&\forall i\in\{1,2,\dots, r\}, \inner{\bme_i, \bmx} = e_i,  \\ 
-&\forall j\in\{1,2,\dots, n\},\inner{\bma_j, \bmx} \leq b_j~\}.
-\end{array}\] Let $\bmx\rast\in \rr^{n}$.  
-\begin{itemize}
-\item 
-The point $\bmx\rast$ is a {\em basic solution} if all the equality constraints are active and there are $m$ linearly independent active constraints with respect to $\bmx\rast$. 
-\item The point $\bmx\rast$ is a {\em basic feasible solution} if $\bmx$ is a basic solution and satisfies all the constrainsts. 
-\end{itemize}
-\end{definition}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.5\textwidth]{fig/BT-fig2.7.png}
-    \caption{Figure~2.7 in {\em Introduction To Linear Optimization} by Bertsekas and Tsitsiklis. The figure illustrates a polyhedral set $P\subset\rr^2$ where $A, B, C, D, E, F$ are all basic solutions to $P$ but only $C, D, E, F$ are basic feasible solutions. Every pair on the same line is a pair of adjacent basic solutions to $P$. }
-    \label{fig: basic solution and adjacency}
-\end{figure}
-
-We should remind reader junior readers that the term ``basic'' stands for the adjective for ``basis'', which states that the solution is generated by a chosen linear algebraic basis. In the following, we consider a linear algebraic property of the intersection of a convex set and a hyperplane and the behavior of an extreme point under intersections. 
-
-%Though we will omit the formal definition of the dimension of a subspace, the following lemma will be helpful. 
+We examine and emphasize the existence of extreme points in a finitely generated polyhedral set. Recall the hypothesis in Theorem~\ref{thm: extreme points part 2} and~\ref{thm: extreme points part 3} that we are given a polyhedral set with only equalities. We say a polyhedral set $P \subset \rr^n$ is in {\em standard form} if $P$ is defined by equality constraints $M\bmx = \bmb$ and inequality constraints $P\subset \rr^n_+$; that is, if $M\in\rr^{m\times n}$, then $P$ is defined with $m+n$ constraints. In a later chapter, we will see why a program in standard form is necessary and sufficient for constructing a solution. Observe that, if $P$ is a polyhedral set in standard form, then a point is a basic solution if and only if it is a basic feasible solution. 
 
 \begin{lemma}\label{lemma: dimension drops by hyperplane intersection}
 Let $K\subseteq \rr^{n}$ be a convex set and $H\subset \rr^{n}$ be a hyperplane such that $K\cap H \neq \empty$. If $K\not\subset H$, then $\dim(K\cap H)\leq \dim(K) - 1$. 
@@ -433,15 +438,4 @@ For the converse direction, we assume that $X$ does not contain a line. We proce
 Inductively, suppose that for any $X_0$ with $\dim(\aff(X_0)) < k$ in which $X_0$ does not contain a line and contains one or more extreme points. Suppose $X$ has that $\dim(\aff(X)) = k$. Since an affine set is a translated subspace, which always contains a line, we have that $X\neq \aff(X)$. Thus, we may take a point from  $\wt\bmx\in X\setminus \ri(X)$. By the proper hyperplane separation theorem, Theorem~\ref{thm: proper separation}, there is a hyperplane $H$ in $\aff(X)$ that contains $\ri(X)$ in one of its halfspaces and properly separates $\wt\bmx$ and $\ri(X)$. We take $X\cap H$, since $\ri(X)\neq\empty$, we know $X\not\subset H$ and, thus, $\dim(\aff(X\cap H))< \dim(\aff(X))$ by Lemma~\ref{lemma: dimension drops by hyperplane intersection}. As $X$ and $H$ are both closed, we have that $X\cap H$ is closed, non-empty, and contains no line. We have that $X\cap H$ contains one or more extreme points. By Theorem~\ref{thm: extreme remains extreme}, an extreme point in $X\cap H$ remains an extreme point in $X$, which proves the theorem that $X$ has one or more extreme points. 
 \end{proof}
 
-The following proposition has a page-long, linear-algebraic proof; however, if we restrict to the case of polyhedral sets, then it is a natural corollary of the Minkowski-Weyl Theorem. 
-
-\begin{proposition}[Krein-Milman Theorem]
-If $K\subset \rr^n$ is a closed convex set that is compact, then $K$ is equal to the convex hull of its extreme points.
-\end{proposition}
-\begin{corollary}
-If $P\subset \rr^n$ is a compact polyhedral set, then $P$ is equal to the convex hull of its extreme points.
-\end{corollary}
-\begin{proof}
-Let $P = \conv(X) + C$ be a polyhedral set with its Minkowski-Weyl representation. A polyhedral set is closed and convex; if $P$ is compact, then $P$ is bounded, which means $C = \{\bm0\}$. Toward a contradiction, suppose $\bmx \in X$ is not an extreme point of $P$, then $\bmx = \alpha \bmu +  (1-\alpha)\bmw$ for some $\alpha\in(0,1)$ and $\bmu, \bmw \in P$, where the representation of $\bmu$ and $\bmw$ can be $\bmx$-free (i.e. the coefficient of $\bmx$ in the representation is 0). Thus, $\conv(X) = \conv(X\setminus\{\bmx\})$. The statement follows by inductively removing all the non-extreme points.
-\end{proof}
 

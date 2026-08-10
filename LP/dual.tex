@@ -13,7 +13,7 @@ In linear optimization problems, the constraints are expressed as linear transfo
 \text{subject to} \quad & M\bmx  \leq \bmb.
 \end{array}
 \end{equation}
-and we may view $M$ as linear transformation $M:\rr^n \to \rr^m$; in a way, the optimization problem (P0) is to study the row space of the matrix $M$, where one needs to find a unitary vector in $\rr^n$ so that it is closest to the objective $\bmc$ and obey the constraint $M$.  
+and we may view $M$ as a linear transformation $M:\rr^n \to \rr^m$; in a way, the optimization problem (P0) is to study the row space of the matrix $M$, where one needs to find a vector in $\rr^n$ so that it has a direction close to the objective $\bmc$ and obeys the constraint $M$.  
 
 Before looking for solutions to the linear program (\ref{P0}), we first want to check whether solutions exist. The following theorem shows that the feasibility of a linear system is completely determined by an associated dual system in $\rr^m$. Recall that the hyperplane separation theorem (Theorem~\ref{prop: strict hyperplane separation}) states the following: if a point $\bmb$ does not lie inside a closed convex set $Z$, you can always draw a hyperplane that completely separates $\bmb$ from $Z$ and does not touch $\bmb$ at all. 
 

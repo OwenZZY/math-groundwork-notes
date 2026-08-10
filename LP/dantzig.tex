@@ -1,24 +1,14 @@
 % !TEX root = ./LP-main.tex
 
+In this section, we consider the celebrated algorithm for computing an optimal solution in a linear program. The bedrock of this chapter is the collection of Theorem~\ref{thm: extreme points part 1}, \ref{thm: extreme points part 2}, and \ref{thm: extreme points part 3}. In particular, this method is defined only for polyhedra defined on a one- or two-sided bounded polyhedron. 
+
 \section{Fundamental Theorem of Linear Programming}
-
-%\subsection{Bauer’s Extreme Point Theorem for Convex Functions}
-%
-%3. Polyhedral Geometry and Extremal Optimality
-%   ├── 3.1 Bauer's Theorem & Continuous Optimality over Compact Sets
-%   └── 3.4 The Fundamental Theorem of Linear Programming
-
-%We first define a helpful notion of affine set and relative interior for sets. 
-
 
 We take the following theorem as given. Let $f: X\to\rr$ and $X\rast = \{x\rast\in X: f(x\rast) = \inf_{x\in X}f(x)\}$. Observe that, if $f$ is not bounded from below, then $X\rast = \emptyset$; for its contraposition, if $X\rast\neq\emptyset$, then $f$ is bounded from below. 
 
 \begin{proposition}\label{thm: ri implies constant}
 Let $f$ be a convex function over $X$ and $X\subset \rr^{n}$ such that $X\neq \emptyset$. Let $X\rast\subset X$ whose elements are $x\in X\rast$ attain the minimum over $X$. If $X\rast\cap \ri(X)\neq \emptyset$, then $f$ is constant over $X$; that is, $X = X\rast$. 
 \end{proposition}
-
-
-
 
 \begin{theorem}[Bauer's Extreme Point Theorem for Convex Maximization]\label{Bauer}
 Let $f$ be a convex function defined on a closed convex set $C\subseteq \rr^{n}$, where $C$ contains one or more extreme points. Let $C\rast\subset C$ be the set of elements that attain the maximum of $f$. If $C\rast\neq\emptyset$, then $C\rast$ contains one or more extreme points of $C$.
@@ -33,13 +23,6 @@ Let $\bmx\rast\in C\rast$. By Proposition~\ref{thm: ri implies constant}, if $\b
 Inductively, let $C_1\rast$ be the set of elements that attain the maximum of $f|_{C\cap H}$; since $\bmx\rast \in C\rast$, we have $\bmx\rast \in C\rast_1$, which implies that elements in $C\rast_1$ attain the minimum of $f$ over $C$, and $C_1\rast \subset C\rast$. By induction, as $\dim(C\cap H)<\dim(C)$, we have that $C_1\rast$ contains one or more extreme points of $C\cap H$. By Theorem~\ref{thm: extreme remains extreme}, which states that the extreme point in $C\cap H$ is an extreme point in $C$, we have that $C\rast$ contains one or more extreme points in $C$, which was what we wanted. 
 \end{proof}
 
-%Observe that the dual statement holds automatically. 
-%\begin{theorem}[Dual of Bauer's Theorem for Maximization]
-%Let $f$ be a convex function defined on a closed convex set $C\subseteq \rr^{n}$, where $C$ contains one or more extreme points. Let $C\rast\subset C$ be the set of elements that attain the maximum of $f$. If $C\rast\neq\emptyset$, then $C\rast$ contains one or more extreme points of $C$. \hfill \qedsymbol
-%\end{theorem}
-
-
-%\subsection{Linear Programming}
 \begin{theorem}[Fundamental Theorem of Linear Programming]
 Given $\bmc\in\rr^n$ and a polyhedral set $P \subset \rr^n$ with one or more extreme points, consider a linear function $\inner{\bmc, \cdot}$ defined over $P$. Either $f$ is not bounded from above, or there is an extreme point in $P$ that attains the maximum $\sup_{\bmx\in P}f(\bmx)$. \hfill\qedsymbol
 \end{theorem}
@@ -70,13 +53,13 @@ Given $\bmc\in\rr^n$ and a polyhedral set $P \subset \rr^n$ with one or more ext
 %\end{proof}
 
 
-
-\section{Characterizing Vertices with Polyhedra}
-
+\section{Linear Algebraic Characterization of Polyhedra}
 
 Given a polyhedral set $P$, a point $\bmx\in \rr^{n}$ is called a {\em vertex in $P$} if $\bmx\in P$ and there is some $\bmc\in\rr^{n}$ so that $\inner{\bmc, \bmx} > \inner{\bmc, \bmx'}$ for all $\bmx'\in P\setminus\{\bmx\}$. Observe that the definition of a vertex and the definition of an extreme point and a basic feasible solution are the same object in three different aspects. Before unifying the three characterizations of a polyhedral corner, it is worth reflecting on the logical architecture of our exposition. In Chapter~\ref{chapter: polyhedral geometry}, we established the fundamental equivalence between extreme points and basic feasible solutions ($\text{extreme point} \iff \text{basic feasible solution}$). This ordering is both deliberate and necessary: extreme points (geometric/topological) and basic feasible solutions (algebraic/algorithmic) are intrinsic to the polyhedron $P$ itself, depending solely on its defining constraint system without reference to an objective function. By isolating this intrinsic geometry-to-algebra bridge first in Theorem~\ref{thm: extreme points part 1}, we established a constructive computational skeleton for $P$. In this section, we introduce the extrinsic optimization perspective: the notion of a vertex defined relative to an optimization objective $\inner{\bmc, \cdot}$; and close the loop to synthesize all three viewpoints into one unified equivalence. 
+
+
 \begin{theorem}[The Unification Theorem]\label{thm: unification}
-For a polyhedral set $P\subset \rr^{n}$ and a point $\bmx\rast \in \rr^{n}$. The following are equivalent. 
+For a polyhedral set $P\subset \rr^{n}$ and a point $\bmx\rast \in \rr^{n}_+$. The following are equivalent. 
 \begin{enumerate}[noitemsep]
 \item The point $\bmx\rast$ is a vertex in $P$. 
 \item The point $\bmx\rast$ is an extreme point in $P$. 
@@ -93,9 +76,7 @@ Thus, there are no lines with endpoints in $P$ that contain $\bmx\rast$.
 Suppose that $\bmx\rast\in P$ is a basic feasible solution to $P$. Without loss of generality, we may assume $\bma_1, \bma_2, \dots, \bma_r$ are linear independent active constraints so that $\inner{\bma_j, \bmx\rast} = b_j$ that attains the bounds $b_j$, for $j\in\{1, 2, \dots, r\}$. We define a vector $\bmc = \sum_{i = 1}^m \bma_j$. Since the constraints are active, we have that  $\inner{\bmc, \bmx\rast} = \sum_{i = 1}^m  b_j$. By the linear indepdence, $\bmx\rast$ is the unique solution so that $\inner{\bma_j, \bmx\rast} = b_j$ for all $j\in\{1,2,\dots, r\}$ and, for any other $\bmx \in P\setminus\{\bmx\rast\}$, we have that $ \inner{\bma_j, \bmx\rast} > \inner{\bma_j, \bmx}$; this follows the definition of $\bmx\rast$ is a vertex in $P$. 
 \end{proof}
 
-
-
-Theorem~\ref{thm: extreme iff no line} provided a geometric characterization of the existence of an extreme point. The next theorem provides a linear-algebraic characterization of the existence of an extreme point. 
+From Theorem~\ref{thm: unification}, an extreme point defined geometrically now has an intrinsic and linear-algebraic characterization as a basic feasible solution, and an extrinsic definition as a vertex. Theorem~\ref{thm: extreme iff no line} provided a geometric characterization of the existence of an extreme point; the next theorem provides a linear-algebraic characterization of the existence of an extreme point. 
 \begin{theorem}
 Let $P \subset \rr^n$ be a polyhedral set defined with $m$ constraints and bounds $\bma_1, \bma_2, \dots, \bma_m \in \rr^n$ and $b_1, b_2, \dots, b_m\in\rr$. 
 \begin{enumerate}[noitemsep]
@@ -110,26 +91,164 @@ As Theorem~\ref{thm: extreme iff no line} showed (1)$\iff$(2), it suffices to sh
 For (3)$\imp$(2), without loss of generality, suppose $\bma_1, \bma_2, \dots, \bma_n$ is a list of $n$ linearly independent constraints. Toward a contradiction, suppose there is a line $\ell = \{ \bmx + \alpha\bmd : \alpha\in\rr \}\subset P$ for some $\bmx, \bmd\in\rr^n$ and $\bmd\neq\bm0$. By the definition of the polyhedral set $P$, we have \[\inner{\bma_i, \bmx + \alpha\bmd} = \inner{\bma_i, \bmx } + \alpha\inner{\bma_i, \bmd} \leq b_i \quad\text{for $i\in\{1,2,\dots, n\}$ and $\alpha\in\rr$, } \] which implies that $\inner{\bma_i, \bmd} = 0$ since, otherwise, the inequalities is violated by choosing $\alpha$ positively large enough or negatively large enough. Since $\bma_1, \bma_2, \dots, \bma_n \in \rr^n$ is a list of linearly independent vector and $\inner{ \bma_i, \bmd } = 0$ for all $i\in\{1,2,\dots, n\}$, we have that $\bmd = 0$, which contradicts the assumption that $\ell$ is a line. 
 \end{proof}
 
+\section{Optimal Conditions and Degeneracy}
 
-%We remark on the choice of indices and rows; observe that $I_m = I_m^\top$. 
-%\[A = \bmat{M\\ -M \\ -I_{m}} = 
-%\left[\begin{array}{cccccc}
-%| & | &  & | & & | \\ 
-%\bmc_1& \bmc_2 & \dots & \bmc_k & \dots & \bmc_m\\
-%| & | &  &| & & | \\ \hline
-%| & | &  & | & & | \\ 
-%-\bmc_1& -\bmc_2 & \dots & -\bmc_k & \dots & -\bmc_m\\
-%| & | &  &| & & | \\ \hline
-%| & | &  & | & & | \\ 
-%-\bm\chi_1& -\bm\chi_2 & \dots & -\bm\chi_k & \dots & -\bm\chi_m\\
-%| & | &  & | & & | \\ 
-%\end{array}\right] 
-%\]
-%Next, we choose from $M$ a set of linearly independent rows, which are guaranteed by the fundamental theorem of linear algebra, and append a set of 
-% 
-In the following, we would assume the linear program lives in $\rr^n$ and is defined by a matrix $M\in\rr^{m\times n}$ with $m\leq n$. Consider the necessary condition of Theorem~\ref{thm: extreme points part 2}. Let $B:\{1, 2, \dots, m\}\to \{1, 2, \dots, n\}$ be a strictly increasing function that defines an ordered subsequence of indices. We would say {\em the columns of $M$ corresponds to $B$} by the $B(1)$-, $B(2)$-, \dots, $B(m)$-th columns of $M$ and we define $A_B\in\rr^{m\times m}$ be the matrix whose $i$-th column is $B(i)$-th column of $A$, for $i\in\{1, 2, \dots, m\}$. 
+We now consider the ``basic'' part of a basic feasible solution. Recall that a point $\bmx \in \rr^n$ is a basic solution to $P\subset \rr^n$ if all the equality constraints are active and there are $n$ active constraints at $\bmx$ in total. In this section, we provide more insights on viewing a linear program with basic- and basic feasible solutions. We first restate Theorem~\ref{thm: extreme points part 2}, which shows the equivalence between an extreme point and a basic feasible solution; we alter the notation for the indices to fit the convention in this chapter. 
 
-%\label{thm: extreme points part 2}
-%Suppose $P\subset \rr^m_+$ is a polyhedral set obtained by the intersection of finitely many hyperplanes, $P =\{ \bmx:  M\bm x = \bmb, \bmx\geq\bm0\},$ where $M\in\rr^{n\times m}$ and $\bmb\in\rr^n$.  A vector $\bmv\in P$ is an extreme point of $P$ if and only if the columns of $M$ corresponding to $\supp(\bmv)$ are linearly independent.
-%\end{theorem}
+\begin{un-theorem}[\ref{thm: extreme points part 2} restated]
+Suppose $P\subset \rr^n_+$ is a polyhedral set obtained by the intersection of finitely many hyperplanes, $P =\{ \bmx:  M\bm x = \bmb, \bmx\geq\bm0\},$ where $M\in\rr^{m\times n}$ and $\bmb\in\rr^m$.  A vector $\bmv \in P$ is an extreme point of $P$ if and only if the columns of $M$ with indices in $\supp(\bmv)$ are linearly independent.
+\end{un-theorem}
 
+In the following, we would assume the linear program lives in $\rr^n$ and is defined by a matrix $M\in\rr^{m\times n}$ with $m\leq n$; in particular, the assumption $m \leq n$ is given by the following fact. 
+
+\begin{theorem}\label{thm: full rank bfs}
+Let $P$ be a polyhedral set defined by equality constraints $\bma_1, \bma_2, \dots, \bma_m\in\rr^n$ and bounds $b_1, b_2, \dots, b_m\in\rr$ so that $P = \{\bmx\in\rr^n:\forall i\in\{1,2,\dots, m\} \inner{\bma_i, \bmx}  = b_i\}$. Without loss of generality, suppose that $\dim(\Span(\{\bma_1, \bma_2, \dots, \bma_m\})) = k < m$ and $\bma_1, \bma_2, \dots, \bma_k$ is a list of linearly independent vectors. Define $Q = \{\bmx\in\rr^n:\forall i\in\{1,2,\dots, k\}, \inner{\bma_i, \bmx}  = b_i\}$, we have that $Q = P$. \hfill\qedsymbol
+\end{theorem}
+
+For a matrix $M \in \rr^{m\ times n}$ and an index set $B\subset \{1, 2, \dots, n\}$ of order $m$, i.e. $|B| = m$; for convienence, we denote the $i$-th least index in $B$ by $B(i)$, for $i\in\{1, 2, \dots, m\}$.  With respect to $B$, if the list of $B(1)$-, $B(2)$-, \dots, $B(m)$-th columns of $M$ are linearly independent, then we call them as the {\em basic columns}. In terms of solving a system of linear equations $ M \bmx = \bmb$, we call the set of $B(i)$-th variables of $\bmx$ the {\em basic variables}; we call the columns in $M$ and the variables not in $B$ as {\em nonbasic}. Generally, we denote $M_B\in\rr^{m\times m}$ as the submatrix of $M$ whose $i$-th column being the $B(i)$-th column of $M$, for $i\in\{1, 2, \dots, m\}$. 
+
+Suppose $B$ corresponds to $m$ linearly independent columns of $M\in\rr^{m\times n}$ and, thus, $M_B$ is a full-rank $m\times m$-matrix. The sub-system of equations of $M\bmx = \bmb$ then has a unique solution $[\bmx]_B \in \rr^m$ to 
+\[ M_B [\bmx]_B =  \bmb  \quad\text{or, equivalently}\quad  [\bmx]_B = {M_B}^{-1}\bmb; \]
+recall that $[\bmx]_B$ indicates the subvector extracted from entries of $\bmx$ with indices in $B$. 
+
+Consider a point $\bmx$ so that the entries with their indices in $B$ are formed by $[\bmx]_B$ and 0 otherwise. Observe that, $\supp(\bmx)\subset B$ since not all entries in $[\bmx]_B$ are non-zero. By Theorem~\ref{thm: extreme points part 2} and \ref{thm: unification}, we have that $\bmx \in P$ is a basic solution. For a polyhedral set in standard form, being basic and being basic feasible are equivalent. 
+
+\begin{remark}
+The above operation to obtain $\bmx$ is sometimes called the construction of a basic solution. Some textbooks refer to it as an ``algorithm starting by {\bf choosing} (or {\bf picking}) $m$ linearly independent columns.'' However, the last author of this booklet felt that it is misleading since the verb ``choosing'' refers to an explicit algorithm that should be introduced beforehand. However, the ``choosing'' part is implicitly given in the later procedure, implied by theorems instead of being explicitly extracted from a matrix; thus, we assume the linearly independent vectors are given for now. 
+\end{remark}
+
+
+
+\begin{assumption}\label{assumption: lps}
+Throughout the section, we consider the same linear program and notations defined as follows. Let $\bmc \in \rr^n$, $M\in\rr^{m\times n}$, and $\bmb \in \rr^m$, define the linear program 
+\begin{equation}\tag{LPS}\label{lps}\begin{split}
+\max_{\bmx\in\rr^n} & ~\inner{\bmc, \bmx}\\
+\text{subject to }~& ~ \bmx\in P \\
+\text{where }~ & ~P = \{\bmx: M \bmx = \bmb, \bmx\geq \bm0\}
+\end{split}\end{equation}
+is the standard form polyhedral set defined by the system of equalities and inequalities. Let $B$ be an index set of a list of $m$ linearly independent columns in $M$ and $N = \{1,2, \dots, n\} \setminus B$. Denote $M$ by its column form so that $M = [\bmf_1 \mid \bmf_2 \mid \dots \mid \bmf_n]$ and $M_B = [\bmf_{B(1)} \mid \bmf_{B(2)} \mid \dots \mid \bmf_{B(m)}]$ be the full-rank $m\times m$-submatrix. We denote each entry of $\bmc$ as $c_j$ for $j\in\{1, 2, \dots, n\}$. 
+\end{assumption}
+
+\newcommand{\LPSA}{(\ref{lps}) in Assumption~\ref{assumption: lps}}
+
+In the following, we consider the ``elbow room'' of a basic solution within $P$. For convienence, let the $j$-th entry of a vector $\bmx$ be $x_j$; we denote $ [\bmx]_j = [\bmx]_{\{j\}} $. 
+
+\begin{definition}\label{def: basic direction}
+Consider \LPSA. For each nonbasic index $k\in N$, define the {\em $k$-th basic direction $\bmd\rise k \in \rr^n$ with respect to $B$}, with each of the $j$-th entry of $\bmd\rise k$, as the following: define  
+\[[\bmd\rise k]_B = - {M_B}^{-1} \bmf_k, ~~\text{}~~ 
+[\bmd\rise k]_{N \setminus \{k\}} = \bm 0, ~~\text{and}~~ 
+[\bmd\rise k]_k = 1.\] 
+Define {\em $j$-th reduced cost} as \[\overline{c_j} = c_j - \inner{[\bmc]_B, {M_B}^{-1} \bmf_j} \] and form the {\em reduced cost $\overline\bmc$} by the collection of all the $j$-th reduced cost. 
+\end{definition}
+
+Using the notations that are consistent with those in Definition~\ref{def: basic direction}, we remark on a few points. As $M_B$ has full rank, the matrix $M_B$ is invertible; so $[\bmd\rise k]_B$ is well-defined. For $j\in B$ defined by $j = B(i)$ for some $i\in\{1,2, \dots, m\}$, the indicator vector $\bm\chi_i$ has that $M_B \bm\chi_i = \bmf_{B(i)}$ and, equivalently, $ \bm\chi_i = {M_B}^{-1}\bmf_{B(i)}$; this is a reason for that basis direction is not defined for indices in $B$. For $j \in B$, we then have $\overline{c_j} = c_j - \inner{[\bmc]_B, \bm\chi_{B(i)}} = c_j - c_j = 0$ since, again, that $M_B$ is invertible and bijective. 
+Otherwise, when $j \in N$, we have $ {M_B}^{-1} \bmf_j = - [\bmd\rise j]_B$ is the $j$-th basic direction. That is, fix a basis index $B$, we have 
+\[ \overline{c_j} = \left\{\begin{array}{ll}
+c_j -  \inner{[\bmc]_B, {M_B}^{-1} \bmf_j }  & \quad \text{if } j\in N, \\
+ 0 & \quad\text{otherwise. }
+\end{array}\right. \]
+Finally, consider the vectorization that $\overline{\bmc}$ can be written in the form of 
+\[ \overline{\bmc} = \bmc - \left({[\bmc]_B}^\top {M_B}^{-1} M\right)^\top = \bmc -  ({M_B}^{-1} M )^\top [\bmc]_B . \]
+
+
+\begin{lemma}\label{lemma: basic direction}
+Consider \LPSA. For $k \in \{1, 2, \dots, m\}\setminus B$, let $\bmd\rise k \in \rr^n$ be the $k$-th basic direction with respect to $ B $. We have that $ M \bmd\rise k = \bm 0.$ 
+\end{lemma}
+\begin{proof}
+We denote $B$ by its column form so that $M = [\bmf_1 \mid \bmf_2 \mid \dots \mid \bmf_n]$ and let $d_j$ denote the $j$-th entry of $\bmd\rise k$, for $j\in\{1,2,\dots, n\}$. Note that a matrix multiplication $M \bmd\rise k = \bm 0$ can be reinterpreted as a linear combination. For each $k\in N$, we obtain that 
+\begin{equation*}\begin{split}
+M \bmd\rise k ~ & =  \sum_{j = 1}^n d_j \bmf_j \\ 
+& = \sum_{j \in B} d_j \bmf_j +  \sum_{j \in N} d_j \bmf_j \\
+& = M_B [\bmd\rise k]_B +  d_k\bmf_k +  \sum_{j \in N\setminus \{k\}} d_j \bmf_j. 
+\end{split}\end{equation*}
+By the definition that $B$ chooses a column basis of $M$, the matrix $M_B$ is invertible and, thus, $[\bmd\rise k]_B = - {M_B}^{-1} \bmf_k$ and $d_k = 1$ and $d_j = 0$ otherwise, we continue so that  
+\begin{equation*}\begin{split}
+M \bmd\rise k ~ & = M_B [\bmd\rise k]_B +  d_k\bmf_k +  \sum_{j \in N\setminus \{k\}} d_j \bmf_j \\
+& = M_B (- {M_B}^{-1} \bmf_k) +  1\cdot \bmf_k +  \sum_{j \in N\setminus \{k\}} 0 \cdot \bmf_j \\
+& = - \bmf_k + \bmf_k \\ 
+& = \bm 0. 
+\end{split}\end{equation*}
+This finishes the proof.
+\end{proof}
+
+
+\begin{theorem}\label{thm: reduced cost to optimal}
+Consider \LPSA~and let $\bmx\rast\in\rr^n$ be a basic feasible solution in $P$. Suppose that $B$ also satisfies that $\supp(\bmx\rast) \subset B$ and $[\bmx\rast]_N = \bm0 $. If the reduced cost $\overline\bmc$ associated with $B$ satisfies that  $\overline{\bmc} \leq \bm0$, then $\bmx\rast$ attains the maximum. 
+\end{theorem}
+\begin{proof}
+Let $\bmx = \bmx\rast$. Suppose $\bmy \in P\setminus\{\bmx\}$ is another basic solution in $P$; we have that $M \bmx = M \bmy = \bmb$ and $\bmy - \bmx \neq \bm 0$; consider the directional vector $\bmu = \bmy - \bmx$ that has $M\bmu = \bm0$. Denote $M = [\bmf_1\mid \bmf_2 \mid \dots \mid \bmf_n]$ and $u_j, x_j, y_j$ denotes the $j$-th entries of $\bmu, \bmx, \bmy$, for $j\in\{1, 2, \dots, n\}$, to show that $\bmx$ is optimal, we show that 
+\[ \inner{\bmc, \bmy} - \inner{\bmc, \bmx} = \inner{\bmc, \bmu} = \sum_{j = 1}^n c_j u_j = \inner{[\bmc]_B, [\bmu]_B} + \sum_{j \in N} c_j u_j \leq 0 \]
+
+Consider the rearrangement $ \bm 0 = M \bmu = M_B [\bmu]_B  + \sum_{j \in N} u_j \bmf_j, $ which gives that 
+\[[\bmu]_B  =  -  \sum_{j \in N} u_j {M_B}^{-1}  \bmf_j. \]
+We then have that 
+\begin{equation*}\begin{split}
+ \inner{\bmc, \bmu}~ & = \inner{[\bmc]_B, [\bmu]_B} + \sum_{j \in N} c_j u_j  \\
+ & = \inner{[\bmc]_B, -  \sum_{j \in N} u_j {M_B}^{-1}  \bmf_j} + \sum_{j \in N} c_j u_j  \\ 
+ & = \sum_{j \in N} c_j u_j -  \sum_{j \in N} u_j \inner{[\bmc]_B, {M_B}^{-1}  \bmf_j} \\ 
+ & = \sum_{j \in N} \left( c_j  -  \inner{[\bmc]_B, {M_B}^{-1}  \bmf_j} \right) u_j \\  
+ & = \sum_{j \in N} \overline{c_j} u_j. 
+\end{split}\end{equation*}
+By the hypothesis that $[\bmx]_N = \bm0$ and $P \subset \rr^n_+$, for $j\in N$, we have that $u_j = y_j - x_j = y_j - 0 = y_j \geq 0$. Since $\overline{\bmc}\leq 0$, we have that $ \inner{\bmc, \bmu} = \sum_{j \in N} \overline{c_j} u_j  \leq 0$. 
+\end{proof}
+
+
+Let $P\subset \rr^n_+$ be a polyhedral set defined by a matrix $M \in \rr^{m\times n}$. Recall that a point $\bmx$ is a basic solution if there are $n$ constraints that are active at $\bmx$. As the assumption is that $m\leq n$, if $n$ constraints are active, then there are $n - m$ or more entries in $\bmx$ that attain the non-negative constraint, i.e., are zero. In other words, $\supp(\bmx) \leq m$. A basic solution $\bmx$ is {\em degenerate} if there are more than $n$ constraints active at $\bmx$.
+
+\begin{remark}\label{rmk: degeneracy equiv}
+Equivalently, a basic solution $\bmx$ is degenerate if $|\supp(\bmx)| < m$. In particular, a basic solution $\bmx$ is non-degenerate if $|\supp(\bmx)| = m$ and, by Theorem~\ref{thm: extreme points part 2}, $\supp(\bmx)$ corresponds to a list of $m$ linearly independent columns in $M$. 
+\end{remark}
+
+\begin{lemma}\label{lemma: reduced cost well-definedness}
+The reduced cost of a non-degenerate basic solution in a polyhedral set is well-defined. 
+\end{lemma}
+\begin{proof}
+Consider \LPSA~with a basic feasible solution $\bmx\rast$. By Theorem~\ref{thm: extreme points part 2}, the indices in $\supp(\bmx\rast)$ correspond to linearly independent columns of $M$. Moreover, by the definition of degeneracy and Remark~\ref{rmk: degeneracy equiv}, the number of active constraints coincides with the cardinality of $|\supp(\bmx\rast)|$. Thus, under the definition of reduced cost, the full-rank submatrix induced from the standard form polyhedral set from the active constraints is unique, which implies the well-definedness. 
+\end{proof}
+
+
+\begin{lemma}\label{lemma: basic direction shift}
+Consider \LPSA~and let $\bmx$ be a non-degenerate basic feasible solution so that $B = \supp(\bmx\rast)$. For every $k\in\{1, 2, \dots, n\} \setminus B$, there exists $\theta\in\rr_{++}$ so that so that $\bmx + \theta \bmd\rise k \in P$, where $\bmd\rise k$ is the $k$-th basic direction. 
+\end{lemma}
+\begin{proof}
+By Lemma~\ref{lemma: reduced cost well-definedness}, the set of basic indices $B = \supp(\bmx)$ and the invertible submatrix $M_B$ are uniquely defined. Note that $\bmd\rise k$ is defined by $[\bmd\rise k]_B = {M_B}^{-1} \bmf_k$, $d_k = 1$, and $d_j = 0$ for $j\in N\setminus\{k\}$, where $\bmf_k$ is the $k$-th column of $M$ and $d_k$ and $d_j$ are the entries of $\bmd\rise k$ with indices in $N$. Since we have $\bmx$ is non-degenerate, $[\bmx]_B > \bm 0$ and $[\bmx]_N = \bm 0$. We now have 
+$\bmx + \theta \bmd\rise k$ is formed by
+\begin{equation*}\begin{split} 
+[\bmx + \theta\bmd\rise k]_B ~& =  [\bmx]_B - \theta{M_B}^{-1}\bmf_k,  \\
+[\bmx + \theta\bmd\rise k]_{k} ~& = x_k + \theta d_k = x_k + \theta, \text{ and } \\
+[\bmx + \theta\bmd\rise k]_{N\setminus \{k\}} ~&= [\bmx]_{N\setminus \{k\}} . 
+\end{split}\end{equation*}
+By Lemma~\ref{lemma: basic direction}, we have $M(\bmx + \theta\bmd\rise k) = M\bmx$; thus, as long as we maintain $\bmx + \theta\bmd\rise k\geq \bm0$, we have that $\bmx + \theta\bmd\rise k \in P$. Since we have restricted $\theta > 0$, we need to only control the entries with indices in $B$. If $\bmd\rise k \geq \bm0$, then we have $\bmx + \theta \bmd\rise k \in P$ for all $\theta \in \rr_{++}$. Otherwise, we may assume there is one or more indices in $B$ so that $[\bmd\rise k]_i < 0$. 
+Let $x_j$ and $d_j$ denote the $j$-th entry of $\bmx$ and $\bmd\rise k$, repsectively, for $j \in B$. Define 
+\[ \theta\rast = \min_{i \in B,~d_i < 0} \frac{x_i}{ - d_i}; \] 
+let $i\rast \in B$ be the one that attains the minimum. By the choice, we have that 
+\[ x_j + \left( -\frac{x_{i\rast}}{d_{i\rast}} \right) d_j \geq x_j + \left( -\frac{x_j}{d_j} \right) d_j \geq 0, \]
+so $\bmx + \theta \bmd\rise k \in P$, which proves the statement. 
+\end{proof}
+
+\begin{theorem}\label{thm: optimal reduced cost}
+Consider \LPSA. If $\bmx\rast$ is a nondegenerate basic feasible solution and attains the maximum, then the reduced cost $\overline{\bmc}$ has that $\overline{\bmc} \leq \bm0$. 
+\end{theorem}
+\begin{proof}
+Suppose $\bmx$ is a nondegenerate basic solution and is an optimal solution for (\ref{lps}). By Lemma~\ref{lemma: reduced cost well-definedness}, there is a unique index set $B$ of cardinality $m$ so that $M_B$ is an invertible submatrix. 
+Toward a contradiction, suppose that $\overline{\bmc}\not\leq \bm0$; that is, there is some $k\in\{1,2,\dots, n\}$ so that $c_k > 0$. 
+
+Recall that $c_j = 0$ for all $j \in B$; we have that $k \in N$. By Lemma~\ref{lemma: basic direction shift}, let $\theta\in\rr_{++}$ be an appropriate scalar so that $\bmx\rast + \theta \bmd\rise k \in P$. Consider 
+\[ \inner{ \bmc, \bmx\rast + \theta \bmd\rise k } =  \inner{ \bmc, \bmx\rast } + \theta \inner{ \bmc,  \bmd\rise k }. \]
+We now have 
+\[ \inner{\bmc, \bmd\rise k} = \inner{[\bmc]_B, [\bmd\rise k]_B}  + c_k =  c_k - \inner{[\bmc]_B, {M_B}^{-1}\bmf_k  } = \overline{c_k} \]
+By the contradictory hypothesis that $\overline{c_k} > 0$, along with $\theta>0$, we have
+\[ \inner{ \bmc, \bmx\rast + \theta \bmd\rise k } =  \inner{ \bmc, \bmx\rast } + \theta \overline{c_k} >  \inner{ \bmc, \bmx\rast }, \]
+which contradicts the hypothesis that $\bmx\rast$ attains the maximum. 
+\end{proof}
+
+Under \LPSA, by definition, we have $\bmx\in P$ implies that $M_B[\bmx]_B = \bmb$ and $[\bmx]_B \geq 0$. Now, since $M_B$ is invertible, we have that $[\bmx]_B = {M_B}^{-1}\bmb$; the two parts in the necessary condition can be combined into $ {M_B}^{-1}\bmb \geq \bm0 $. Meanwhile, observe that the specification in the sufficient condition of Theorem~\ref{thm: reduced cost to optimal} is to specify a basis since the assumption on degeneracy is missing; thus, if we include it, we may solely discuss the basis submatrix of the constraint matrix, independent of a specific point in $P$. As such, consider the following definition. 
+
+\begin{definition}
+Consider \LPSA. The matrix $M_B$ is {\em optimal} if it satisfies that ${M_B}^{-1} \bmb \geq \bm0$ and the reduced cost $\overline{\bmc} = \bmc -  ({M_B}^{-1}M)^\top [\bmc]_B \leq \bm0$. 
+\end{definition}
+
+Now, we are equipped with all the ground to implement Phase II of Dantzig's simplex method.
+
+\input{dantzig-phaseii}
+\input{dantzig-simplex1}

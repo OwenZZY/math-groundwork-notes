@@ -1,0 +1,52 @@
+% !TEX root = ./LP-main.tex
+
+\section{Initiating the Simplex Method}
+
+%Mathematically, it is perfectly fine to make assumptions for theoretical results, such as assuming the existence of a column basis of a constraint matrix; however, implementing a linear program solver would require step-by-step guidance from input to output. In this section, we investigate the initialization of the simplex method. 
+
+\subsection{Reduction to Standard Form}
+
+We first show that every polyhedral set can be reduced into a standard form polyhedral set. 
+Without loss of generality, every polyhedral set has the following form: let $\bma_1, \bma_2, \dots, \bma_m\in \rr^n$ and $b_1, b_2, \dots, b_m\in\rr$; define
+\begin{equation}\label{poly simplex} P = \{\bmx\in\rr^n: \forall j\in\{1, 2, \dots, m\}, \inner{\bma_j, \bmx} \leq b_j\}. \end{equation}
+For each constraint $\bma_j$, for $j\in \{1, 2, \dots, m\}$, introduce a {\em slack variable} $s_j \in \rr_+$ and form a vector $\bms\in\rr^m_+$; consider 
+\[   P_1 = \left\{\bmat{\bmx\\ \bms} \in \rr^{n+m} : \forall i\in\{1, 2, \dots, m\}, \inner{\bma_j, \bmx} + s_j = b_j, s_j \geq 0\right\}. \]
+Observe that every feasible solution $\bmx_0 \in P$, there is some $\bms_0\in\rr^m$ so that $(\bmx_0, \bms_0) \in P_1$; conversely, for every $(\bmx_0, \bms_0) \in P_1$, we have $\bmx_0 \in P$.  
+
+Observe that a number can always be represented by the difference of two non-negative numbers; for example, $ 5 = 5 -0 $ and $-5 = 0 - 5$. We start by assuming that none of the variables of $\bmx$ has bounds on them. For each variable $x_i$, where $i\in\{1, 2, \dots, n\}$, introduce two variable $x^+_i$ and $x^-_i$ and form $\bmx^+, \bmx^- \in \rr^n$. Consider a third polyhedral set such that 
+\begin{equation}\label{poly simplex standard}
+P_2 = \left\{ \bmat{\bmx^+ \\ \bmx^- \\ \bms } \in \rr^{2n + m} : 
+\begin{array}{ll}
+ \forall j\in\{1, 2, \dots, n\}, & 
+% \left\{ 
+\begin{array}{l}
+\inner{\bma_j, \bmx^+} - \inner{\bma_j, \bmx^-} + s_j   = b_j, \\
+s_j \geq \bm0, 
+\end{array}
+%\right. 
+\\
+ \bmx^+ \geq \bm0, & \\ 
+ \bmx^- \geq \bm0. & \\
+\end{array}
+\right\}
+\end{equation}
+Observe that if $(\bmx^+_0, \bmx^-_0, \bms_0) \in P_2$, then $(\bmx^+_0 - \bmx^-_0, \bm s) \in P_1$. Conversely, suppose $(\bmx_0, \bm s_0) \in P_1$; let $x_i$ denote the $i$-th entry of $\bmx_0$, where $i\in\{1,2,\dots,n\}$, set pairs 
+\[ (x_j^+, x_j^-) = \left\{ \begin{array}{ll} 
+(x_j, 0) & \text{ if $x_j\geq 0$. } \\ 
+(0, -x_j) & \text{otherwise,}
+\end{array}\right. \]
+and define $\bmx^+_0$ and $\bmx^-_0$ accordingly, we have $\bmx^+_0, \bmx^-_0 \in \rr^n_+$ and $(\bmx^+_0, \bmx^-_0, \bms_0) \in P_2$. 
+Without loss of generality, we may assume that the bounds in $P$ have $b_j \geq 0$ for all $j\in \{1, 2, \dots, m\}$ since if a solution satisfies an equality constraint, then it also satisfies this equality constraint by flipping the sign on both sides by multiplying by $-1$. 
+
+\begin{theorem}
+Given a polyhedral set $P\subset \rr^n$ defined as in (\ref{poly simplex}) and an auxiliary polyhedral set $P_2 \subset \rr^{2n \times m}_+$ constructed as in (\ref{poly simplex standard}). Let $\bmc, \bmx \in \rr^n$ and $\bmx^+, \bmx^- \in \rr^n_+$ where $\bmx = \bmx^+ - \bmx^-$, the point $\bmx \in P$ maximizes $\inner{\bmc, \bmx}$ if and only if $(\bmx^+, \bmx^-, \bms) \in P_2$ maximizes $\inner{\bmc, \bmx^+ - \bmx^-}$, for some $\bms \in \rr^m$.  \hfill\qedsymbol
+\end{theorem}
+
+Starting from an arbitrary polyhedral set $P$, we obtain a standard form polyhedral set $P_2$ that is equivalent to $P$. Thus, in the following, we consider only polyhedral sets in standard form. 
+
+
+\subsection{Phase I: Initializing a Basic Feasible Solution}
+
+
+
+
