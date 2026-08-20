@@ -1,40 +1,238 @@
 % !TEX root = ./LP-main.tex
 
-\section{Simplex Method: the Algorithmic Procedure}
+\section{Moving Between Basic Feasible Solutions}
 
 As an algorithm, the simplex method takes in a linear program. The algorithm also optionally takes in a basic feasible solution to initiate the procedure or, if none is given, proceeds with a preliminary procedure to generate one; we will discuss this procedure in the next section. Thus, we study the so-called {\em Phase II} of the simplex method in this section; in particular, Phase II also provides intuition for which basic feasible solution to use if it is not provided. 
-
-\subsection{The Non-Degenerate Conditions}
 
 Based on \LPSA, we first assume there is a basic feasible solution $\bmx$  that is nondegenerate and define the unique $B$ and induce the invertible matrix $M_B$. Compute each $k$-th reduced cost with respect to basis $B$ and form $\bmc$; by Theorem~\ref{thm: reduced cost to optimal}, if $\overline{\bmc} \leq \bm0$, then $\bmx$ attains the maximum of $\inner{\bmc, \cdot}$ over $P$. 
 
 We now suppose that there is some $k$ so that $\overline{c_k} > 0$, which repeats exactly the proof of Theorem~\ref{thm: optimal reduced cost}, and we know that there is some $\theta \in \rr_{++}$ so that $\bmx + \theta \bmd\rise k \in P$; in particular, Theorem~\ref{thm: optimal reduced cost} relies on Lemma~\ref{lemma: basic direction shift} for the choice of $\theta$. We now show that this choice leads to a basic feasible solution with respect to another basis. 
 
-\begin{theorem}
-Consider \LPSA~and let $\bmx$ be a nondegenerate basic feasible solution so that $B = \supp(\bmx)$. Suppose there is $k \in N$ such that $\overline{c_k} > 0$; either the maximization problem (\ref{lps}) is not bounded from above over $P$, or there is some $i\rast \in B$ so that another point  
-\[ \bmx' =  \bmx - \frac{[\bmx]_{i\rast}}{ [\bmd\rise k]_{i\rast} } \bmd\rise k \in P\] 
-is a basic feasible solution and $\inner{\bmc, \bmx'} > \inner{\bmc, \bmx}$. 
+
+\begin{theorem}\label{thm:move-feasible}
+Consider \LPSA~and let $\bmx$ be a basic feasible solution so that $\supp(\bmx)\subset B$. Suppose there is $k \in N$ such that $\overline{c_k} > 0$; either (\ref{lps}) is not bounded from above over $P$, or there is some $i\rast \in B$ where
+\[ \theta = - \frac{[\bmx]_{i\rast}}{ [\bmd\rise k]_{i\rast} } = \min_{i \in B,~ [\bmd\rise k]_{i} < 0}  - \frac{[\bmx]_{i}}{ [\bmd\rise k]_{i}} \] that defines another basic feasible solution
+$ \bmx' =  \bmx + \theta \bmd\rise k \in P.$ In particular, if $\bmx$ is nondegenerate, then $\theta > 0 $. 
 \end{theorem}
 \begin{proof}
-By Theorem~\ref{thm: optimal reduced cost}, $\bmx$ is not optimal. By the choice of $\bmx'$ in Lemma~\ref{lemma: basic direction shift} and the constructive proof, if $\bmd\rise k \geq \bm0$, then the optimization problem $\max_{\bmx\in P}\inner{\bmc, \bmx}$ is not bounded from above. 
+By Theorem~\ref{thm: optimal reduced cost}, $\bmx$ is not optimal. By the choice of $\bmx'$ in Lemma~\ref{lemma: basic direction shift} and the constructive proof, if $\bmd\rise k \geq \bm0$, then the optimization problem $\max_{\bmx\in P}\inner{\bmc, \bmx}$ is not bounded from above. In the following, we may assume that there is some $i \in N$ so that $[\bmd\rise k]_i < 0$. 
 
-%By the proof and construction in Theorem~\ref{thm: optimal reduced cost}, we know that $\bmx$ is not an optimal solution. In particular, the construction depends on the construction and choice of Lemma~\ref{lemma: basic direction shift}. By the construction in Lemma~\ref{lemma: basic direction shift}, if $\bmd\rise k \geq \bm0$, then $\bmx + \theta \bmd\rise k\in P$ for every $\theta\in\rr_++$. This then gives that 
-%\[ \inner{\bmc, \bmx'} = \inner{\bmc, \bmx } + \inner{\bmc, \bmd\rise k }\]
-
-We now assume that there is some $i \in N$ so that $[\bmd\rise k]_i < 0$; thus, we may choose $\theta = \min_{i \in B,~d_i < 0}  -x_i / d_i$ and denote $i\rast \in B$ be the one that attains the minimum. Now, we have that 
-\[ {[\bmx]}_{i\rast} - \frac{{[\bmx]}_{i\rast}}
-{[\bmd\rise k]_{i\rast}} [\bmd\rise k]_{i\rast} = 0. \] 
-
-Let $\bmx' = \bmx + \theta \bmd\rise k$; we now need to further investigate the entries of $\bmx$ and $\bmx'$; without loss of generality, we may assume $i\rast =1$, $B = \{1, 2, \dots, m\}, k = m+1$, and $N = \{m+1, \dots, n\}$ so we write
+Define $\theta$ and $i\rast \in B$ as in the statement and that $\bmx' = \bmx + \theta \bmd\rise k$; observe that \[ {[\bmx]}_{i\rast} - \frac{{[\bmx]}_{i\rast}}{[\bmd\rise k]_{i\rast}} [\bmd\rise k]_{i\rast} = 0. \]  
+We now need to further investigate the entries of $\bmx$ and $\bmx'$; without loss of generality, we may assume $i\rast =1$, $B = \{1, 2, \dots, m\}, k = m+1$, and $N = \{m + 1, m + 2, \dots, n\}$. Consider the construction of Lemma~\ref{lemma: basic direction shift}, we write
 \[ \bmx' = \bmat{[\bmx]_B \\ 0 \\  \bm0} + \theta \bmat{[\bmd\rise k]_B \\ 1 \\ \bm0} \] 
-It is now clear that we have designed to have $\supp(\bmx') \setminus \{k\} \subset \supp(\bmx)\setminus \{i\rast\}$ since the choice of $i\rast$ may not be unique but $[\bmx']_{i\rast} = 0$ neccessarily. Let $B' = B\setminus \{i\rast\} \cup\{k\}$; we will show that $B' = \{2, 3, \dots, m,  m+1\}$ corresponds to a list of linearly independent columns of $M$. Let $(\mu_j)_{j\in B'}$ be a list of real numbers so that $\bm 0 = \sum_{j\in B'} \mu_j \bmf_j$; we apply ${M_B}^{-1}$ to both sides of elements in $\rr^m$ so that
+It is now clear that we have designed to have $\supp(\bmx') \setminus \{k\} \subset B\setminus \{i\rast\}$ since the choice of $i\rast$ may not be unique but $[\bmx']_{i\rast} = 0$ neccessarily. Let $B' = B\setminus \{i\rast\} \cup\{k\}$; we will show that $B' = \{2, 3, \dots, m,  m+1\}$ corresponds to a list of linearly independent columns of $M$. Let $(\mu_j)_{j\in B'}$ be a list of real numbers so that $\bm 0 = \sum_{j\in B'} \mu_j \bmf_j$; we apply ${M_B}^{-1}$ to both sides of elements in $\rr^m$ so that
 \begin{equation}\label{eqn: swap linear independence}\begin{split}
 \bm 0 =  {M_B}^{-1} \bm 0~& = {M_B}^{-1} \left( \mu_2 \bmf_2 + \mu_3 \bmf_3 + \dots + \mu_{m+1} \bmf_{m+1} \right) \\
 & =   \mu_2 {M_B}^{-1}\bmf_2 + \mu_3 {M_B}^{-1}\bmf_3 + \dots + \mu_{m+1} {M_B}^{-1}\bmf_{m+1} \\
 & =   \mu_2 \bm\chi_2 + \mu_3 \bm\chi_3 + \dots + \mu_m \bm\chi_m +  \mu_{m+1} [\bmd\rise k]_B
 \end{split}\end{equation}
-where the first $m-1$ terms are due to the observation that  ${M_B}^{-1} \bmf_j = \bm\chi_j$ for $j\in B$ and the last term is given by the choice of $k$ gives that $ {M_B}^{-1} \bmf_k = - [\bmd\rise k]_B$. Since we have assumed $[\bmd\rise k]_{i\rast} < 0$, where $i\rast = 1$ and, in (\ref{eqn: swap linear independence}), all $\bm\chi_i$ for $i\in\{2,3,\dots, m\}$ does not contrabute to the first entry, we may conclude that $\mu_{m+1} = 0$. Now, since the list $\chi_2, \chi_3, \dots, \chi_m$ is linearly independent, we have that $\{\mu_2, \mu_3, \dots, \mu_m\} = \{0\}$. This concludes that $\bm\chi_2, \bm\chi_3, \dots, \bm\chi_m, [\bmd\rise k]_{B}$ is a list of linearly independent vectors and, by properties of invertible mappings, $\bmf_2, \bmf_3, \dots, \bmf_{m+1}$ is a list of linearly independent vectors. By Theorem~\ref{thm: extreme points part 2} and Theorem~\ref{thm: unification}, $\bmx'$ is a basic feasible solution. 
+where the first $m-1$ terms are due to the observation that  ${M_B}^{-1} \bmf_j = \bm\chi_j$ for $j\in B$ and the last term is given by the choice of $k$ gives that $ {M_B}^{-1} \bmf_k = - [\bmd\rise k]_B$. Since we have assumed $[\bmd\rise k]_{i\rast} < 0$, where $i\rast = 1$ and, in (\ref{eqn: swap linear independence}), all $\bm\chi_i$ for $i\in\{2,3,\dots, m\}$ does not contrabute to the first entry, we may conclude that $\mu_{m+1} = 0$. Now, since the list $\bm\chi_2, \bm\chi_3, \dots, \bm\chi_m$ is linearly independent, combined with $\bm0 = 0 [\bmd\rise k]_B$, we have that $\{\mu_2, \mu_3, \dots, \mu_m\} = \{0\}$. This concludes that $\bm\chi_2, \bm\chi_3, \dots, \bm\chi_m, [\bmd\rise k]_{B}$ is a list of linearly independent vectors and, by properties of invertible mappings, $\bmf_2, \bmf_3, \dots, \bmf_{m+1}$ is a list of linearly independent vectors. By Theorem~\ref{thm: extreme points part 2} and Theorem~\ref{thm: unification}, $\bmx'$ is a basic feasible solution. 
 \end{proof}
 
 
-\subsubsection{Step 1} For each $k\in B$, 
+We remark a few points from the proof of Theorem~\ref{thm:move-feasible}. First, observe that it provides an inductive step for implementing the simplex algorithm. Consider a basic index set $B$ associated with a basic feasible solution $\bmx$ such that $\supp(\bmx)\subset B$. Theorem~\ref{thm:move-feasible} computes a new basic feasible solution and updates to a new basic index set $B' = B \setminus \{k\} \cup \{i\rast\}$. We will call an index, a column, or a variable {\em exiting} if it is associated with $k$ and call them {\em entering} if they are associated with $i\rast$. We may refer to the addition $\bmx + \theta \bmd\rise k$ by {\em moving away} from $\bmx$ or {\em entering $\bmx + \theta \bmd\rise k$} if $\theta > 0$. A strategy of choosing such an $i\rast$, regardless of whether it is unique or not, is called a {\em pivoting rule}.
+
+However, observe that the choice of $i\rast$ does not guarantee that $\theta \neq 0$ in a degenerate case; this, though, does not break the algorithm but may cause an infinite loop so that the algorithm never terminates. Thus, it forces us to introduce a pivoting rule that never enters an existing basis. We will show in the next section that there is one strategy. Given a nondegenerate basic feasible solution $\bmx$ and the associated basis $B$, we build the following inductive step. 
+
+\begin{definition}[The Simplex Method]
+Consider \LPSA~and a given pivoting rule. 
+\begin{enumerate}
+\item Compute 
+$$ \overline\bmc =  \bmc -  ({M_B}^{-1}M)^\top [\bmc]_B $$ and determine whether or not $\overline\bmc \leq \bm0$; if so, then return $\bmx$ as the optimal solution to the linear program; otherwise, let $k\in N$ be an index so that $\overline{c_k} > 0$. 
+\item Compute $\bmd\rise k$. If $\bmd\rise k \geq \bm0$, then terminate the procedure and inform that the linear program is unbounded from above. Otherwise, update the following two quantities: 
+\item Choose the scalar $\theta$ and an associated index $i\rast$ under the pivoting rule so that
+\[\theta = - \frac{[\bmx]_{i\rast}}{ [\bmd\rise k]_{i\rast}} =  \min_{i \in B,~ [\bmd\rise k]_{i} < 0}  - \frac{[\bmx]_{i}}{ [\bmd\rise k]_{i}} \] and compute 
+$\bmx' = \bmx + \theta \bmd\rise k$. 
+\item Update $B' = B\setminus\{ i\rast \}\cup \{k\}$. 
+\end{enumerate}
+\end{definition}
+
+
+
+\section{The Lexicographical Pivoting Rule}\label{sec:lexi}
+For two distinct vectors $\bmu, \bmv \in \rr^n$, we say $\bmu$ is {\em lexicographically smaller than} $\bmv$ and denote by $\bmu\prec \bmv$ if the first nonzero component of $\bmv - \bmu$ is positive; in other words, the first distinct entry $u_i$ and $v_i$ has that $u_i < v_i$. Respectively, $\bmu$ is lexicographically larger than $\bmv$ if the first nonzero component of $\bmv-\bmu$ is negative. We abbreviate the comparison as {\em lexicolarger} or {\em lexicosmaller}. This notation extends to the comparison with $\bm0$: a point $\bmu$ is {\em lexicopositive} if $\bm0\prec \bmu$ and is {\em lexiconegative} if $\bm0 \prec - \bmu$.  
+
+\begin{lemma}
+The lexicographical ordering is a strict total order. 
+\end{lemma}
+\begin{proof}
+Let $\bmu, \bmv, \bmw \in \rr^n$ and $u_i, v_i, w_i$ denote the $i$-th entry $\bmu, \bmv, \bmw$, respectively. First, irreflexivity holds because it is not defined for a pair of identical vectors. If $\bmu \prec \bmv$ for two vectors, then the first index $i$ such that $u_i < v_i$ and $\bmv\not\prec\bmu$; thus, lexicographical ordering is asymmetric. Suppose $\bmu\prec\bmv$ and $\bmv\prec\bmw$. There are indices $k$ and $\ell$ so that $u_k < v_k$, $u_i = v_i$ for $i\in\{1, 2, \dots, k\}$, $v_\ell < w_\ell$, and $v_j = w_j$ for $j \in \{1, 2, \dots, \ell\}$. If $k\leq \ell$, then $u_k < v_k = w_k$; thus, $\bmu\prec\bmw$. If $\ell < k$, then $u_\ell = v_\ell < w_\ell$; thus, $\bmu\prec \bmw$ again. Therefore, the transitivity holds. The connectedness holds naturally. 
+\end{proof}
+
+Consider \LPSA~and $\bmx$ is basic feasible solution that there is $k\in N$ so that $\overline{c_k} > 0$. Let $\bmd\rise k = {M_B}^{-1} \bmf_k$ be the basic direction. As $\overline{c_k} > 0$, $\bmx$ is not optimal and, by Corollary~\ref{cor: unboundedness criterion}, the objective function is unbounded if $\bmd\rise k \geq \bm0$. We may assume that there are one or more entries of $\bmd\rise k$ that are negative.  
+
+In an engineering and implementation perspective, we consider the following augmented matrix. Consider the matrix obtained by attaching $\bmb$ as the first column of $M$ and apply the transformation
+\[ {M_B}^{-1} [\bmb \mid M] = {M_B}^{-1} [\bmb \mid \bmf_1 \mid \bmf_2 \mid \dots \mid \bmf_n]. \]
+As we have investigated in Section~\ref{sec:OptimalDegeneracy}, the resulting matrix consists of the following elements. 
+\begin{itemize}
+\item ${M_B}^{-1} \bmb = {M_B}^{-1} M \bmx$ determines whether the solution is optimal; if not, we need the following vectors. 
+\item  Each column ${M_B}^{-1} \bmf_k$ either is a basic direction $- \bmd\rise k$ if $k\in N$ or an standard basis vector $\bm\chi_j$ for $k = B(j) $ for $k\in B$. 
+\end{itemize}
+
+We now also integrate the reduced cost into consideration. Recall the following facts. The reduced cost $\overline\bmc$ can be written in a vectorized form that $\overline{\bmc} = \bmc -  ({M_B}^{-1} M )^\top [\bmc]_B$ or, equivalently, $\overline\bmc^\top = \bmc^\top - {[\bmc]_B}^\top {M_B}^{-1} M$. Theorem~\ref{thm: extreme points part 2} addressed that, if $\bmx$ is a basic feasible solution, then $[\bmx]_N = \bm0$ is the zero vector; thus, a basic feasible solution $\bmx$ has that $\inner{\bmc, \bmx} = \inner{[\bmc]_B, [\bmx]_B}$ is the obective value. As $M_B[\bmx]_B = \bmb$, we have that $[\bmx]_B = {M_B}^{-1}\bmb$. Consider the $(m+1)\times (n+1)$-matrix 
+\[
+\left[ 
+\begin{array}{c|c}
+ -\inner{[\bmc]_B, {M_B}^{-1}\bmb} ~~&~~ \overline{\bmc}^\top \\\hline
+ {M_B}^{-1}\bmb & {M_B}^{-1} M
+\end{array}
+ \right]
+\] 
+and the entries of the matrix can be expanded into
+\[
+\left[ 
+\begin{array}{c|cccc} 
+-\inner{\bmc, \bmx} 	& \overline{c_1} 	& \overline{c_2} 	& \hdots\hdots 	& \overline{c_n} \\\hline
+{[\bmx]_{B(1)}} 		& \vdots		& \vdots 			&   	& \vdots \\
+{[\bmx]_{B(2)}} 		& \mid 		& \mid 			&  	& \mid \\
+\vdots 			& -\bmd\rise 1 	& -\bmd\rise 2 		& \hdots\hdots 	& -\bmd\rise n \\
+\vdots 			& \mid 		& \mid 			&  	& \mid \\
+{[\bmx]_{B(m)}} 	& \vdots		& \vdots 			&  	& \vdots \\
+\end{array}
+ \right].
+\] 
+We call this matrix the {\em simplex tableau} of Linear Program~(\ref{lps}) defined by the basis $B$, the {\em tableau} defined by the basis $B$, or simply the {\em tableau} given the clarity of the context. In a given tableau, we index the rows and columns and name a part of it as follows. 
+\begin{itemize}
+\item The leading column that corresponds to a basic feasible solution is the {\em zero-th column} so that the numbering of the remaining columns is consistent with the numbering in $M$ itself; 
+\item The leading row that corresponds to the current objective value and the reduced cost as the {\em zero-th row}. 
+\item We call the part of the tableau consisting of all rows except the zero-th row ${M_B}^{-1} [\bmb \mid M]$ the {\em body} of the tableau. 
+\end{itemize}
+Let $T$ be a tableau; we denote the $i$-th row of $T$ by $T_i$ for $i\in\{0, 1, 2, \dots, m\}$, the $j$-th column as $T_{:, j}$ for $j \in \{0, 1, 2, \dots, n\}$, and the $(i, j)$-th entry as $T_{i, j}$. 
+
+Be aware that in different literature, the simplex tableau is also known as the full tableau and the body of a tableau as the simplex tableau. We consider the following choosing strategy for the entry criterion. As we mentioned in Remark~\ref{rmk:Replacement}, the index set $B$ is now a list and its order matters. 
+
+\begin{definition}[Lexicographic Pivoting Rule]
+Given that $T$ is a tableau defined by a basis $B$. Let $k\in N$ such that $\overline{c_k} > 0$ and obtain $\bmd\rise k\in\rr^m$. Let $I = \{i\in B: [\bmd\rise k]_i < 0\}$. Consider a second tableau obtained by dividing each {\em $i$-th row}, for $i\in I$, of $T$ by $-[\bmd\rise k]_i$. Let $\ell \in \{1, 2, \dots, m\}$ be the lexicographically smallest row in the second tableau and let $i\rast$ be the index such that $B(\ell) = i\rast$; define $B'$ by replacing $B(\ell)$ with $k$. 
+\end{definition}
+
+In the rule, the index set $I$ is nonempty; if $I = \emptyset$, then the algorithm terminates because the problem is unbounded. Note that the lexicographic pivoting rule does not modify the tableau; it makes a copy to compute the comparison. Also note that the row selection seems not to involve the 0-th row but, in fact, $\bmd\rise k$ is already embedded into the tableau when performing the division. Notice that the lexicographic pivoting rule does not explicitly compute the stepsize $\theta$, but the resulting 0-th column embeds the nonzero part of the basic feasible solution. Last but not least, note that the body of the tableau does not involve the optimization problem while the 0th row does. 
+
+\begin{theorem}\label{thm:lexico-monotonicity}
+Consider \LPSA~and a basic feasible solution $\bmx$ to it; we further suppose that every row, except possibly the 0-th row of its tableau, is lexicographically positive. Suppose the algorithm proceeds with the lexicographic pivoting rule; the following statement holds. 
+\begin{enumerate}
+\item Every row, except the 0-th row, of the tableau inductively remains lexi-positive. 
+\item Inductively, the 0-th row strictly decreases lexicographically. 
+\item The simplex method algorithm terminates after a finite number of iterations. 
+\end{enumerate}
+\end{theorem}
+ 
+We dedicate the next section to the proof of Theorem~\ref{thm:lexico-monotonicity}. We finish this section by showing that the lexicographical pivoting rule aligns with Theorem~\ref{thm:move-feasible}. 
+We first show that the index replacement operation can be obtained by a matrix multiplication; this is intuitively true since ${M_B}$ is a full-rank matrix, so that any new column can be represented as a linear combination of the existing columns. Further, we show that this index-swapping matrix is powerful enough that we need not compute the inverse ${M_{B'}}^{-1}$ from scratch but can obtain it via matrix multiplication from ${M_{B}}^{-1}$ and another mechanically constructed matrix, which is computationally cheaper. 
+
+\begin{lemma}[Change of Basis Matrix]\label{lemma:change-of-basis}
+Consider \LPSA with $k \in N$ and $B$ as the basic index list. Define $\bmu = {M_B}^{-1} \bmf_k$ with $u_i = [\bmu]_i$ be its $i$-th entry, for $i\in\{1, 2, \dots, m\}$. Let $\ell \in \{1,2,\dots, m\}$ and $R = \{1,2,\dots,m\}\setminus \{\ell\}$ such that $u_\ell > 0$ and define a new basic index set $B'$ where $B'(\ell) = k$ and $B'(i) = B(i)$ for all $i\in R$. 
+Define a new matrix $E \in \rr^{m\times m}$ in its column-form where
+\[ E = [\bm\chi_1 \mid \bm\chi_2\mid \dots \mid \bm\chi_{\ell-1} \mid \bmu \mid \bm\chi_{\ell+1} \mid \dots | \bm\chi_m] \] and a second matrix $Q\in \rr^{m\times m}$ by its rows where 
+\[ Q_\ell = \frac{1}{u_\ell} \bm\chi_\ell^\top \quad\text{and}\quad 
+Q_i = \bm\chi_i^\top - \frac{u_i}{u_{\ell}} \bm\chi_{\ell}^\top ~\text{ for }~i \in R. \]
+We have that $M_B E = M_{B'}$ and $ QE = I_m$, where $ I_m$ is the identity matrix. 
+\end{lemma}
+\begin{proof}
+We take the notations as in the statement. Taking the multiplication symbolically, we have that 
+\[ \begin{split}
+M_B E = ~& [ M_B \bm\chi_1 \mid M_B \bm\chi_2 \mid \dots \mid M_B \bm\chi_{\ell-1} \mid M_B \bmu \mid M_B \bm\chi_{\ell+1} \mid \dots \mid M_B \bm\chi_m] \\
+= ~&  [\bmf_{B(1)} \mid \bmf_{B(2)}\mid \dots \mid \bmf_{B(\ell-1)} \mid \bmf_k \mid \bmf_{B(\ell + 1)} \mid \dots | \bmf_{B(m)}] \\
+\end{split}\]
+in which the $\ell$-th column expands as $M_B {M_B}^{-1} \bmf_{k} =  \bmf_{k}$ by the definition of $\bmu$. Observe that $M_B E$ now follows precisely the defintion of $M_{B'}$ since $k = B'(\ell)$ and $B(j) = B'(j)$ if $j\in R$. 
+
+We now show that $Q$ is the inverse of $E$; that is, $QE = I_m$. Observe that at the $\ell$-th column of $QE$ is $Q\bmu$ and we have that 
+\[ [Q\bmu]_\ell = \inner{{Q_\ell}^\top, \bmu} = \inner{\frac{1}{u_\ell}\bm\chi_\ell, \bmu} = \frac{1}{u_\ell}\inner{\bm\chi_\ell, \bmu} = \frac{1}{u_\ell} u_{\ell} = 1 \]
+and 
+\[ [Q\bmu]_i = \inner{{Q_i}^\top, \bmu} = \inner{\bm\chi_i - \frac{u_i}{u_{\ell}}\bm\chi_{\ell}^\top  , \bmu} = \inner{\bm\chi_i , \bmu} -\frac{u_i}{u_{\ell}} \inner{ \bm\chi_{\ell}, \bmu} = u_i - u_i = 0 \] for $i\in R$. Let $i, j\in R$; note that the $j$-th column of $QE$ is $Q\bm\chi_j  =  Q_{:, j}$; this is straightforward to verify that
+\[  [Q\bm\chi_j]_\ell = Q_{\ell, j} = \left[  \frac{1}{u_\ell}\bm\chi_\ell^\top   \right]_j = 0   \]
+and 
+\[  [Q\bm\chi_j]_i = Q_{i, j} = \left[\bm\chi_i - \frac{u_i}{u_{\ell}} \bm\chi_{\ell}\right]_j = \left\{\begin{array}{ll}
+1 &~\text{if $i = j$, }\\
+0 &~\text{otherwise. }
+\end{array} \right. \]
+This verifies that $QE$ is the identity matrix. 
+\end{proof}
+
+Consider \LPSA~and a new basic index set $B'$ defined by $B$ with the lexicographical pivoting rule. Let $Q$ be the inverse of the change-of-basis matrix obtained as in Lemma~\ref{lemma:change-of-basis}, we have the first column $[\bmx']_{B'} = {M_{B'}}^{-1}\bmb = Q {M_{B}}^{-1} \bmb = [\bmx]_B$. We may expand so that 
+\[ \inner{Q_\ell^\top, [\bmx]_{B(\ell)}} = \frac{1}{u_\ell} [\bmx]_{B(\ell)} = \frac{[\bmx]_{B(\ell)}}{-[\bmd\rise k]_\ell} = \theta\] and 
+\[ \begin{split}
+\inner{Q_i^\top, [\bmx]_{B(i)}}  =~& \inner{\bm\chi_i, [\bmx]_B} - \frac{u_i}{u_\ell} \inner{\bm\chi_\ell, [\bmx]_B}\\
+=~& [\bmx]_{B(i)} - \frac{[\bmd\rise k]_{i}}{[\bmd\rise k]_k}[\bmx]_{B(\ell)} \\
+=~& [\bmx]_{B(i)} - \frac{ [\bmx]_{B(\ell) }}{[\bmd\rise k]_k}[\bmd\rise k]_{i} \\
+=~& [\bmx]_{B(i)} + \theta [\bmd\rise k]_{i}  
+\end{split} \]  for $i\in R$. Following Equation~\ref{eqn:form-of-new-bfs}, the new point obtained inductively is indeed a basic feasible solution, consistent with existing theoretical results. Finally, notice that there is a distinct pivoting rule, {\em Bland's Pivoting Rule}, which states that the algorithm only needs to choose the least $k$ so that $\overline{c_k} > 0$ and the index $\ell$ satisfies that $B(\ell)$ is the least. This rule, proved by contradiction yet not constructive, also guarantees termination. 
+
+
+\section{Proof of the Positivity, the Monotonicity, and the Termination of the Lexicographical Pivoting Rule}
+
+We start with the setup as in the statement. Suppose we start with a tableau in which all rows are lexicographically positive except the 0th row. Let $k\in N$ so that $\overline{c_k} > 0 $; we denote $\bmu = {M_B}^{-1}\bmf_{k} = -\bmd\rise k $ and denote each entry by $u_j = -[\bmd\rise k]_j$ for each $\ell \in \{1, 2, \dots, m\}$. Let $I = \{i \in B: u_i > 0\}$ and $\ell$ be the index that satisfies 
+\[ \frac{1}{ u_{\ell}} T_\ell \prec \frac{1}{ u_j } T_j \quad\text{ for all $j \in \{1, 2, \dots, m\} \setminus \{\ell\}$}. \] 
+Throughout, let $R = \{1, 2, \dots, m\} \setminus \{ \ell \}$. 
+We now obtain a new index set $B'$ by $B'(j) = B(j)$ for $j \in R$ and $B'(\ell) = k$. We now have a new tableau $T'$ defined by the basis $B'$. Note that in both tableaux $T$ and $T'$, the columns $T_{:, B(\ell)}$ and $T'_{:, B'(\ell)}$ are both the standard basis vector $\bm\chi_\ell\in\rr^m$; that is, \[{M_{B}}^{-1} \bmf_{B(\ell)} = {M_{B'}}^{-1} \bmf_{B'(\ell)} = \bm\chi_\ell.\] 
+
+
+Let $Q\in \rr^{m\times m}$ be defined as in Lemma~\ref{lemma:change-of-basis} so that $Q {M_{B}}^{-1} = {M_{B'}}^{-1}$. 
+Note that we have ${M_{B'}}^{-1} = (M_BE)^{-1} = E^{-1}{M_B}^{-1} = Q {M_B}^{-1}$ and, further, we may write the body of the tableaux $T'$ and $T$ as $ {M_{B'}}^{-1}[\bmb\mid M] = Q{M_{B}}^{-1}[\bmb\mid M]. $ 
+
+\subsubsection{Proof of the Lexicographical Positiveness}
+
+We may now compare the two tableaux using linear algebraic techniques. Observe that 
+\[T'_\ell = \frac{1}{u_\ell} T_\ell \quad\text{and}\quad T'_i = T_i - \frac{u_i}{u_\ell} T_\ell~~\text{ for } i \in R. \]
+
+By the definition of $\ell$, we have that $u_{\ell} = [-\bmd\rise k]_{\ell} > 0$, which first gives the lexicographical positiveness of $T'_{\ell}$. For $i \in R$, we consider the following cases.  
+
+If $u_i > 0$, we have chose $\frac{1}{u_\ell} T_\ell \prec \frac{1}{u_i} T_j$. By rearranging and multiplying both sides by $u_j$. As a positive scalar does not change the sign of an inequality, we have $\bm0 \prec T_j  - \frac{u_j}{u_\ell}T_\ell$; by definition, we have that $T'_j$ is lexicographically positive. Now, if $u_j \leq 0$, then $-u_j/u_\ell \geq 0$; coupled with the fact that all rows are lexicographically positive, we have that $T'_j = T_j + (-u_j/u_\ell) T_\ell$ is lexicographically positive. This proves Item 1. 
+
+\subsubsection{Proof of the Monotonicity of the Zeroth Row}
+
+We now turn to the second part on the 0-th row. The first entry $T'_{0,0} = \inner{[\bmc]_{B'}, {M_{B'}}^{-1} \bmb}$ can be expanded as follows:
+\[ \begin{split}  
+\inner{[\bmc]_{B'}, {M_{B'}}^{-1} \bmb}~& = \inner{[\bmc]_{B'}, Q{M_B}^{-1} \bmb}\\
+& = \inner{
+\bmat{ c_{B'(1)} \\ c_{B'(2)} \\ \vdots\\ c_{B'(m)}},  
+\bmat{Q_1\\ Q_2\\\vdots\\ Q_m}
+\bmat{[\bmx]_{B(1)} \\ [\bmx]_{B(2)}\\ \vdots \\ [\bmx]_{B(m)}}
+}\\
+& = c_{B'(\ell)} \inner{{Q_\ell}^\top, [\bmx]_B} + \sum_{i \in R} c_{B'(i)} \inner{Q_i^\top, [\bmx]_B} \\ 
+& = \frac{ c_{B'(\ell)} }{u_\ell} [\bmx]_{B(\ell)} + \sum_{i \in R}c_{B(i)} \left([\bmx]_{B(i)} - \frac{u_i}{u_\ell} [\bmx]_{B(\ell)}\right) \\
+\end{split} \]
+where the last equality replaces $B(i) = B'(i)$ for $i\in R$ and all other terms remain unchanged. Reordering the summation, we have 
+\[ \begin{split} \inner{[\bmc]_{B'}, {M_{B'}}^{-1} \bmb} = ~&
+\frac{ c_{B'(\ell)} }{u_\ell} [\bmx]_{B(\ell)} + \sum_{i \in R}c_{B(i)} [\bmx]_{B(i)} - \sum_{i \in R}c_{B(i)}\frac{u_i}{u_\ell} [\bmx]_{B(\ell)} \\
+=~& \frac{[\bmx]_{B(\ell)} }{u_\ell} c_{B'(\ell)}  + \sum_{i \in R}c_{B(i)} [\bmx]_{B(i)} - \frac{[\bmx]_{B(\ell)}}{u_\ell}\sum_{i \in R}c_{B(i)}u_i  \end{split}. \]
+Consider the following two terms that 
+\[  \sum_{i \in R}c_{B(i)} [\bmx]_{B(i)} = \inner{[\bmc]_B, [\bmx]_B} - c_{B(\ell)} [\bmx]_{B(\ell)} \]
+and
+\[ \frac{[\bmx]_{B(\ell)} }{u_\ell} c_{B'(\ell)}  - \frac{[\bmx]_{B(\ell)}}{u_\ell}\sum_{i \in R}c_{B(i)}u_i  =  \frac{[\bm{x}]_{B(\ell)}}{u_\ell} \left( c_{B'(\ell)} - \inner{[\bm{c}]_B, \bmu} + c_{B(\ell)} u_\ell \right).  \]
+Combining them together, we have that 
+\[ \begin{split} \inner{[\bmc]_{B'}, {M_{B'}}^{-1} \bmb} =~& \inner{[\bmc]_B, [\bmx]_B}  + \frac{[\bm{x}]_{B(\ell)}}{u_\ell} c_{B'(\ell)} -\frac{[\bm{x}]_{B(\ell)}}{u_\ell}  \inner{[\bm{c}]_B, \bmu} \\
+=~& \inner{[\bmc]_B, [\bmx]_B}  + \frac{[\bm{x}]_{B(\ell)}}{u_\ell} \overline{c_k} \\
+=~ & -T_{0, 0} + \frac{\overline{c_k}}{u_\ell}T_{\ell, 0}; 
+\end{split} 
+\]
+which gives that $T_{0, 0}' = T_{0, 0} - \overline{c_k} T_{\ell, 0}/ u_\ell$. 
+
+
+\begin{figure}[t]
+  \centering
+\begin{equation}\label{eqn:long-deduction}
+\boxed{\begin{split}
+         & c_j - \inner{[\bmc]_{B'}, {M_{B'}}^{-1} \bmf_j} \\
+         =~ &  c_j - \inner{[\bmc]_{B'}, Q{M_{B}}^{-1} \bmf_j} \\
+        =~ &  c_j - \inner{[\bmc]_{B'}, Q \bmv_j} \\ 
+        =~ &  c_j - c_{B'(\ell)} \inner{Q_\ell^\top, \bmv_j} - \sum_{i\in R} c_{B'(i)} \inner{Q_i^\top, \bmv_j} \\
+        =~ &  c_j - \frac{c_{B'(\ell)}}{u_\ell} T_{\ell, j} - \sum_{i\in R} c_{B(i)} \left(T_{i, j} - \frac{u_i}{u_\ell} T_{\ell, j} \right) \\
+        =~ &  c_j - \frac{c_{B'(\ell)}}{u_\ell} T_{\ell, j} - \sum_{i\in R} c_{B(i)} T_{i, j} + \frac{T_{\ell, j}}{u_\ell} \sum_{i\in R} c_{B'(i)} u_i \\
+        =~ &  c_j - \frac{c_{B'(\ell)}}{u_\ell} T_{\ell, j} 
+        - \left( \inner{[\bmc]_{B}, {M_B}^{-1} \bmf_j} - c_{B(\ell)}T_{\ell, j} \right)
+        + \left( \frac{T_{\ell, j}}{u_\ell} \inner{\bmc_B, \bmu} - \frac{T_{\ell, j}}{u_\ell}c_{B(\ell)}u_\ell\right)\\
+        =~ &  c_j - \inner{[\bmc]_{B}, {M_B}^{-1} \bmf_j} - \frac{ T_{\ell, j} }{u_\ell}c_{B'(\ell)} + \frac{T_{\ell, j}}{u_\ell} \inner{\bmc_B, \bmu} + c_{B(\ell)}T_{\ell, j}  - T_{\ell, j}c_{B(\ell)} \\
+        =~ &  \overline{c_j} - \frac{ T_{\ell, j} }{u_\ell}\overline{c_k} + c_{B(\ell)}T_{\ell, j}  - T_{\ell, j}c_{B(\ell)} \\
+        =~ &  T_{0, j} - \frac{ \overline{c_k} }{u_\ell} T_{\ell, j} + c_{B(\ell)}T_{\ell, j}   - T_{\ell, j}c_{B(\ell)}  \\
+        =~ &  T_{0, j} - \frac{ \overline{c_k} }{u_\ell} T_{\ell, j} 
+        \end{split}}
+\end{equation}
+        \caption{An expanded justification for the update of each $j$-th column of $T_0'$. }
+\end{figure}
+
+We now consider the $j$-th entry in $T_0'$ involving the $j$-th reduced cost given the new basis $B'$. Let $\bmv_j = {M_{B}}^{-1} \bmf_j$; observe from Equation~\ref{eqn:long-deduction} that we have $c_j - \inner{[\bmc]_{B'}, {M_{B'}}^{-1} \bmf_j} =  T_{0, j} - ( \overline{c_k} / u_\ell) T_{\ell, j} $. Integrate the 0-th column and all $j$-th column of $T_0'$, we have that $T_0' = T_0 - (\overline{c_k}/u_\ell) T_{\ell}$. Since $T_\ell$ is inductively lexicographically positive and the coefficient is a division of two positive numbers, which remains positive, we have that $T_0'$ strictly decreases lexicographically.   
+
+\subsubsection{ The Guraneteed Termination }
+Finally, observe that we may define the tableau given a basis, independent of the bases with which we started the algorithm or those obtained inductively. Also note that there are finitely many, namely $\binom{n}{m}$ bases we can choose. Coupled with the fact that the 0-th row lexicographically decreases strictly, we have that the algorithm terminates after finitely many iterations. 
+
+

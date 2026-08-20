@@ -4,12 +4,12 @@
 
 %Mathematically, it is perfectly fine to make assumptions for theoretical results, such as assuming the existence of a column basis of a constraint matrix; however, implementing a linear program solver would require step-by-step guidance from input to output. In this section, we investigate the initialization of the simplex method. 
 
-\subsection{Reduction to Standard Form}
+%\subsection{Reduction to Standard Form}
 
 We first show that every polyhedral set can be reduced into a standard form polyhedral set. 
 Without loss of generality, every polyhedral set has the following form: let $\bma_1, \bma_2, \dots, \bma_m\in \rr^n$ and $b_1, b_2, \dots, b_m\in\rr$; define
 \begin{equation}\label{poly simplex} P = \{\bmx\in\rr^n: \forall j\in\{1, 2, \dots, m\}, \inner{\bma_j, \bmx} \leq b_j\}. \end{equation}
-For each constraint $\bma_j$, for $j\in \{1, 2, \dots, m\}$, introduce a {\em slack variable} $s_j \in \rr_+$ and form a vector $\bms\in\rr^m_+$; consider 
+For each constraint $\bma_j$, for $j\in \{1, 2, \dots, m\}$, introduce a {\em slack variable} $s_j \in \rr$ and form a vector $\bms\in\rr^m_+$; consider  
 \[   P_1 = \left\{\bmat{\bmx\\ \bms} \in \rr^{n+m} : \forall i\in\{1, 2, \dots, m\}, \inner{\bma_j, \bmx} + s_j = b_j, s_j \geq 0\right\}. \]
 Observe that every feasible solution $\bmx_0 \in P$, there is some $\bms_0\in\rr^m$ so that $(\bmx_0, \bms_0) \in P_1$; conversely, for every $(\bmx_0, \bms_0) \in P_1$, we have $\bmx_0 \in P$.  
 
@@ -17,7 +17,7 @@ Observe that a number can always be represented by the difference of two non-neg
 \begin{equation}\label{poly simplex standard}
 P_2 = \left\{ \bmat{\bmx^+ \\ \bmx^- \\ \bms } \in \rr^{2n + m} : 
 \begin{array}{ll}
- \forall j\in\{1, 2, \dots, n\}, & 
+ \forall j\in\{1, 2, \dots, n\}, &  
 % \left\{ 
 \begin{array}{l}
 \inner{\bma_j, \bmx^+} - \inner{\bma_j, \bmx^-} + s_j   = b_j, \\
